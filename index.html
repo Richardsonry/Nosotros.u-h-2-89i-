@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#fbe3ea">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -166,6 +166,39 @@
     .sub, .bye, .intro-title, .question, .score-card, .choice, .opt { background: rgba(255,255,255,.8); }
   }
 
+
+  /* ===== Pantalla fija tipo iPhone (19.5:9) ===== */
+  html, body { position: fixed; inset: 0; width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; }
+  .app { position: relative; height: 100vh; height: 100dvh; min-height: 0; max-width: none; overflow: hidden; }
+  main { min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: none; scrollbar-width: none; }
+  main::-webkit-scrollbar { display: none; }
+  @media (min-width: 600px) {
+    body { display: grid; place-items: center; }
+    .app {
+      --h: min(844px, calc(100dvh - 32px)); height: var(--h); width: calc(var(--h) * 9 / 19.5);
+      padding: 28px 20px 18px; border-radius: 48px; border: 1px solid var(--edge);
+      background: rgba(255,255,255,.16); box-shadow: 0 30px 80px rgba(150,60,90,.25), inset 0 0 0 7px rgba(255,255,255,.3);
+    }
+  }
+  /* ===== Inicio ===== */
+  .home { text-align: left; }
+  .home-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .home .big { font-size: 2rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+  .home .date { font-weight: 600; color: var(--muted); margin-top: 2px; }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; color: var(--accent); font-size: 1.2rem; background: var(--glass); border: 1px solid var(--edge); box-shadow: var(--glass-shadow); }
+  .sec { font-size: 1.2rem; font-weight: 700; letter-spacing: -.02em; margin: 16px 0 10px; }
+  .carousel { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; padding-bottom: 4px; }
+  .carousel::-webkit-scrollbar { display: none; }
+  .ph { flex: none; width: 72%; height: 190px; border-radius: 28px; position: relative; overflow: hidden; scroll-snap-align: start; border: 1px solid var(--edge); box-shadow: var(--glass-shadow); }
+  .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ph .cap { position: absolute; left: 8px; right: 8px; bottom: 8px; padding: 10px 14px; border-radius: 20px; font-weight: 600; font-size: .9rem; background: rgba(255,255,255,.4); -webkit-backdrop-filter: blur(18px) saturate(180%); backdrop-filter: blur(18px) saturate(180%); }
+  .ph .rm { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; border: none; background: rgba(0,0,0,.45); color: #fff; font-size: 17px; line-height: 1; }
+  .ph.add { display: grid; place-items: center; text-align: center; cursor: pointer; color: var(--accent); font-weight: 600; line-height: 1.5; background: var(--glass); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); }
+  .daily { padding: 18px 20px 20px; border-radius: 28px; background: var(--glass); border: 1px solid var(--edge); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%); }
+  .daily .sec { margin: 0 0 4px; }
+  .dsub { color: var(--muted); font-size: .92rem; line-height: 1.5; margin-bottom: 14px; }
+  .btn.full { display: block; width: 100%; text-align: center; }
+  .btn.glass { background: var(--glass); color: var(--ink); border-color: var(--edge); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%); }
 </style>
 </head>
 <body>
@@ -202,9 +235,17 @@
 // false = va directo al test
 const INTRO_ENABLED = true;
 
+// true  = hay pantalla de inicio con fotos, "Pregunta del día" y el botón del test
+// false = se desactiva y todo funciona como antes (va directo al test)
+const DAILY_ENABLED = true;
+
+// Fotos fijas para el inicio (opcional). Formato: { src: "data:image/jpeg;base64,...", caption: "Nuestro primer viaje" }
+// También se pueden añadir desde el teléfono con la tarjeta "Añadir fotos".
+const PHOTOS = [];
+
 // Tu número de WhatsApp con código de país, sin "+" ni espacios (Colombia = 57).
 // Ejemplo: "573001234567"
-const WHATSAPP_NUMBER = "57XXXXXXXXXX";
+const WHATSAPP_NUMBER = "573104182428";
 
 // Preguntas por test
 const PER_TEST = 10;
@@ -418,7 +459,7 @@ function introSent() {
     <p class="sub">Cuando hayas enviado el mensaje por WhatsApp,<br>vuelve aquí y toca el botón. ✨</p>
     <button class="btn wide" id="ready">Ya lo envié, ¡quiero la sorpresa!</button>
     <p class="again"><a href="${waUrl}" target="_blank" rel="noopener">¿No se abrió WhatsApp? Intentar de nuevo</a></p>`;
-  $('ready').onclick = startTest;
+  $('ready').onclick = entry;
 }
 
 function introTest() {
@@ -428,7 +469,7 @@ function introTest() {
       <button class="choice primary" id="yes">SÍ</button>
       <button class="choice" id="no">NO</button>
     </div>`;
-  $('yes').onclick = startTest;
+  $('yes').onclick = entry;
   $('no').onclick = () => go(introBye, INTRO);
 }
 
@@ -516,15 +557,123 @@ function showResult() {
       <p class="detail">${correct} de ${test.length} respuestas correctas · ${m.detail}</p>
     </div>
     <a class="btn wide" href="${resultLink(pct)}" target="_blank" rel="noopener">Enviar mi resultado 💌</a>
-    <button class="btn" id="again" style="margin-top:16px">Intentar de nuevo</button>`;
+    <button class="btn" id="again" style="margin-top:16px">Intentar de nuevo</button>${DAILY_ENABLED ? '<button class="btn glass" id="home" style="margin:16px 0 0 8px">Inicio</button>' : ''}`;
+  if ($('home')) $('home').onclick = goHome;
   $('again').onclick = startTest;
 }
 
 document.addEventListener('keydown', e => screen._keys && screen._keys(e));
 
+/* ===================== Inicio + Pregunta del día ===================== */
+const store = {
+  get: (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } },
+  set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+};
+const dayKey = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
+const dayNum = () => { const d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); };
+const dailyQ = () => READY.length ? READY[dayNum() % READY.length] : null;
+const dailyState = () => { const s = store.get('qn_daily', null); return s && s.key === dayKey() ? s : null; };
+const goHome = () => go(renderHome, { hideTitle: true });
+const entry = () => DAILY_ENABLED ? goHome() : startTest();
+
+const readPhoto = f => new Promise(res => {
+  const fr = new FileReader();
+  fr.onerror = () => res(null);
+  fr.onload = () => {
+    const im = new Image();
+    im.onerror = () => res(null);
+    im.onload = () => {
+      const k = Math.min(1, 720 / Math.max(im.width, im.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+      res(c.toDataURL('image/jpeg', .72));
+    };
+    im.src = fr.result;
+  };
+  fr.readAsDataURL(f);
+});
+
+function renderHome() {
+  const mine = store.get('qn_photos', []);
+  const all = [...PHOTOS, ...mine.map((src, i) => ({ src, mine: i }))];
+  const d = new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' });
+  const done = dailyState();
+  screen.innerHTML = `<div class="home">
+    <div class="home-top"><div><h2 class="big">Nosotros</h2><div class="date">${d[0].toUpperCase() + d.slice(1)}</div></div><div class="avatar">♥</div></div>
+    <h3 class="sec">Nuestros momentos</h3>
+    <div class="carousel">
+      ${all.map(p => `<div class="ph"><img src="${p.src}" alt="">${p.caption ? `<div class="cap">${p.caption}</div>` : ''}${p.mine !== undefined ? `<button class="rm" data-i="${p.mine}" aria-label="Quitar foto">×</button>` : ''}</div>`).join('')}
+      <label class="ph add"><input type="file" accept="image/*" multiple style="display:none" id="pf"><span style="font-size:1.8rem">＋</span><br>Añadir fotos</label>
+    </div>
+    <div class="daily" style="margin-top:16px">
+      <h3 class="sec">Pregunta del día</h3>
+      <p class="dsub">${done ? 'Ya respondiste la de hoy. Mañana hay otra.' : 'Una pregunta nueva cada día. ¿Qué tanto me conoces hoy?'}</p>
+      <button class="btn full" id="dq">${done ? 'Ver mi respuesta' : 'Responder'}</button>
+    </div>
+    <button class="btn glass full" id="tq" style="margin-top:12px">Hacer nuestro test</button>
+  </div>`;
+  $('dq').onclick = () => go(showDaily);
+  $('tq').onclick = startTest;
+  $('pf').onchange = async e => {
+    const list = store.get('qn_photos', []);
+    for (const f of e.target.files) { const src = await readPhoto(f); if (src) list.push(src); }
+    if (!store.set('qn_photos', list)) alert('No hay espacio para guardar más fotos en este teléfono.');
+    renderHome();
+  };
+  screen.querySelectorAll('.rm').forEach(b => b.onclick = () => {
+    const list = store.get('qn_photos', []); list.splice(+b.dataset.i, 1); store.set('qn_photos', list); renderHome();
+  });
+}
+
+function showDaily() {
+  const q = dailyQ();
+  if (!q) {
+    screen.innerHTML = `<p class="sub">Aún no hay preguntas listas.</p><button class="btn" id="hm">Volver</button>`;
+    $('hm').onclick = goHome; return;
+  }
+  const right = q.options[q.answer];
+  const opts = q.options.filter(o => o.trim());
+  screen.innerHTML = `
+    <div class="meta">Pregunta del día</div>
+    <div class="question">${q.text}</div>
+    <div class="options">
+      ${opts.map((o, i) => `<button class="opt" data-v="${o.replace(/"/g, '&quot;')}"><b>${letters[i]}</b><span>${o}</span></button>`).join('')}
+    </div>
+    <div id="after"></div>`;
+  const buttons = [...screen.querySelectorAll('.opt')];
+  const reveal = chosen => {
+    buttons.forEach(b => {
+      b.disabled = true;
+      if (b.dataset.v === right) b.classList.add('ok');
+      else if (b.dataset.v === chosen) b.classList.add('bad');
+      else b.classList.add('dim');
+    });
+    const ok = chosen === right;
+    $('after').innerHTML = `
+      <p class="detail" style="margin:16px 0 12px;text-align:center">${ok ? '¡Correcto! 💕' : 'Casi… la respuesta era ' + right}</p>
+      <a class="btn wide" href="${waLink(`Pregunta del día 💕\n${q.text}\n→ ${chosen} ${ok ? '✅' : `❌ (era: ${right})`}`)}" target="_blank" rel="noopener">Enviar mi respuesta 💌</a>
+      <button class="btn glass full" id="hm" style="margin-top:10px">Volver al inicio</button>`;
+    $('hm').onclick = goHome;
+  };
+  const st = dailyState();
+  if (st) reveal(st.chosen);
+  else buttons.forEach(b => b.onclick = () => { store.set('qn_daily', { key: dayKey(), chosen: b.dataset.v }); reveal(b.dataset.v); });
+}
+
+/* Bloquea el movimiento vertical de la página (solo se mueve el carrusel, o el contenido si no cabe) */
+document.addEventListener('touchmove', e => {
+  if (e.target.closest('.carousel')) return;
+  const m = e.target.closest('main');
+  if (m && m.scrollHeight > m.clientHeight + 1) return;
+  e.preventDefault();
+}, { passive: false });
+
 /* ===================== Arranque ===================== */
 if (INTRO_ENABLED) {
   introAsk();
+} else if (DAILY_ENABLED) {
+  renderHome();
 } else {
   head.classList.remove('is-hidden');
   showStart();
