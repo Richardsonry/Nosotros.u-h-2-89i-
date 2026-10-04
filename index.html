@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf7f5">
+<title>Qué tanto sabes de nosotros</title>
+<style>
+  :root {
+    --bg: #faf7f5;
+    --ink: #2b2325;
+    --muted: #9b8f92;
+    --accent: #c2485c;
+    --line: #e9e1e3;
+    --ok: #3f9b6b;
+    --bad: #d0505a;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16px;
+  }
+  button, a { touch-action: manipulation; }
+
+  .app {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding:
+      calc(28px + env(safe-area-inset-top))
+      calc(20px + env(safe-area-inset-right))
+      calc(18px + env(safe-area-inset-bottom))
+      calc(20px + env(safe-area-inset-left));
+  }
+
+  /* ---------- Título principal ---------- */
+  header {
+    text-align: center;
+    max-height: 220px;
+    overflow: hidden;
+    transition: opacity .6s ease, max-height .6s ease;
+  }
+  header.is-hidden { opacity: 0; max-height: 0; }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.15rem, 5.2vw, 2.2rem);
+    letter-spacing: .16em;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .rule { width: 48px; height: 1px; background: var(--accent); margin: 14px auto 28px; }
+
+  /* ---------- Pantallas ---------- */
+  main { flex: 1; display: flex; flex-direction: column; }
+  .screen {
+    width: 100%;
+    text-align: center;
+    align-self: flex-start;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity .45s ease, transform .45s ease;
+    animation: fadeIn .7s ease backwards;
+  }
+  .screen.center { align-self: center; margin: auto 0; }
+  .screen.out { opacity: 0; transform: translateY(14px); }
+  .screen.pre { opacity: 0; transform: translateY(-14px); transition: none; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } }
+
+  .sub { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-bottom: 32px; }
+  .sub em { color: var(--ink); font-family: var(--serif); font-size: 1.25rem; font-style: italic; }
+
+  .btn {
+    display: inline-block;
+    font: inherit; font-weight: 400;
+    background: var(--ink); color: #fff;
+    border: none; padding: 16px 34px;
+    letter-spacing: .12em; text-transform: uppercase; font-size: .8rem;
+    border-radius: 999px; cursor: pointer; text-decoration: none;
+    transition: background .25s, transform .2s;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn.wide {
+    display: block; width: 100%;
+    text-transform: none; letter-spacing: .02em;
+    font-size: 1rem; line-height: 1.35;
+    border-radius: 16px; padding: 18px 20px;
+    background: var(--accent);
+  }
+  .again { margin-top: 22px; font-size: .85rem; }
+  .again a { color: var(--muted); }
+
+  /* ---------- Inicio (intro) ---------- */
+  .intro-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(1.7rem, 7.5vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: 34px;
+  }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pair.stack { grid-template-columns: 1fr; }
+  .choice {
+    font: inherit; font-weight: 400; font-size: 1.05rem; color: var(--ink);
+    background: #fff; border: 1px solid var(--line);
+    min-height: 60px; padding: 14px 18px; border-radius: 16px; cursor: pointer;
+    transition: border-color .25s, background .25s, transform .2s;
+  }
+  .choice:active { transform: scale(.97); }
+  .choice.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .bye { font-family: var(--serif); font-size: clamp(1.4rem, 6vw, 1.9rem); line-height: 1.4; margin-bottom: 18px; }
+  .love { font-family: var(--serif); font-size: 1.6rem; color: var(--accent); margin-bottom: 34px; }
+
+  /* ---------- Preguntas ---------- */
+  .meta { color: var(--muted); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 12px; }
+  .bar { height: 2px; background: var(--line); margin-bottom: 26px; border-radius: 2px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .5s ease; }
+
+  .question {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(1.3rem, 5.6vw, 1.9rem);
+    line-height: 1.35;
+    margin-bottom: 24px;
+  }
+  .options { display: grid; gap: 10px; text-align: left; }
+  .opt {
+    font: inherit; font-weight: 300; font-size: 1rem; color: var(--ink);
+    display: flex; align-items: center; gap: 16px;
+    background: #fff; border: 1px solid var(--line);
+    min-height: 56px; padding: 14px 18px; border-radius: 14px; cursor: pointer;
+    transition: border-color .25s, background .25s, transform .2s, opacity .3s;
+  }
+  .opt:active:not(:disabled) { transform: scale(.98); }
+  @media (hover: hover) { .opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); } }
+  .opt b { font-weight: 500; color: var(--accent); width: 22px; flex: none; font-family: var(--serif); font-size: 1.15rem; }
+  .opt:disabled { cursor: default; }
+  .opt.ok { border-color: var(--ok); background: #eef8f2; }
+  .opt.bad { border-color: var(--bad); background: #fcefef; }
+  .opt.dim { opacity: .5; }
+
+  /* ---------- Resultado ---------- */
+  .score { font-family: var(--serif); font-size: clamp(4rem, 22vw, 6.5rem); font-weight: 500; color: var(--accent); line-height: 1; }
+  .score small { font-size: .3em; color: var(--muted); font-weight: 400; }
+  .msg { font-family: var(--serif); font-size: clamp(1.4rem, 6vw, 2rem); font-weight: 500; line-height: 1.3; margin: 22px 0 10px; }
+  .detail { color: var(--muted); margin-bottom: 32px; font-size: .92rem; line-height: 1.6; }
+
+  footer { color: var(--muted); font-size: .7rem; letter-spacing: .15em; padding-top: 24px; text-align: center; }
+
+  .fallback {
+    text-align: center; color: var(--muted); font-size: .95rem; line-height: 1.7;
+    padding: 40px 8px; align-self: center; margin: auto 0;
+  }
+  .fallback b { color: var(--ink); font-weight: 500; }
+
+  /* Pantallas bajitas (iPhone en Safari con barras) */
+  @media (max-height: 720px) {
+    .app { padding-top: calc(18px + env(safe-area-inset-top)); }
+    .rule { margin: 10px auto 18px; }
+    .bar { margin-bottom: 18px; }
+    .question { margin-bottom: 18px; }
+    footer { display: none; }
+  }
+
+  /* Portátil / pantallas grandes */
+  @media (min-width: 700px) {
+    .app { padding-top: 56px; max-width: 700px; }
+    .rule { margin-bottom: 44px; }
+    .opt { padding: 17px 22px; font-size: 1.05rem; }
+    .btn:hover { background: var(--ink); }
+    .btn.wide:hover { filter: brightness(1.08); }
+    .choice:hover { border-color: var(--accent); }
+  }
+  @media (hover: hover) { .btn:hover { background: var(--accent); } .btn.wide:hover { background: var(--accent); filter: brightness(1.08); } }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header id="head" class="is-hidden">
+    <h1>QUE TANTO SABES DE NOSOTROS</h1>
+    <div class="rule"></div>
+  </header>
+
+  <main>
+    <div id="fallback" class="fallback">
+      <b>Cargando…</b><br>
+      Si solo ves esto, tu teléfono abrió el archivo en una vista previa que no permite ejecutarlo.<br>
+      Ábrelo desde un link en Safari o Chrome.
+    </div>
+    <div id="screen" class="screen center"></div>
+  </main>
+  <script>
+    window.onerror = function (msg, src, line) {
+      var f = document.getElementById('fallback');
+      if (f) { f.style.display = 'block'; f.innerHTML = '<b>Ups, hubo un error</b><br>' + msg + ' (línea ' + line + ')'; }
+    };
+  </script>
+
+  <footer>HECHO CON ♥</footer>
+</div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN
+   ===================================================================== */
+// true  = primero salen las preguntas "¿Podemos arreglar las cosas?" y luego el test
+// false = va directo al test
+const INTRO_ENABLED = true;
+
+// Tu número de WhatsApp con código de país, sin "+" ni espacios (Colombia = 57).
+// Ejemplo: "573001234567"
+const WHATSAPP_NUMBER = "57XXXXXXXXXX";
+
+// Preguntas por test
+const PER_TEST = 10;
+
+/* =====================================================================
+   BANCO DE PREGUNTAS
+   ---------------------------------------------------------------------
+   Formato:  Q("Pregunta", ["Opción A", "Opción B", "Opción C", "Opción D"], indiceCorrecto)
+   - indiceCorrecto: 0 = primera opción, 1 = segunda, 2 = tercera, 3 = cuarta.
+   - Las opciones se mezclan solas en cada test.
+   - Las preguntas con opciones vacías ("") se IGNORAN: puedes ir llenándolas de a poco.
+   ===================================================================== */
+const Q = (text, options = ["", "", "", ""], answer = 0) => ({ text, options, answer });
+
+const BANK = [
+  // ---- Ya completas ----
+  Q("¿Qué día de la semana nos conocimos?", ["Lunes", "Miércoles", "Viernes", "Jueves"], 3),
+  Q("¿En qué fecha oficializamos nuestra historia como pareja?", ["23-03-20", "28-04-20", "28-03-20", "13-03-20"], 2),
+  Q("¿Cuál es mi color favorito?", ["Rojo", "Verde", "Azul", "Negro"], 0),
+
+  // ---- Por completar (4 - 100) ----
+  Q("¿En qué lugar nos conocimos por primera vez?"),                          // 4
+  Q("¿Cuál fue nuestra primera cita?"),                                       // 5
+  Q("¿Qué plan o película hicimos en nuestra primera salida?"),               // 6
+  Q("¿Dónde nos dimos nuestro primer beso?"),                                 // 7
+  Q("¿Cuál fue el primer regalo que te di?"),                                 // 8
+  Q("¿De qué color era la ropa que yo llevaba el día que nos conocimos?"),    // 9
+  Q("¿Cuál fue el primer viaje que hicimos juntos?"),                         // 10
+  Q("¿Quién dio el primer paso en nuestra historia?"),                        // 11
+  Q("¿Cuál fue la primera comida que compartimos?"),                          // 12
+  Q("¿Qué fue lo primero que me llamó la atención de ti?"),                   // 13
+  Q("¿En qué año nos conocimos?"),                                            // 14
+  Q("¿En qué mes nos conocimos?"),                                            // 15
+  Q("¿En qué mes es mi cumpleaños?"),                                         // 16
+  Q("¿Cuántos años cumplo en mi próximo cumpleaños?"),                        // 17
+  Q("¿Cuál es mi signo zodiacal?"),                                           // 18
+  Q("¿Cuál es mi segundo nombre?"),                                           // 19
+  Q("¿Cuál es mi comida favorita?"),                                          // 20
+  Q("¿Cuál es mi bebida favorita?"),                                          // 21
+  Q("¿Cuál es mi postre favorito?"),                                          // 22
+  Q("¿Cuál es mi sabor de helado favorito?"),                                 // 23
+  Q("¿Cuál es mi película favorita?"),                                        // 24
+  Q("¿Cuál es mi serie favorita?"),                                           // 25
+  Q("¿Qué género musical es el que más disfruto?"),                           // 26
+  Q("¿Cuál es mi canción favorita?"),                                         // 27
+  Q("¿Cuál es mi artista o banda favorita?"),                                 // 28
+  Q("¿Cuál es mi deporte favorito?"),                                         // 29
+  Q("¿De qué equipo soy hincha?"),                                            // 30
+  Q("¿Cuál es mi animal favorito?"),                                          // 31
+  Q("¿Cuál es mi número favorito?"),                                          // 32
+  Q("¿Cuál es mi videojuego favorito?"),                                      // 33
+  Q("¿Cuál es mi mayor miedo?"),                                              // 34
+  Q("¿Qué es lo que más me incomoda o me molesta?"),                          // 35
+  Q("¿Cuál es mi talla de zapatos?"),                                         // 36
+  Q("¿Cuál es mi mayor sueño?"),                                              // 37
+  Q("¿Qué haría si me ganara la lotería?"),                                   // 38
+  Q("¿Cuál es el destino de viaje con el que más sueño?"),                    // 39
+  Q("¿Qué comida no soporto?"),                                               // 40
+  Q("¿Qué pido siempre cuando vamos a un restaurante?"),                      // 41
+  Q("¿Cómo tomo el café?"),                                                   // 42
+  Q("¿Qué es lo primero que hago al despertar?"),                             // 43
+  Q("¿A qué hora suelo irme a dormir?"),                                      // 44
+  Q("¿Cuál es mi manía más peculiar?"),                                       // 45
+  Q("¿Cuál es la frase que más repito?"),                                     // 46
+  Q("¿Cuál es mi mayor defecto?"),                                            // 47
+  Q("¿Cuál es mi mejor cualidad?"),                                           // 48
+  Q("¿Cómo se llama mi mejor amigo?"),                                        // 49
+  Q("¿Cómo se llama mi mamá?"),                                               // 50
+  Q("¿Cómo se llama mi papá?"),                                               // 51
+  Q("¿Cuántos hermanos tengo?"),                                              // 52
+  Q("¿A qué me dedico?"),                                                     // 53
+  Q("¿Qué quería ser cuando era niño?"),                                      // 54
+  Q("¿Cuál era mi materia favorita en el colegio?"),                          // 55
+  Q("¿Cuál es el apodo cariñoso con el que te llamo?"),                       // 56
+  Q("¿Cómo tengo guardado tu contacto en mi celular?"),                       // 57
+  Q("¿Cuál fue el primer apodo que te puse?"),                                // 58
+  Q("¿Qué es lo que más me hace reír?"),                                      // 59
+  Q("¿Qué es lo que me pone de mal humor?"),                                  // 60
+  Q("¿Qué hago cuando estoy nervioso?"),                                      // 61
+  Q("¿Cuál es mi plan ideal para un fin de semana?"),                         // 62
+  Q("¿Cuál es mi rincón favorito de la casa?"),                               // 63
+  Q("¿Cuál es la prenda de ropa que más uso?"),                               // 64
+  Q("¿Cuál es mi perfume favorito?"),                                         // 65
+  Q("¿Cuál es mi marca de ropa favorita?"),                                   // 66
+  Q("¿Qué flor te regalaría siempre?"),                                       // 67
+  Q("¿Cuál ha sido el mejor regalo que te he dado?"),                         // 68
+  Q("¿Cuál es «nuestra canción»?"),                                           // 69
+  Q("¿Qué película o serie hemos visto más veces juntos?"),                   // 70
+  Q("¿Cuál es nuestro lugar favorito para salir?"),                           // 71
+  Q("¿Cuál es nuestro plato favorito para compartir?"),                       // 72
+  Q("¿Cuál fue el motivo de nuestra primera discusión?"),                     // 73
+  Q("¿Cuál es la anécdota más divertida que hemos vivido juntos?"),           // 74
+  Q("¿A qué lugar sueño llevarte algún día?"),                                // 75
+  Q("¿En qué ciudad o país me gustaría que viviéramos?"),                     // 76
+  Q("¿Cuántos hijos me gustaría tener?"),                                     // 77
+  Q("¿Qué nombre le pondría a nuestra futura mascota?"),                      // 78
+  Q("¿Qué mascota me gustaría tener?"),                                       // 79
+  Q("¿Cómo sueño que sea nuestra boda?"),                                     // 80
+  Q("¿Cuál es mi lenguaje del amor?"),                                        // 81
+  Q("¿Cuál es mi mayor debilidad?"),                                          // 82
+  Q("¿Qué haría con un día completamente libre?"),                            // 83
+  Q("¿Qué superpoder elegiría?"),                                             // 84
+  Q("¿Cuál es mi mejor recuerdo de la infancia?"),                            // 85
+  Q("¿Cuánto tiempo tardo en arreglarme para salir?"),                        // 86
+  Q("¿Qué tipo de cocina prefiero cuando salimos a comer?"),                  // 87
+  Q("¿Cuál fue la primera foto que nos tomamos juntos?"),                     // 88
+  Q("¿Qué es lo primero que hago cuando te veo?"),                            // 89
+  Q("¿Qué clima prefiero: calor, frío o lluvia?"),                            // 90
+  Q("¿Cuál es mi forma favorita de pasar la tarde contigo?"),                 // 91
+  Q("¿Qué cosa nunca me falta en el bolsillo o en la mochila?"),              // 92
+  Q("¿Cuál es la aplicación que más uso en el celular?"),                     // 93
+  Q("¿Qué es lo que más me gusta de ti?"),                                    // 94
+  Q("¿Cuál es el logro del que me siento más orgulloso?"),                    // 95
+  Q("¿Qué es lo que más admiro de ti?"),                                      // 96
+  Q("¿Cuál es mi frase favorita para decirte «te quiero»?"),                  // 97
+  Q("¿Cuál es mi mayor tentación a la hora de comer?"),                       // 98
+  Q("¿Cómo reacciono cuando tengo hambre?"),                                  // 99
+  Q("¿Cuál es mi lugar favorito en el mundo?"),                               // 100
+];
+
+/* ===================== Mensajes según el puntaje ===================== */
+const MESSAGES = [
+  { max: 29,  text: "¡CASI 7 AÑOS Y NO SABES NAADAAA! 😭",              detail: "Tranquila, aún estás a tiempo de ponerte a estudiar." },
+  { max: 49,  text: "Mmm… hay esperanza, pero toca repasar la tarea 📚", detail: "Algo sabes, pero falta convivencia intensiva." },
+  { max: 69,  text: "Vas por la mitad: el amor está, la memoria no tanto 😅", detail: "Aprobaste raspando, mi amor." },
+  { max: 89,  text: "¡Casi casi! Me conoces bastante bien 💕",           detail: "Se nota que prestas atención a los detalles." },
+  { max: 99,  text: "¡Wow! Eres mi detective del amor 🔎❤️",              detail: "Casi perfecto. Te falta un detallito para el diploma." },
+  { max: 100, text: "¡PERFECTO! Me conoces mejor que yo mismo 💖",       detail: "Eres oficialmente mi persona favorita en el mundo." },
+];
+
+/* ===================== Utilidades ===================== */
+const $ = id => document.getElementById(id);
+const screen = $('screen');
+const head = $('head');
+const letters = ['A', 'B', 'C', 'D'];
+const seen = new Set();
+
+const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+// Solo cuentan las preguntas con al menos 2 opciones y respuesta válida
+const READY = BANK.filter(q => q.options.filter(o => o.trim()).length >= 2 && (q.options[q.answer] || '').trim());
+console.log(`Preguntas listas: ${READY.length} de ${BANK.length}`);
+
+const waLink = text => {
+  const n = String(WHATSAPP_NUMBER).replace(/\D/g, '');
+  const base = n.length >= 8 ? `https://wa.me/${n}` : 'https://wa.me/';
+  return `${base}?text=${encodeURIComponent(text)}`;
+};
+
+// Transición suave entre pantallas
+let moving = false;
+function go(renderFn, opts = {}) {
+  if (moving) return;
+  moving = true;
+  screen.classList.add('out');
+  setTimeout(() => {
+    screen._keys = null;
+    renderFn();
+    screen.classList.toggle('center', !!opts.center);
+    head.classList.toggle('is-hidden', !!opts.hideTitle);
+    screen.classList.remove('out');
+    screen.classList.add('pre');
+    void screen.offsetWidth;
+    screen.classList.remove('pre');
+    window.scrollTo(0, 0);
+    moving = false;
+  }, 450);
+}
+
+/* ===================== Inicio (intro) ===================== */
+const INTRO = { center: true, hideTitle: true };
+const PLACES = [
+  { label: "Ven a mi casa", msg: "Quiero que vengas a mi casa 🏠" },
+  { label: "Voy a la tuya", msg: "Voy yo a tu casa 🏠" },
+];
+let choice = null;
+let waUrl = '';
+
+function introAsk() {
+  screen.innerHTML = `
+    <h2 class="intro-title">¿Podemos arreglar las cosas?</h2>
+    <div class="pair">
+      <button class="choice primary" id="yes">SÍ</button>
+      <button class="choice" id="no">NO</button>
+    </div>`;
+  $('yes').onclick = () => go(introPlace, INTRO);
+  $('no').onclick = () => go(introTest, INTRO);
+}
+
+function introPlace() {
+  screen.innerHTML = `
+    <h2 class="intro-title">¿Quieres que vaya a tu casa o vienes a la mía?</h2>
+    <div class="pair stack">
+      ${PLACES.map((p, i) => `<button class="choice" data-i="${i}">${p.label}</button>`).join('')}
+    </div>`;
+  screen.querySelectorAll('.choice').forEach(b => {
+    b.onclick = () => { choice = PLACES[b.dataset.i]; go(introSend, INTRO); };
+  });
+}
+
+function introSend() {
+  waUrl = waLink(`Sí, podemos arreglar las cosas 💕 ${choice.msg}`);
+  screen.innerHTML = `
+    <p class="sub">Elegiste:<br><em>${choice.label}</em> 💕</p>
+    <a class="btn wide" id="send" href="${waUrl}" target="_blank" rel="noopener">Envíame la respuesta y mira la sorpresa que viene</a>`;
+  $('send').addEventListener('click', () => setTimeout(() => go(introSent, INTRO), 700));
+}
+
+function introSent() {
+  screen.innerHTML = `
+    <p class="sub">Cuando hayas enviado el mensaje por WhatsApp,<br>vuelve aquí y toca el botón. ✨</p>
+    <button class="btn wide" id="ready">Ya lo envié, ¡quiero la sorpresa!</button>
+    <p class="again"><a href="${waUrl}" target="_blank" rel="noopener">¿No se abrió WhatsApp? Intentar de nuevo</a></p>`;
+  $('ready').onclick = startTest;
+}
+
+function introTest() {
+  screen.innerHTML = `
+    <h2 class="intro-title">¿Quieres hacer un pequeño test sobre nosotros?</h2>
+    <div class="pair">
+      <button class="choice primary" id="yes">SÍ</button>
+      <button class="choice" id="no">NO</button>
+    </div>`;
+  $('yes').onclick = startTest;
+  $('no').onclick = () => go(introBye, INTRO);
+}
+
+function introBye() {
+  screen.innerHTML = `
+    <p class="bye">De verdad quiero estar bien contigo.<br>Ojalá lo pienses mejor y arreglemos las cosas.</p>
+    <p class="love">Te amo mucho ♥</p>
+    <button class="btn" id="back">Pensarlo de nuevo</button>`;
+  $('back').onclick = () => go(introAsk, INTRO);
+}
+
+/* ===================== Test ===================== */
+let test = [], idx = 0, correct = 0, locked = false;
+
+function showStart() {
+  screen.innerHTML = `
+    <p class="sub">${PER_TEST} preguntas sobre nosotros.<br>Responde con el corazón… y con memoria. ♥</p>
+    <button class="btn" id="start">Empezar</button>`;
+  $('start').onclick = startTest;
+}
+
+function startTest() {
+  if (!READY.length) {
+    go(() => { screen.innerHTML = `<p class="sub">Aún no hay preguntas listas.</p>`; }, { center: true });
+    return;
+  }
+  let pool = READY.filter(q => !seen.has(q));
+  if (pool.length < Math.min(PER_TEST, READY.length)) { seen.clear(); pool = READY; }
+  test = shuffle(pool).slice(0, Math.min(PER_TEST, READY.length));
+  test.forEach(q => seen.add(q));
+  idx = 0; correct = 0;
+  go(showQuestion);
+}
+
+function showQuestion() {
+  locked = false;
+  const q = test[idx];
+  const right = q.options[q.answer];
+  const opts = shuffle(q.options.filter(o => o.trim()));
+  screen.innerHTML = `
+    <div class="meta">Pregunta ${idx + 1} de ${test.length}</div>
+    <div class="bar"><i style="width:${(idx / test.length) * 100}%"></i></div>
+    <div class="question">${q.text}</div>
+    <div class="options">
+      ${opts.map((o, i) => `<button class="opt" data-v="${o.replace(/"/g, '&quot;')}"><b>${letters[i]}</b><span>${o}</span></button>`).join('')}
+    </div>`;
+  requestAnimationFrame(() => { screen.querySelector('.bar i').style.width = ((idx + 1) / test.length * 100) + '%'; });
+
+  const buttons = [...screen.querySelectorAll('.opt')];
+  const pick = btn => {
+    if (locked) return;
+    locked = true;
+    if (btn.dataset.v === right) correct++;
+    buttons.forEach(b => {
+      b.disabled = true;
+      if (b.dataset.v === right) b.classList.add('ok');
+      else if (b === btn) b.classList.add('bad');
+      else b.classList.add('dim');
+    });
+    setTimeout(() => { idx++; idx < test.length ? go(showQuestion) : go(showResult, { center: true }); }, 1100);
+  };
+  buttons.forEach(b => b.onclick = () => pick(b));
+  screen._keys = e => {
+    const i = letters.indexOf(e.key.toUpperCase());
+    if (i > -1 && buttons[i]) pick(buttons[i]);
+  };
+}
+
+function showResult() {
+  const pct = Math.round((correct / test.length) * 100);
+  const m = MESSAGES.find(m => pct <= m.max);
+  screen.innerHTML = `
+    <div class="meta">Tu puntaje</div>
+    <div class="score">${pct}<small> / 100</small></div>
+    <div class="msg">${m.text}</div>
+    <p class="detail">${correct} de ${test.length} respuestas correctas · ${m.detail}</p>
+    <button class="btn" id="again">Intentar de nuevo</button>`;
+  $('again').onclick = startTest;
+}
+
+document.addEventListener('keydown', e => screen._keys && screen._keys(e));
+
+/* ===================== Arranque ===================== */
+if (INTRO_ENABLED) {
+  introAsk();
+} else {
+  head.classList.remove('is-hidden');
+  showStart();
+}
+$('fallback').style.display = 'none';
+</script>
+</body>
+</html>
