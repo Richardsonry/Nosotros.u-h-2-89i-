@@ -317,6 +317,35 @@
   .screen.full .req { flex: none; margin-bottom: 0; }
   .calbtn .ic { background: linear-gradient(135deg, #e9677f, #c2485c); }
   @media (max-height: 760px) { .entry p { display: none; } }
+
+  /* ===== Galería deslizable con asomo de la siguiente tarjeta ===== */
+  .pager .entry { flex: 0 0 90%; scroll-snap-align: start; }
+  /* ===== Recuadros de abajo: test (izquierda) y eventos (derecha) ===== */
+  .screen.full > .home { padding-bottom: 4px; }
+  .tiles { flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .tile { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-height: 92px; text-align: left; border: 0; border-radius: 24px; padding: 14px; font: inherit; color: var(--ink); background: #fff; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); transition: transform .2s; }
+  .tile:active { transform: scale(.97); }
+  .tile .ti { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); }
+  .tile.main { color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: 0 5px 14px rgba(194,72,92,.3), inset 0 1.5px 0 rgba(255,255,255,.4); }
+  .tile.main .ti { background: rgba(255,255,255,.25); }
+  .tile b { font-weight: 700; font-size: .98rem; line-height: 1.15; }
+  .tile small { color: var(--muted); font-size: .74rem; font-weight: 500; margin-top: -4px; }
+  .tile .badge { position: absolute; top: 12px; right: 12px; font-size: .66rem; font-weight: 700; color: #fff; background: #ff4d6d; border-radius: 999px; padding: 3px 8px; }
+  /* ===== Pantalla de eventos ===== */
+  .todaypill { display: inline-block; margin: -6px 0 14px; padding: 6px 12px; border-radius: 999px; font-size: .8rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); }
+  .evlist { display: grid; gap: 10px; }
+  .evh { font-size: .8rem; font-weight: 700; color: var(--muted); margin: 8px 4px 0; }
+  .ev { position: relative; display: flex; align-items: center; gap: 12px; border-radius: 18px; padding: 12px 14px; }
+  .ev.today { box-shadow: 0 0 0 2px var(--c); }
+  .ev.old { opacity: .5; }
+  .evd { flex: none; width: 46px; text-align: center; color: var(--c); line-height: 1.05; }
+  .evd b { display: block; font-size: 1.45rem; font-weight: 800; }
+  .evd span { font-size: .68rem; font-weight: 700; text-transform: uppercase; }
+  .evt { flex: 1; min-width: 0; }
+  .evn { font-weight: 700; font-size: .98rem; line-height: 1.2; }
+  .evs { font-size: .76rem; color: var(--ink); opacity: .7; margin-top: 2px; }
+  .evs em { font-style: normal; font-weight: 800; color: var(--c); opacity: 1; }
+  .evempty { text-align: center; color: var(--muted); font-size: .92rem; line-height: 1.6; padding: 36px 10px; }
 </style>
 </head>
 <body>
@@ -335,7 +364,6 @@
     </div>
     <div id="screen" class="screen center"></div>
   </main>
-  <div id="dock"><button class="btn glass" id="tq"><span style="color:var(--accent)">♥</span>&nbsp; Hacer nuestro test</button></div>
   <script>
     window.onerror = function (msg, src, line) {
       var f = document.getElementById('fallback');
@@ -379,6 +407,12 @@ const DAILY_QUESTION = {
 // También se pueden añadir desde el teléfono con la tarjeta "Añadir fotos".
 const PHOTOS = [];
 
+// Eventos programados (pantalla "Eventos"). Para añadir uno, copia una línea; para borrarlo, quita su línea.
+// date: AAAA-MM-DD · time y note son opcionales. Todo el que abra la página ve los mismos eventos.
+const EVENTS = [
+  // { date: "2026-10-10", time: "7:00 PM", title: "Cena en nuestro sitio favorito", note: "" },
+];
+
 // Calendario de la universidad (aparece debajo de las fotos). dow: 1 = lunes … 5 = viernes.
 // color = color fuerte del texto, bg = color suave del recuadro.
 const SCHEDULE = [
@@ -390,7 +424,7 @@ const SCHEDULE = [
 
 // Tu número de WhatsApp con código de país, sin "+" ni espacios (Colombia = 57).
 // Ejemplo: "573001234567"
-const WHATSAPP_NUMBER = "573104182428";
+const WHATSAPP_NUMBER = "57XXXXXXXXXX";
 
 // Preguntas por test
 const PER_TEST = 10;
@@ -545,7 +579,6 @@ let moving = false;
 function go(renderFn, opts = {}) {
   if (moving) return;
   moving = true;
-  $('dock').classList.remove('on');
   screen.classList.add('out');
   setTimeout(() => {
     screen._keys = null;
@@ -822,14 +855,21 @@ const readPhoto = f => new Promise(res => {
   fr.readAsDataURL(f);
 });
 
+const pageOf = p => Math.round(p.scrollLeft / (p.firstElementChild.offsetWidth + 12));
+
 function renderHome(page = 0) {
   const mine = store.get('qn_photos', []).map(p => typeof p === 'string' ? { s: p, d: 0 } : p);
   const items = [...PHOTOS.map(p => ({ s: p.src, d: 0 })), ...mine.map((p, i) => ({ ...p, mine: i }))];
-  const cards = Math.floor(items.length / 5) + 1;
+  const cards = Math.max(2, Math.floor(items.length / 5) + 1);
   const fmt = t => { const x = new Date(t || Date.now()).toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' }); return x[0].toUpperCase() + x.slice(1); };
   const plus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
   const spark = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
   const done = dailyState();
+  const tdy = todayISO(), evs = allEvents(), evToday = evs.filter(e => e.date === tdy).length, evNext = evs.filter(e => e.date >= tdy).length;
+  const tiles = `<div class="tiles">
+    <button class="tile main" id="tq"><span class="ti"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 4.8 6.2 4.8c2 0 3.5 1.1 4.3 2.4h3c.8-1.3 2.3-2.4 4.3-2.4 3.5 0 5.3 3.6 3.8 7C19.5 16.4 12 21 12 21z" transform="translate(-.5 .5) scale(.96)"/></svg></span><b>Hacer nuestro test</b></button>
+    <button class="tile" id="evb"><span class="ti"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 15.3l2-.3z"/></svg></span><b>Eventos</b><small>${evNext ? evNext + (evNext > 1 ? ' próximos' : ' próximo') : 'Sin eventos aún'}</small>${evToday ? '<i class="badge">Hoy</i>' : ''}</button>
+  </div>`;
   let list = '';
   const extra = `<button class="calbtn" id="cb"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span class="tx"><b>Calendario Universidad</b><small>Toca para ver los horarios</small><span class="dots">${SCHEDULE.map(d => `<i style="background:${d.color}"></i>`).join('')}</span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
     <div class="req"><h4>Petición</h4><p>Si necesitas algún ajuste o añadir algo, puedes pedirlo acá.</p><div class="rrow"><input id="rq" type="text" placeholder="Escribe tu petición…" enterkeyhint="send" autocomplete="off"><button class="send" id="rs" aria-label="Enviar petición"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div>`;
@@ -851,15 +891,16 @@ function renderHome(page = 0) {
       <button class="pill${DAILY_ENABLED ? '' : ' off'}" id="dq"${DAILY_ENABLED ? '' : ' disabled'}>${spark}Pregunta del día${DAILY_ENABLED && !done ? '<i class="dot"></i>' : ''}</button></div>
     <div class="pager" id="pg">${list}</div>${cards > 1 ? `<div class="pdots">${Array.from({ length: cards }, (_, i) => `<i${i === page ? ' class="on"' : ''}></i>`).join('')}</div>` : ''}
     ${extra}
+    ${tiles}
     <input type="file" accept="image/*" multiple id="pf" style="display:none">
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   const pg = $('pg');
-  pg.scrollLeft = page * pg.clientWidth;
-  pg.onscroll = () => { const i = Math.round(pg.scrollLeft / pg.clientWidth); screen.querySelectorAll('.pdots i').forEach((d, k) => d.classList.toggle('on', k === i)); };
-  $('dock').classList.add('on');
+  pg.scrollLeft = page * (pg.firstElementChild.offsetWidth + 12);
+  pg.onscroll = () => { const i = pageOf(pg); screen.querySelectorAll('.pdots i').forEach((d, k) => d.classList.toggle('on', k === i)); };
   $('tq').onclick = startTest;
   $('cb').onclick = () => go(showCalendar, { hideTitle: true });
+  $('evb').onclick = () => go(showEvents, { hideTitle: true });
   const sendReq = () => {
     const i = $('rq'), t = i.value.trim();
     if (!t) { i.focus(); return; }
@@ -874,11 +915,11 @@ function renderHome(page = 0) {
     const l = store.get('qn_photos', []);
     for (const f of e.target.files) { const src = await readPhoto(f); if (src) l.push({ s: src, d: Date.now() }); }
     if (!store.set('qn_photos', l)) alert('No hay espacio para guardar más fotos en este teléfono.');
-    renderHome(Math.round(pg.scrollLeft / pg.clientWidth));
+    renderHome(pageOf(pg));
   };
   screen.querySelectorAll('img[data-m]').forEach(im => im.onclick = () => {
     if (!confirm('¿Quitar esta foto?')) return;
-    const l = store.get('qn_photos', []); l.splice(+im.dataset.m, 1); store.set('qn_photos', l); renderHome(Math.round(pg.scrollLeft / pg.clientWidth));
+    const l = store.get('qn_photos', []); l.splice(+im.dataset.m, 1); store.set('qn_photos', l); renderHome(pageOf(pg));
   });
 }
 
@@ -888,6 +929,41 @@ function showCalendar() {
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><div><h2 class="big">Calendario</h2><div class="date">Universidad</div></div></div>
     <div class="cgrid one">${SCHEDULE.map(d => `<div class="day${d.dow === wd ? ' today' : ''}" style="--c:${d.color};background:${d.bg}"><div class="dn">${d.day}</div>${d.items.map(([t, n]) => `<div class="cls"><span>${t}</span><b>${n}</b></div>`).join('')}</div>`).join('')}</div>
+  </div>`;
+  $('back').onclick = goHome;
+}
+
+/* ===================== Eventos ===================== */
+const pad2 = n => String(n).padStart(2, '0');
+const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; };
+const fmtTime = t => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ''); if (!m) return t || ''; const h = +m[1]; return `${h % 12 || 12}:${m[2]} ${h < 12 ? 'AM' : 'PM'}`; };
+const allEvents = () => EVENTS.map(e => ({ ...e }))
+  .filter(e => e.date && e.title)
+  .sort((a, b) => (a.date + (a.time || '')) < (b.date + (b.time || '')) ? -1 : 1);
+const EV_PAL = [
+  { c: "#c2275a", bg: "#ffe3ec" }, { c: "#1f6fd1", bg: "#e0eeff" }, { c: "#14825a", bg: "#dcf6ea" },
+  { c: "#b36b00", bg: "#fff0d2" }, { c: "#7b3fc4", bg: "#efe6fb" },
+];
+
+function showEvents() {
+  const t = todayISO(), evs = allEvents();
+  const up = evs.filter(e => e.date >= t), past = evs.filter(e => e.date < t).reverse();
+  const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+  const now = new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' });
+  const card = (e, i, old) => {
+    const [y, m, d] = e.date.split('-').map(Number), dt = new Date(y, m - 1, d), col = EV_PAL[i % EV_PAL.length];
+    const wd = dt.toLocaleDateString('es-CO', { weekday: 'long' });
+    return `<div class="ev${e.date === t ? ' today' : ''}${old ? ' old' : ''}" style="--c:${col.c};background:${col.bg}">
+      <div class="evd"><b>${d}</b><span>${dt.toLocaleDateString('es-CO', { month: 'short' }).replace('.', '')}</span></div>
+      <div class="evt"><div class="evn">${e.title}</div><div class="evs">${e.date === t ? '<em>Hoy</em> · ' : ''}${wd[0].toUpperCase() + wd.slice(1)}${e.time ? ' · ' + fmtTime(e.time) : ''}${e.note ? ' · ' + e.note : ''}</div></div></div>`;
+  };
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">
+    <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><h2 class="big" style="flex:1">Eventos</h2></div>
+    <div class="todaypill">Hoy · ${now[0].toUpperCase() + now.slice(1)}</div>
+    <div class="evlist">
+      ${up.length ? up.map((e, i) => card(e, i, false)).join('') : '<div class="evempty">Aún no hay eventos programados.</div>'}
+      ${past.length ? '<div class="evh">Anteriores</div>' + past.map((e, i) => card(e, i, true)).join('') : ''}
+    </div>
   </div>`;
   $('back').onclick = goHome;
 }
