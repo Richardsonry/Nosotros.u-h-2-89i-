@@ -331,6 +331,11 @@
   .tile b { font-weight: 700; font-size: .98rem; line-height: 1.15; }
   .tile small { color: var(--muted); font-size: .74rem; font-weight: 500; margin-top: -4px; }
   .tile .badge { position: absolute; top: 12px; right: 12px; font-size: .66rem; font-weight: 700; color: #fff; background: #ff4d6d; border-radius: 999px; padding: 3px 8px; }
+  /* ===== Fecha de hoy arriba del título ===== */
+  .tdate { flex: none; font-weight: 600; font-size: .95rem; color: var(--muted); margin: 2px 2px 0; }
+  .tdate + .jtop { margin-top: 2px; }
+  .pager .entry { padding: 4px; }
+
   /* ===== Pantalla de eventos ===== */
   .todaypill { display: inline-block; margin: -6px 0 14px; padding: 6px 12px; border-radius: 999px; font-size: .8rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); }
   .evlist { display: grid; gap: 10px; }
@@ -855,13 +860,15 @@ const readPhoto = f => new Promise(res => {
   fr.readAsDataURL(f);
 });
 
+const dateLabel = () => { const x = new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' }); return x[0].toUpperCase() + x.slice(1); };
+const dateTop = () => `<div class="tdate">${dateLabel()}</div>`;
+
 const pageOf = p => Math.round(p.scrollLeft / (p.firstElementChild.offsetWidth + 12));
 
 function renderHome(page = 0) {
   const mine = store.get('qn_photos', []).map(p => typeof p === 'string' ? { s: p, d: 0 } : p);
   const items = [...PHOTOS.map(p => ({ s: p.src, d: 0 })), ...mine.map((p, i) => ({ ...p, mine: i }))];
   const cards = Math.max(2, Math.floor(items.length / 5) + 1);
-  const fmt = t => { const x = new Date(t || Date.now()).toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' }); return x[0].toUpperCase() + x.slice(1); };
   const plus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
   const spark = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
   const done = dailyState();
@@ -881,12 +888,10 @@ function renderHome(page = 0) {
         ? `<div class="slot"><img src="${it.s}" alt=""${it.mine !== undefined ? ` data-m="${it.mine}"` : ''}></div>`
         : `<button class="slot" data-add="1" aria-label="Añadir foto">${plus}</button>`;
     }).join('');
-    list += `<div class="entry"><div class="mosaic">${slots}</div>
-      <h4>${c === 0 ? 'Nuestros momentos' : 'Más momentos'}</h4>
-      <p>${chunk.length ? 'Recuerdos de ustedes dos ♥' : 'Toca un recuadro para añadir una foto.'}</p>
-      <div class="foot"><span>${fmt(chunk[0] && chunk[0].d)}</span><span>${chunk.length} de 5</span></div></div>`;
+    list += `<div class="entry"><div class="mosaic">${slots}</div></div>`;
   }
   screen.innerHTML = `<div class="home">
+    ${dateTop()}
     <div class="jtop"><h2 class="big">Nuestro diario</h2>
       <button class="pill${DAILY_ENABLED ? '' : ' off'}" id="dq"${DAILY_ENABLED ? '' : ' disabled'}>${spark}Pregunta del día${DAILY_ENABLED && !done ? '<i class="dot"></i>' : ''}</button></div>
     <div class="pager" id="pg">${list}</div>${cards > 1 ? `<div class="pdots">${Array.from({ length: cards }, (_, i) => `<i${i === page ? ' class="on"' : ''}></i>`).join('')}</div>` : ''}
@@ -927,6 +932,7 @@ function showCalendar() {
   const wd = new Date().getDay();
   const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
+    ${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><div><h2 class="big">Calendario</h2><div class="date">Universidad</div></div></div>
     <div class="cgrid one">${SCHEDULE.map(d => `<div class="day${d.dow === wd ? ' today' : ''}" style="--c:${d.color};background:${d.bg}"><div class="dn">${d.day}</div>${d.items.map(([t, n]) => `<div class="cls"><span>${t}</span><b>${n}</b></div>`).join('')}</div>`).join('')}</div>
   </div>`;
@@ -949,7 +955,6 @@ function showEvents() {
   const t = todayISO(), evs = allEvents();
   const up = evs.filter(e => e.date >= t), past = evs.filter(e => e.date < t).reverse();
   const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
-  const now = new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' });
   const card = (e, i, old) => {
     const [y, m, d] = e.date.split('-').map(Number), dt = new Date(y, m - 1, d), col = EV_PAL[i % EV_PAL.length];
     const wd = dt.toLocaleDateString('es-CO', { weekday: 'long' });
@@ -958,8 +963,8 @@ function showEvents() {
       <div class="evt"><div class="evn">${e.title}</div><div class="evs">${e.date === t ? '<em>Hoy</em> · ' : ''}${wd[0].toUpperCase() + wd.slice(1)}${e.time ? ' · ' + fmtTime(e.time) : ''}${e.note ? ' · ' + e.note : ''}</div></div></div>`;
   };
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
+    ${dateTop()}
     <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><h2 class="big" style="flex:1">Eventos</h2></div>
-    <div class="todaypill">Hoy · ${now[0].toUpperCase() + now.slice(1)}</div>
     <div class="evlist">
       ${up.length ? up.map((e, i) => card(e, i, false)).join('') : '<div class="evempty">Aún no hay eventos programados.</div>'}
       ${past.length ? '<div class="evh">Anteriores</div>' + past.map((e, i) => card(e, i, true)).join('') : ''}
