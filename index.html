@@ -301,6 +301,22 @@
   .cgrid.one .dn { font-size: .92rem; margin-bottom: 8px; }
   .cgrid.one .cls span { font-size: .78rem; }
   .cgrid.one .cls b { font-size: .96rem; }
+
+  /* ===== Inicio fijo: todo cabe en una pantalla, las fotos se deslizan hacia los lados ===== */
+  .screen.full { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; align-self: stretch; margin: 0; }
+  .screen.full > .home { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: 84px; }
+  main:has(.screen.full) { overflow-y: hidden; }
+  .pager { flex: 1 1 0; min-height: 150px; display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior: contain; margin: -2px -6px -6px; padding: 2px 6px 22px; scroll-padding: 0 6px; }
+  .pager::-webkit-scrollbar { display: none; }
+  .pager .entry { display: flex; flex-direction: column; flex: 0 0 100%; scroll-snap-align: center; margin-bottom: 0; }
+  .pager .mosaic { flex: 1; min-height: 90px; height: auto; }
+  .pdots { flex: none; display: flex; justify-content: center; gap: 5px; margin: -8px 0 8px; }
+  .pdots i { width: 6px; height: 6px; border-radius: 50%; background: #dccfd4; transition: background .2s, transform .2s; }
+  .pdots i.on { background: var(--accent); transform: scale(1.2); }
+  .screen.full .calbtn { flex: none; }
+  .screen.full .req { flex: none; margin-bottom: 0; }
+  .calbtn .ic { background: linear-gradient(135deg, #e9677f, #c2485c); }
+  @media (max-height: 760px) { .entry p { display: none; } }
 </style>
 </head>
 <body>
@@ -342,11 +358,19 @@ const INTRO_ENABLED = true;
 // false = el botón sigue ahí, atenuado y sin función
 const DAILY_ENABLED = true;
 
-// ✏️ PREGUNTA DEL DÍA — la cambias aquí cada día (es independiente del banco de 100 preguntas).
+// 📒 REGISTRO (opcional): pega aquí el link de tu hoja de Google (Apps Script) o de Make para Notion.
+// Cada respuesta de "Pregunta del día" y cada resultado del test se enviará ahí. Vacío ("") = no se registra nada.
+const LOG_URL = "";
+
+// 🔗 PREGUNTA DEL DÍA DESDE GOOGLE SHEETS (gratis): pega aquí el link CSV de tu hoja publicada.
+// Así cambias la pregunta desde el celular sin tocar este archivo. Déjalo vacío ("") para usar solo DAILY_QUESTION.
+const DAILY_SHEET_URL = "";
+
+// ✏️ PREGUNTA DEL DÍA de respaldo (se usa si no hay hoja o no hay internet). Es independiente del banco de 100 preguntas.
 // answer: 0 = primera opción, 1 = segunda, 2 = tercera, 3 = cuarta.
 // Si cambias el texto de la pregunta, ella podrá responder la nueva aunque ya haya respondido la anterior.
 const DAILY_QUESTION = {
-  text: "¿Cuál es mi plan ideal para hoy domingo?",
+  text: "¿Cuál es mi plan ideal para un domingo?",
   options: ["Dormir todo el día", "Salir a caminar", "Ver series contigo", "Ir a comer algo rico"],
   answer: 2,
 };
@@ -525,6 +549,7 @@ function go(renderFn, opts = {}) {
   screen.classList.add('out');
   setTimeout(() => {
     screen._keys = null;
+    screen.classList.remove('full');
     renderFn();
     screen.classList.toggle('center', !!opts.center);
     head.classList.toggle('is-hidden', !!opts.hideTitle);
@@ -671,6 +696,7 @@ function resultLink(pct) {
 function showResult() {
   const pct = Math.round((correct / test.length) * 100);
   const m = MESSAGES.find(m => pct <= m.max);
+  logEvent({ tipo: 'Test', puntaje: pct, correctas: correct, total: test.length, detalle: answers.map((a, i) => `${i + 1}. ${a.q} → ${a.chosen} ${a.ok ? '✅' : `❌ (era: ${a.right})`}`).join('\n') });
   screen.innerHTML = `
     <div class="score-card">
       <div class="meta" style="text-align:center;padding:0">Tu puntaje</div>
@@ -693,10 +719,90 @@ const store = {
 };
 const dayKey = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
 const dayNum = () => { const d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); };
-const dailyQ = () => { const q = DAILY_QUESTION; return q && q.text && q.options.filter(o => o.trim()).length >= 2 && (q.options[q.answer] || '').trim() ? q : null; };
+const dailyQ = () => { const q = currentDaily; return q && q.text && q.options.filter(o => o.trim()).length >= 2 && (q.options[q.answer] || '').trim() ? q : null; };
 const dailyState = () => { const s = store.get('qn_daily', null), q = dailyQ(); return s && q && s.key === q.text ? s : null; };
 const goHome = () => go(renderHome, { hideTitle: true });
 const entry = goHome;
+
+/* ---- Registro de respuestas (opcional) ---- */
+const sendLog = d => fetch(LOG_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: new URLSearchParams(d) });
+const queueLog = d => { const n = store.get('qn_queue', []); n.push(d); store.set('qn_queue', n); };
+function logEvent(d) {
+  if (!LOG_URL) return;
+  d = { ...d, fecha: new Date().toLocaleString('es-CO'), iso: new Date().toISOString() };
+  sendLog(d).catch(() => queueLog(d));
+}
+function flushLog() {
+  if (!LOG_URL) return;
+  const q = store.get('qn_queue', []);
+  if (!q.length) return;
+  store.set('qn_queue', []);
+  q.forEach(d => sendLog(d).catch(() => queueLog(d)));
+}
+
+/* ---- Pregunta del día desde Google Sheets (opcional) ---- */
+let currentDaily = DAILY_SHEET_URL ? (store.get('qn_dq', null) || DAILY_QUESTION) : DAILY_QUESTION;
+
+function parseCSV(t) {
+  const rows = []; let r = [], c = '', q = false;
+  for (let i = 0; i < t.length; i++) {
+    const ch = t[i];
+    if (q) { if (ch === '"') { if (t[i + 1] === '"') { c += '"'; i++; } else q = false; } else c += ch; }
+    else if (ch === '"') q = true;
+    else if (ch === ',') { r.push(c); c = ''; }
+    else if (ch === '\n' || ch === '\r') { if (ch === '\r' && t[i + 1] === '\n') i++; r.push(c); rows.push(r); r = []; c = ''; }
+    else c += ch;
+  }
+  if (c !== '' || r.length) { r.push(c); rows.push(r); }
+  return rows;
+}
+
+// Columnas: A fecha (opcional, AAAA-MM-DD) · B pregunta · C-F opciones · G correcta (A-D o 1-4)
+function pickDaily(rows) {
+  const clean = v => String(v || '').replace(/[<>]/g, '').trim();
+  const p2 = n => String(n).padStart(2, '0');
+  const iso = v => {
+    v = clean(v);
+    let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m) return `${m[1]}-${p2(m[2])}-${p2(m[3])}`;
+    m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    return m ? `${m[3]}-${p2(m[2])}-${p2(m[1])}` : '';
+  };
+  const list = rows
+    .map(r => ({ date: iso(r[0]), text: clean(r[1]), options: [2, 3, 4, 5].map(i => clean(r[i])), ans: clean(r[6]) }))
+    .filter(r => r.text && r.text.toLowerCase() !== 'pregunta' && r.options.filter(Boolean).length >= 2);
+  if (!list.length) return null;
+  const d = new Date(), today = `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
+  const dated = list.filter(r => r.date);
+  const row = dated.length
+    ? (dated.find(r => r.date === today) || dated.filter(r => r.date <= today).sort((a, b) => a.date < b.date ? -1 : 1).pop())
+    : list[list.length - 1];
+  if (!row) return null;
+  const a = row.ans.toUpperCase();
+  const idx = /^[A-D]$/.test(a) ? 'ABCD'.indexOf(a) : parseInt(a, 10) - 1;
+  if (!(idx >= 0 && idx < 4) || !row.options[idx]) return null;
+  return { text: row.text, options: row.options, answer: idx };
+}
+
+async function loadDaily() {
+  if (!DAILY_SHEET_URL) return;
+  try {
+    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 7000);
+    const res = await fetch(DAILY_SHEET_URL + (DAILY_SHEET_URL.includes('?') ? '&' : '?') + '_=' + Date.now(), { signal: ctl.signal, cache: 'no-store' });
+    clearTimeout(to);
+    if (!res.ok) return;
+    const q = pickDaily(parseCSV(await res.text()));
+    if (!q) return;
+    currentDaily = q; store.set('qn_dq', q);
+    const b = $('dq');
+    if (b && DAILY_ENABLED) {
+      const old = b.querySelector('.dot'); if (old) old.remove();
+      if (!dailyState()) b.insertAdjacentHTML('beforeend', '<i class="dot"></i>');
+    }
+  } catch (e) { /* sin internet: se queda con la última pregunta guardada */ }
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); flushLog(); } });
+
 
 const readPhoto = f => new Promise(res => {
   const fr = new FileReader();
@@ -716,7 +822,7 @@ const readPhoto = f => new Promise(res => {
   fr.readAsDataURL(f);
 });
 
-function renderHome() {
+function renderHome(page = 0) {
   const mine = store.get('qn_photos', []).map(p => typeof p === 'string' ? { s: p, d: 0 } : p);
   const items = [...PHOTOS.map(p => ({ s: p.src, d: 0 })), ...mine.map((p, i) => ({ ...p, mine: i }))];
   const cards = Math.floor(items.length / 5) + 1;
@@ -725,7 +831,7 @@ function renderHome() {
   const spark = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
   const done = dailyState();
   let list = '';
-  const extra = `<button class="calbtn" id="cb"><span class="ic">🎓</span><span class="tx"><b>Calendario Universidad</b><small>Toca para ver los horarios</small><span class="dots">${SCHEDULE.map(d => `<i style="background:${d.color}"></i>`).join('')}</span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  const extra = `<button class="calbtn" id="cb"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span class="tx"><b>Calendario Universidad</b><small>Toca para ver los horarios</small><span class="dots">${SCHEDULE.map(d => `<i style="background:${d.color}"></i>`).join('')}</span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
     <div class="req"><h4>Petición</h4><p>Si necesitas algún ajuste o añadir algo, puedes pedirlo acá.</p><div class="rrow"><input id="rq" type="text" placeholder="Escribe tu petición…" enterkeyhint="send" autocomplete="off"><button class="send" id="rs" aria-label="Enviar petición"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div>`;
   for (let c = 0; c < cards; c++) {
     const chunk = items.slice(c * 5, c * 5 + 5);
@@ -739,17 +845,21 @@ function renderHome() {
       <h4>${c === 0 ? 'Nuestros momentos' : 'Más momentos'}</h4>
       <p>${chunk.length ? 'Recuerdos de ustedes dos ♥' : 'Toca un recuadro para añadir una foto.'}</p>
       <div class="foot"><span>${fmt(chunk[0] && chunk[0].d)}</span><span>${chunk.length} de 5</span></div></div>`;
-    if (c === 0) list += extra;
   }
   screen.innerHTML = `<div class="home">
     <div class="jtop"><h2 class="big">Nuestro diario</h2>
       <button class="pill${DAILY_ENABLED ? '' : ' off'}" id="dq"${DAILY_ENABLED ? '' : ' disabled'}>${spark}Pregunta del día${DAILY_ENABLED && !done ? '<i class="dot"></i>' : ''}</button></div>
-    ${list}
+    <div class="pager" id="pg">${list}</div>${cards > 1 ? `<div class="pdots">${Array.from({ length: cards }, (_, i) => `<i${i === page ? ' class="on"' : ''}></i>`).join('')}</div>` : ''}
+    ${extra}
     <input type="file" accept="image/*" multiple id="pf" style="display:none">
   </div>`;
+  screen.classList.remove('center'); screen.classList.add('full');
+  const pg = $('pg');
+  pg.scrollLeft = page * pg.clientWidth;
+  pg.onscroll = () => { const i = Math.round(pg.scrollLeft / pg.clientWidth); screen.querySelectorAll('.pdots i').forEach((d, k) => d.classList.toggle('on', k === i)); };
   $('dock').classList.add('on');
   $('tq').onclick = startTest;
-  $('cb').onclick = () => go(showCalendar);
+  $('cb').onclick = () => go(showCalendar, { hideTitle: true });
   const sendReq = () => {
     const i = $('rq'), t = i.value.trim();
     if (!t) { i.focus(); return; }
@@ -758,17 +868,17 @@ function renderHome() {
   };
   $('rs').onclick = sendReq;
   $('rq').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); sendReq(); } };
-  if (DAILY_ENABLED) $('dq').onclick = () => go(showDaily);
+  if (DAILY_ENABLED) $('dq').onclick = () => go(showDaily, { hideTitle: true });
   screen.querySelectorAll('[data-add]').forEach(b => b.onclick = () => $('pf').click());
   $('pf').onchange = async e => {
     const l = store.get('qn_photos', []);
     for (const f of e.target.files) { const src = await readPhoto(f); if (src) l.push({ s: src, d: Date.now() }); }
     if (!store.set('qn_photos', l)) alert('No hay espacio para guardar más fotos en este teléfono.');
-    renderHome();
+    renderHome(Math.round(pg.scrollLeft / pg.clientWidth));
   };
   screen.querySelectorAll('img[data-m]').forEach(im => im.onclick = () => {
     if (!confirm('¿Quitar esta foto?')) return;
-    const l = store.get('qn_photos', []); l.splice(+im.dataset.m, 1); store.set('qn_photos', l); renderHome();
+    const l = store.get('qn_photos', []); l.splice(+im.dataset.m, 1); store.set('qn_photos', l); renderHome(Math.round(pg.scrollLeft / pg.clientWidth));
   });
 }
 
@@ -814,14 +924,15 @@ function showDaily() {
   };
   const st = dailyState();
   if (st) reveal(st.chosen);
-  else buttons.forEach(b => b.onclick = () => { store.set('qn_daily', { key: q.text, chosen: b.dataset.v }); reveal(b.dataset.v); });
+  else buttons.forEach(b => b.onclick = () => { store.set('qn_daily', { key: q.text, chosen: b.dataset.v }); reveal(b.dataset.v);
+    logEvent({ tipo: 'Pregunta del día', pregunta: q.text, respuesta: b.dataset.v, acierto: b.dataset.v === right ? 'Sí' : 'No', respuesta_correcta: right }); });
 }
 
 /* Bloquea el movimiento vertical de la página (solo se mueve el carrusel, o el contenido si no cabe) */
 document.addEventListener('touchmove', e => {
-  if (e.target.closest('.carousel')) return;
+  if (e.target.closest('.pager')) return;
   const m = e.target.closest('main');
-  if (m && m.scrollHeight > m.clientHeight + 1) return;
+  if (m && !screen.classList.contains('full') && m.scrollHeight > m.clientHeight + 1) return;
   e.preventDefault();
 }, { passive: false });
 
@@ -831,6 +942,7 @@ if (INTRO_ENABLED) {
 } else {
   renderHome();
 }
+loadDaily(); flushLog();
 $('fallback').style.display = 'none';
 </script>
 </body>
