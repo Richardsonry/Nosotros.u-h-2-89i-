@@ -234,6 +234,35 @@
   #dock.on { opacity: 1; transform: none; }
   #dock.on .btn { pointer-events: auto; }
   #dock .btn { box-shadow: 0 10px 28px rgba(90,40,60,.2), inset 0 1.5px 0 #fff; background: rgba(255,255,255,.85); }
+
+  /* ===== Sombras sin recortes ===== */
+  :root { --glass-shadow: 0 4px 14px rgba(150,60,90,.10), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(255,255,255,.35); }
+  /* El contenedor con scroll recortaba las sombras en recto: se le da margen interior y se compensa por fuera */
+  main { margin: -10px -20px calc(-18px - env(safe-area-inset-bottom)); padding: 10px 20px calc(30px + env(safe-area-inset-bottom)); }
+  /* El degradado de abajo coincidía mal con el fondo: ahora el fondo es liso abajo */
+  body { background: radial-gradient(80% 30% at 0% 0%, rgba(255,205,220,.45), transparent 70%), radial-gradient(60% 24% at 100% 0%, rgba(215,200,255,.35), transparent 70%), var(--bg); }
+  .btn { box-shadow: 0 4px 12px rgba(40,10,25,.22), inset 0 1px 0 rgba(255,255,255,.25); }
+  .btn.wide { box-shadow: 0 5px 14px rgba(190,60,90,.28), inset 0 1.5px 0 rgba(255,255,255,.45); }
+  .btn.glass { box-shadow: var(--glass-shadow); }
+  .choice.primary { box-shadow: 0 4px 12px rgba(40,10,25,.22), inset 0 1px 0 rgba(255,255,255,.25); }
+  .entry, .cal { box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .home { padding-bottom: 84px; }
+
+  /* Botón de abajo, más bajo */
+  #dock { bottom: max(10px, calc(env(safe-area-inset-bottom) - 12px)); }
+  #dock::before { bottom: -40px; height: 140px; }
+  #dock .btn { box-shadow: 0 4px 14px rgba(90,40,60,.16), inset 0 1.5px 0 #fff; }
+
+  /* ===== Calendario Universidad ===== */
+  .cal { background: #fff; border-radius: 24px; padding: 14px 12px 12px; margin-bottom: 16px; }
+  .cal h4 { font-size: .95rem; font-weight: 700; padding: 0 4px 10px; }
+  .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .day { border-radius: 16px; padding: 9px 10px 10px; }
+  .day.today { box-shadow: 0 0 0 2px var(--c); }
+  .dn { font-size: .72rem; font-weight: 800; color: var(--c); margin-bottom: 5px; }
+  .cls + .cls { margin-top: 6px; }
+  .cls span { display: block; font-size: .64rem; font-weight: 700; color: var(--c); }
+  .cls b { display: block; font-size: .74rem; font-weight: 600; line-height: 1.25; color: var(--ink); }
 </style>
 </head>
 <body>
@@ -279,9 +308,18 @@ const DAILY_ENABLED = true;
 // También se pueden añadir desde el teléfono con la tarjeta "Añadir fotos".
 const PHOTOS = [];
 
+// Calendario de la universidad (aparece debajo de las fotos). dow: 1 = lunes … 5 = viernes.
+// color = color fuerte del texto, bg = color suave del recuadro.
+const SCHEDULE = [
+  { day: "Lunes",     dow: 1, color: "#c2275a", bg: "#ffe3ec", items: [["1:50 – 4:20 PM", "Psicología Organizacional II"]] },
+  { day: "Martes",    dow: 2, color: "#1f6fd1", bg: "#e0eeff", items: [["3:30 – 6:00 PM", "Psicología Educativa II"], ["6:00 – 7:40 PM", "Análisis de Datos Cualitativos"]] },
+  { day: "Miércoles", dow: 3, color: "#14825a", bg: "#dcf6ea", items: [["3:30 – 6:00 PM", "Psicometría II"]] },
+  { day: "Jueves",    dow: 4, color: "#b36b00", bg: "#fff0d2", items: [["7:00 – 9:30 AM", "Psicología Social y Comunitaria II"], ["9:30 AM – 12:00 PM", "Psicopatología II"]] },
+];
+
 // Tu número de WhatsApp con código de país, sin "+" ni espacios (Colombia = 57).
 // Ejemplo: "573001234567"
-const WHATSAPP_NUMBER = "57XXXXXXXXXX";
+const WHATSAPP_NUMBER = "573104182428";
 
 // Preguntas por test
 const PER_TEST = 10;
@@ -640,6 +678,8 @@ function renderHome() {
   const spark = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
   const done = dailyState();
   let list = '';
+  const wd = new Date().getDay();
+  const calHtml = `<div class="cal"><h4>🎓 Calendario Universidad</h4><div class="cgrid">${SCHEDULE.map(d => `<div class="day${d.dow === wd ? ' today' : ''}" style="--c:${d.color};background:${d.bg}"><div class="dn">${d.day}</div>${d.items.map(([t, n]) => `<div class="cls"><span>${t}</span><b>${n}</b></div>`).join('')}</div>`).join('')}</div></div>`;
   for (let c = 0; c < cards; c++) {
     const chunk = items.slice(c * 5, c * 5 + 5);
     const slots = [0, 1, 2, 3, 4].map(j => {
@@ -652,6 +692,7 @@ function renderHome() {
       <h4>${c === 0 ? 'Nuestros momentos' : 'Más momentos'}</h4>
       <p>${chunk.length ? 'Recuerdos de ustedes dos ♥' : 'Toca un recuadro para añadir una foto.'}</p>
       <div class="foot"><span>${fmt(chunk[0] && chunk[0].d)}</span><span>${chunk.length} de 5</span></div></div>`;
+    if (c === 0) list += calHtml;
   }
   screen.innerHTML = `<div class="home">
     <div class="jtop"><h2 class="big">Nuestro diario</h2>
