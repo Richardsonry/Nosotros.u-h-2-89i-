@@ -885,7 +885,7 @@ async function loadDaily() {
     }
   } catch (e) { /* sin internet: se queda con la última pregunta guardada */ }
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); flushLog(); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); loadBuzon(); flushLog(); } });
 
 
 const readPhoto = f => new Promise(res => {
@@ -1023,14 +1023,58 @@ const NOTITAS = [
   "Respira ♥",
 ];
 
-function showMailbox() {
+// 🔗 BUZÓN DESDE GOOGLE SHEETS (opcional): pega aquí el link CSV de tu hoja publicada y podrás cambiar la carta y las
+// notitas desde el celular (con un atajo o la app de Sheets) sin tocar este archivo. Vacío ("") = se usan CARTA y NOTITAS de arriba.
+// La hoja tiene dos columnas: A = campo, B = valor. Campos: sobre, saludo, carta, firma, nota1 … nota6.
+// En "carta" cada salto de línea dentro de la celda es un párrafo nuevo.
+const BUZON_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSJVzFyqX6-dYfRhhFC5m73mIb159Z6tzzObvTo42CxlaUEIX6S2O1hCMvHRdWk0ewD7GtkLrC1xKnJ/pubhtml?gid=1400420465&single=true";
+
+function buzonFromRows(rows) {
+  const out = {}, nn = {};
+  rows.forEach(r => {
+    const k = String(r[0] || '').trim().toLowerCase().replace(/\s+/g, ''), v = String(r[1] || '').trim();
+    if (!k || !v) return;
+    let m;
+    if (k === 'sobre' || k === 'saludo' || k === 'firma') out[k] = v;
+    else if (k === 'carta') out.texto = v.split(/\n+/).map(x => x.trim()).filter(Boolean);
+    else if ((m = /^nota(\d)$/.exec(k))) nn[+m[1]] = v;
+  });
+  out.notas = Object.keys(nn).sort((a, b) => a - b).map(k => nn[k]).slice(0, 6);
+  return out;
+}
+function getBuzon() {
+  const b = (BUZON_SHEET_URL && store.get('qn_buzon', null)) || {};
+  return {
+    sobre: b.sobre || CARTA.sobre, saludo: b.saludo || CARTA.saludo, firma: b.firma || CARTA.firma,
+    texto: b.texto && b.texto.length ? b.texto : CARTA.texto,
+    notas: b.notas && b.notas.length ? b.notas : NOTITAS,
+  };
+}
+async function loadBuzon() {
+  if (!BUZON_SHEET_URL) return;
+  try {
+    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 7000);
+    const res = await fetch(BUZON_SHEET_URL + (BUZON_SHEET_URL.includes('?') ? '&' : '?') + '_=' + Date.now(), { signal: ctl.signal, cache: 'no-store' });
+    clearTimeout(to);
+    if (!res.ok) return;
+    const b = buzonFromRows(parseCSV(await res.text()));
+    if (!b.sobre && !b.saludo && !b.firma && !b.texto && !b.notas.length) return; // la hoja no es válida: se queda con lo guardado
+    if (JSON.stringify(store.get('qn_buzon', null)) === JSON.stringify(b)) return;
+    store.set('qn_buzon', b);
+    const stg = $('stg');
+    if (stg && !stg.classList.contains('opened')) showMailbox(true); // si está en el buzón sin abrir, se refresca
+  } catch (e) { /* sin internet: se queda con la última carta guardada */ }
+}
+
+function showMailbox(noLoad) {
+  const B = getBuzon();
   const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
   const POS = [
     'left:0;top:1%;--r:-7deg', 'right:0;top:7%;--r:6deg', 'left:2%;bottom:4%;--r:5deg', 'right:1%;bottom:10%;--r:-5deg',
     'left:-2%;top:38%;--r:-6deg;width:23%', 'right:-2%;top:46%;--r:7deg;width:23%',
   ];
   const COL = ['#fff3a8', '#ffd3df', '#cdf0dc', '#e4d9fb', '#ffe0b8', '#d4e8ff'];
-  const notes = NOTITAS.slice(0, 6).map((t, i) => `<div class="note" style="${POS[i]};--nb:${COL[i]}">${escH(t)}</div>`).join('');
+  const notes = B.notas.slice(0, 6).map((t, i) => `<div class="note" style="${POS[i]};--nb:${COL[i]}">${escH(t)}</div>`).join('');
   screen.innerHTML = `<div class="home">
     ${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><h2 class="big">Buzón</h2></div>
@@ -1038,13 +1082,13 @@ function showMailbox() {
       ${notes}
       <div class="env" id="env" role="button" tabindex="0" aria-label="Abrir sobre">
         <div class="eback"></div><div class="slip"></div><div class="efront"></div><div class="ebot"></div>
-        <div class="elabel">${escH(CARTA.sobre)}</div>
+        <div class="elabel">${escH(B.sobre)}</div>
         <div class="eflap"></div><div class="seal">♥</div>
       </div>
       <div class="hint" id="hint">Toca el sobre</div>
       <div class="paper" id="paper">
         <button class="pclose" id="pclose" aria-label="Cerrar carta">✕</button>
-        <div class="pbody"><p class="psal">${escH(CARTA.saludo)}</p>${CARTA.texto.map(t => `<p>${escH(t)}</p>`).join('')}<p class="pfirm">${escH(CARTA.firma)}</p></div>
+        <div class="pbody"><p class="psal">${escH(B.saludo)}</p>${B.texto.map(t => `<p>${escH(t)}</p>`).join('')}<p class="pfirm">${escH(B.firma)}</p></div>
       </div>
     </div>
   </div>`;
@@ -1062,6 +1106,7 @@ function showMailbox() {
     stg.classList.remove('read');
     setTimeout(() => { env.classList.remove('open'); stg.classList.remove('opened'); }, 600);
   };
+  if (!noLoad) loadBuzon();
 }
 
 function showCalendar() {
@@ -1159,7 +1204,7 @@ if (INTRO_ENABLED) {
 } else {
   renderHome();
 }
-loadDaily(); flushLog();
+loadDaily(); loadBuzon(); flushLog();
 $('fallback').style.display = 'none';
 </script>
 </body>
