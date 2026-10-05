@@ -486,6 +486,14 @@
   .srow .nl { color: #fff; }
   .srow .sc { flex: 1; min-width: 0; }
   .srow .sc b { display: block; font-size: .8rem; margin: 0 2px 3px; }
+
+  /* ===== Fecha y hora en la misma fila ===== */
+  .evadd .rrow { gap: 6px; }
+  .evadd .rrow .datef { padding: 0 10px 0 14px; font-size: 15px; white-space: nowrap; gap: 6px; }
+  .evadd .rrow .datef span { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .evadd .rrow .datef svg { width: 18px; height: 18px; }
+  .evadd .rrow .datef.dd { flex: 1.45; }
+  .evadd .rrow .datef.tt { flex: 1; }
 </style>
 </head>
 <body>
@@ -1000,6 +1008,22 @@ async function fetchTab(tab, csvUrl) {
   }
   return null;
 }
+/* Pide al Apps Script cualquier cosa por GET y devuelve el JSON (o null). */
+async function apiGet(params) {
+  if (!API_URL) return null;
+  const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 25000);
+  try {
+    const q = new URLSearchParams(params).toString();
+    const res = await fetch(API_URL + (API_URL.includes('?') ? '&' : '?') + q + '&_=' + Date.now(), { signal: ctl.signal, cache: 'no-store' });
+    return await res.json();
+  } catch (e) { return null; } finally { clearTimeout(to); }
+}
+/* Igual que postApi pero espera a terminar (y admite cuerpos grandes, como las fotos). */
+function postApiP(body) {
+  if (!API_URL) return Promise.resolve();
+  const b = JSON.stringify({ clave: API_KEY, ...body });
+  return fetch(API_URL, { method: 'POST', mode: 'no-cors', keepalive: b.length < 60000, body: b }).catch(() => {});
+}
 /* Envía un cambio al Apps Script (no espera respuesta). */
 function postApi(body) {
   if (!API_URL) return;
@@ -1020,21 +1044,21 @@ async function loadDaily() {
     }
   } catch (e) { /* sin internet: se queda con la última pregunta guardada */ }
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadTodos(); flushLog(); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadTodos(); flushLog(); } });
 
 
-const readPhoto = f => new Promise(res => {
+const readPhoto = (f, max = 640, q = .7) => new Promise(res => {
   const fr = new FileReader();
   fr.onerror = () => res(null);
   fr.onload = () => {
     const im = new Image();
     im.onerror = () => res(null);
     im.onload = () => {
-      const k = Math.min(1, 720 / Math.max(im.width, im.height));
+      const k = Math.min(1, max / Math.max(im.width, im.height));
       const c = document.createElement('canvas');
       c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
       c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
-      res(c.toDataURL('image/jpeg', .72));
+      res(c.toDataURL('image/jpeg', q));
     };
     im.src = fr.result;
   };
@@ -1058,8 +1082,8 @@ const escH = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const pageOf = p => Math.round(p.scrollLeft / (p.firstElementChild.offsetWidth + 12));
 
 function renderHome(page = 0) {
-  const mine = store.get('qn_photos', []).map(p => typeof p === 'string' ? { s: p, d: 0 } : p);
-  const items = [...PHOTOS.map(p => ({ s: p.src, d: 0 })), ...mine.map((p, i) => ({ ...p, mine: i }))];
+  const mine = fotos().filter(x => x.tipo === 'collage');
+  const items = [...PHOTOS.map(p => ({ s: p.src, d: 0 })), ...mine.map(p => ({ ...p, mine: p.id }))];
   const cards = Math.max(2, Math.floor(items.length / 5) + 1);
   const plus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
   const tdy = todayISO(), evs = allEvents(), evToday = evs.filter(e => e.date === tdy).length, evNext = evs.filter(e => e.date >= tdy).length;
@@ -1111,14 +1135,13 @@ function renderHome(page = 0) {
   $('nx').onclick = () => go(renderHome2, { hideTitle: true });
   screen.querySelectorAll('[data-add]').forEach(b => b.onclick = () => $('pf').click());
   $('pf').onchange = async e => {
-    const l = store.get('qn_photos', []);
-    for (const f of e.target.files) { const src = await readPhoto(f); if (src) l.push({ s: src, d: Date.now() }); }
-    if (!store.set('qn_photos', l)) alert('No hay espacio para guardar más fotos en este teléfono.');
+    for (const f of e.target.files) { const src = await readPhoto(f, 640, .7); if (src) addFoto('collage', src); }
+    e.target.value = '';
     renderHome(pageOf(pg));
   };
   screen.querySelectorAll('img[data-m]').forEach(im => im.onclick = () => {
     if (!confirm('¿Quitar esta foto?')) return;
-    const l = store.get('qn_photos', []); l.splice(+im.dataset.m, 1); store.set('qn_photos', l); renderHome(pageOf(pg));
+    delFoto(im.dataset.m); renderHome(pageOf(pg));
   });
 }
 
@@ -1221,6 +1244,82 @@ function qrSvg(text) {
 }
 
 
+/* ===================== Fotos (collage y perfil) en Google Sheets ===================== */
+// Cada foto vive en la pestaña "fotos" de la hoja. Aquí se guarda una copia en el teléfono para verlas rápido.
+const fotoOps = () => store.get('qn_fotos_ops', []);
+let fotosMem = null, fotosBusy = false, postQ = Promise.resolve();
+const fotosSrv = () => fotosMem || store.get('qn_fotos_srv', []);
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+function fotos() {
+  const m = new Map();
+  fotosSrv().forEach(x => m.set(x.id, { ...x }));
+  fotoOps().forEach(o => {
+    if (o.k === 'add') {
+      if (o.tipo.startsWith('perfil:')) [...m.values()].forEach(x => { if (x.tipo === o.tipo) m.delete(x.id); });
+      m.set(o.id, { id: o.id, tipo: o.tipo, s: o.s, d: o.d });
+    } else if (o.k === 'del') m.delete(o.id);
+  });
+  return [...m.values()].sort((a, b) => a.d - b.d);
+}
+const fotoPerfil = id => { const l = fotos().filter(x => x.tipo === 'perfil:' + id); return l.length ? l[l.length - 1].s : ''; };
+const fotoPost = o => o.k === 'add' ? { tipo: 'foto', id: o.id, cat: o.tipo, datos: o.s, fecha: String(o.d) } : { tipo: 'foto_borrar', id: o.id };
+const queuePost = o => { postQ = postQ.then(() => postApiP(fotoPost(o))); return postQ; };
+function addFoto(tipo, s) {
+  const o = { k: 'add', id: newId(), tipo, s, d: Date.now(), ts: Date.now() };
+  if (!API_URL) { // sin hoja: la lista guardada en este dispositivo es la lista
+    let l = fotosSrv().filter(x => !(tipo.startsWith('perfil:') && x.tipo === tipo));
+    l.push({ id: o.id, tipo, s, d: o.d }); fotosMem = l;
+    if (!store.set('qn_fotos_srv', l)) alert('No hay espacio para guardar más fotos en este teléfono.');
+    return;
+  }
+  if (!store.set('qn_fotos_ops', [...fotoOps(), o])) { alert('No hay espacio para guardar más fotos en este teléfono.'); return; }
+  queuePost(o);
+}
+function delFoto(id) {
+  const o = { k: 'del', id, ts: Date.now() };
+  if (!API_URL) { fotosMem = fotosSrv().filter(x => x.id !== id); store.set('qn_fotos_srv', fotosMem); return; }
+  store.set('qn_fotos_ops', [...fotoOps().filter(x => x.id !== id), o]);
+  queuePost(o);
+}
+const delFotosTipo = tipo => fotos().filter(x => x.tipo === tipo).forEach(x => delFoto(x.id));
+const fotosSig = () => fotos().map(x => x.id).join();
+function refreshFotoViews() {
+  if ($('pg')) renderHome(pageOf($('pg')));
+  else if ($('pav') && typeof cardPaint === 'function') cardPaint();
+  else if (screen.querySelector('.ppick')) showPerfil();
+}
+async function loadFotos() {
+  if (!API_URL || fotosBusy) return;
+  fotosBusy = true;
+  try {
+    // fotos que ya estaban solo en este teléfono: se suben una vez
+    const old = store.get('qn_photos', []).map(p => typeof p === 'string' ? { s: p, d: 0 } : p).filter(p => p && p.s);
+    if (old.length) {
+      const ops = fotoOps(), t = Date.now();
+      old.forEach((p, i) => ops.push({ k: 'add', id: newId(), tipo: 'collage', s: p.s, d: (p.d || t) + i, ts: t }));
+      if (store.set('qn_fotos_ops', ops)) { store.set('qn_photos', []); ops.slice(-old.length).forEach(queuePost); }
+    }
+    const before = fotosSig();
+    const res = await apiGet({ hoja: 'fotos' });
+    if (!res || !res.ok || !Array.isArray(res.list)) return;
+    const have = new Map(fotosSrv().map(x => [x.id, x])), next = [];
+    for (const it of res.list) {
+      let x = have.get(it.id);
+      if (!x || !x.s) { const r = await apiGet({ hoja: 'fotos', id: it.id }); if (!r || !r.ok || !r.data) continue; x = { id: it.id, tipo: it.tipo, s: r.data, d: +it.fecha || 0 }; }
+      else x = { ...x, tipo: it.tipo, d: +it.fecha || x.d };
+      next.push(x);
+    }
+    fotosMem = next; store.set('qn_fotos_srv', next);
+    const by = new Set(next.map(x => x.id)), now = Date.now();
+    // lo que la hoja ya refleja (o tiene más de 6 h) se descarta; lo demás se reenvía
+    const keep = fotoOps().filter(o => now - o.ts < 6 * 3600e3 && (o.k === 'add' ? !by.has(o.id) : by.has(o.id)));
+    store.set('qn_fotos_ops', keep);
+    keep.forEach(o => { if (now - o.ts > 20000) queuePost(o); });
+    if (fotosSig() !== before) refreshFotoViews();
+  } catch (e) { /* sin internet: se queda con lo último guardado */ }
+  finally { fotosBusy = false; }
+}
+
 /* ===================== Perfil: tarjetas con redes y QR ===================== */
 const NETS = {
   instagram: { c: 'linear-gradient(135deg,#833ab4,#e1306c 55%,#fcb045)', n: 'Instagram', l: 'IG', u: v => 'https://instagram.com/' + v },
@@ -1251,13 +1350,49 @@ const PERSONAS = [{ id: 'ella', nombre: 'Ella' }, { id: 'el', nombre: 'Él' }];
 const defRedes = id => Object.keys(NETS).map(k => ({ red: NETS[k].n, enlace: id === 'el' && k === 'whatsapp' ? String(WHATSAPP_NUMBER).replace(/\D/g, '') : '' }));
 function getPerfil(id) {
   const s = store.get('qn_perfil2', {})[id] || {}, base = PERSONAS.find(p => p.id === id);
-  return { id, nombre: s.nombre || base.nombre, foto: s.foto || '', redes: Array.isArray(s.redes) ? s.redes : defRedes(id) };
+  return { id, nombre: s.nombre || base.nombre, foto: fotoPerfil(id), redes: Array.isArray(s.redes) ? s.redes : defRedes(id) };
 }
+const perfT = {};
+const postPerfil = id => { const p = getPerfil(id); postApi({ tipo: 'perfil_guardar', persona: id, nombre: p.nombre, redes: p.redes }); };
 function setPerfil(p) {
-  const d = store.get('qn_perfil2', {}); d[p.id] = { nombre: p.nombre, foto: p.foto, redes: p.redes };
-  if (!store.set('qn_perfil2', d)) alert('No hay espacio para guardar la foto en este teléfono.');
+  const d = store.get('qn_perfil2', {}); d[p.id] = { nombre: p.nombre, redes: p.redes };
+  store.set('qn_perfil2', d);
+  if (!API_URL) return;
+  const dd = store.get('qn_perfil_dirty', {}); dd[p.id] = Date.now(); store.set('qn_perfil_dirty', dd);
+  clearTimeout(perfT[p.id]); perfT[p.id] = setTimeout(() => postPerfil(p.id), 900);
 }
-async function loadPerfil() { /* el perfil se guarda en este dispositivo */ }
+const normP = v => String(v || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const perfSig = (nombre, redes) => JSON.stringify([nombre, redes.map(r => [String(r.red).toLowerCase(), r.enlace])]);
+async function loadPerfil() {
+  if (!API_URL) return;
+  try {
+    const rows = await fetchTab('perfil', '');
+    if (!rows) return;
+    const by = {};
+    rows.forEach(r => {
+      const p = normP(r[0]), red = String(r[1] || '').trim(), en = String(r[2] || '').trim();
+      if (p !== 'ella' && p !== 'el') return;
+      if (!red || red.toLowerCase() === 'red') return;
+      by[p] = by[p] || { nombre: '', redes: [] };
+      if (red === '_nombre') by[p].nombre = en; else by[p].redes.push({ red, enlace: en });
+    });
+    const d = store.get('qn_perfil2', {}), dirty = store.get('qn_perfil_dirty', {}), now = Date.now();
+    PERSONAS.forEach(({ id }) => {
+      const sh = by[id]; if (!sh) return;
+      const cur = getPerfil(id);
+      if (dirty[id] && now - dirty[id] < 10 * 60000) { // cambio nuestro todavía sin llegar a la hoja
+        if (perfSig(cur.nombre, cur.redes) === perfSig(sh.nombre || cur.nombre, sh.redes)) delete dirty[id];
+        else if (now - dirty[id] > 20000) postPerfil(id);
+        return;
+      }
+      delete dirty[id];
+      d[id] = { nombre: sh.nombre || cur.nombre, redes: sh.redes };
+    });
+    store.set('qn_perfil2', d); store.set('qn_perfil_dirty', dirty);
+    if ($('pav') && typeof cardPaint === 'function') cardPaint();
+    else if (screen.querySelector('.ppick')) showPerfil();
+  } catch (e) { /* sin internet: se queda con lo último guardado */ }
+}
 const avatarInner = p => p.foto ? `<img src="${p.foto}" alt="">` : escH((p.nombre[0] || '?').toUpperCase());
 
 function showQR(persona, red, enlace) {
@@ -1293,7 +1428,7 @@ function openSheet(id, onClose) {
     $s('sx').onclick = close;
     $s('snm').oninput = e => { const q = getPerfil(id); q.nombre = e.target.value.trim().replace(/[<>]/g, '') || PERSONAS.find(x => x.id === id).nombre; setPerfil(q); };
     $s('sph').onclick = () => file.click();
-    if ($s('spx')) $s('spx').onclick = () => { const q = getPerfil(id); q.foto = ''; setPerfil(q); render(); };
+    if ($s('spx')) $s('spx').onclick = () => { delFotosTipo('perfil:' + id); render(); };
     box.querySelectorAll('input[data-i]').forEach(inp => inp.oninput = () => { const q = getPerfil(id); q.redes[+inp.dataset.i].enlace = inp.value.trim(); setPerfil(q); });
     box.querySelectorAll('[data-del]').forEach(b => b.onclick = () => armDelete(b, () => { const q = getPerfil(id); q.redes.splice(+b.dataset.del, 1); setPerfil(q); render(); }));
     const sel = $s('sadd'), oth = $s('soth');
@@ -1305,7 +1440,7 @@ function openSheet(id, onClose) {
     };
   };
   const $s = k => box.querySelector('#' + k);
-  file.onchange = async () => { const f = file.files[0]; if (!f) return; const src = await readPhoto(f); if (src) { const q = getPerfil(id); q.foto = src; setPerfil(q); render(); } file.value = ''; };
+  file.onchange = async () => { const f = file.files[0]; if (!f) return; const src = await readPhoto(f, 400, .8); if (src) { addFoto('perfil:' + id, src); render(); } file.value = ''; };
   ov.onclick = e => { if (e.target === ov) close(); };
   render();
   document.body.appendChild(ov);
@@ -1313,6 +1448,7 @@ function openSheet(id, onClose) {
 }
 
 /* Tarjeta de presentación: foto arriba al centro y las redes en filas debajo */
+let cardPaint = null;
 function showCard(id) {
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
@@ -1328,7 +1464,7 @@ function showCard(id) {
       return `<button class="nbar${has ? '' : ' empty'}" data-i="${i}" style="--nc:${n.c};--ni:${n.ink || '#fff'}"><span class="nl">${escH(n.l)}</span><span>${escH(r.red)}</span><small>${has ? 'Ver QR' : 'Añadir enlace'}</small></button>`; }).join('')
       : '<div class="evempty">No hay redes. Toca la tuerca para añadir.</div>';
   };
-  paint();
+  paint(); cardPaint = paint;
   $('back').onclick = () => go(showPerfil, { hideTitle: true });
   $('gear').onclick = () => openSheet(id, paint);
   $('bars').onclick = e => {
@@ -1567,7 +1703,7 @@ const isoOf = v => {
 };
 const dateLabel2 = iso => {
   const [y, m, d] = String(iso).split('-').map(Number); if (!y) return 'Elegir fecha';
-  const x = new Date(y, m - 1, d).toLocaleDateString('es-CO', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(/\./g, '');
+  const x = new Date(y, m - 1, d).toLocaleDateString('es-CO', { weekday: 'short', day: 'numeric', month: 'short', year: y === new Date().getFullYear() ? undefined : 'numeric' }).replace(/\./g, '');
   return x[0].toUpperCase() + x.slice(1);
 };
 const allEvents = () => {
@@ -1653,8 +1789,7 @@ function showEvents() {
     <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><h2 class="big" style="flex:1">Eventos</h2></div>
     <div class="evadd">
       <input id="evt" type="text" maxlength="60" placeholder="Título del evento" enterkeyhint="done" autocomplete="off">
-      <div class="rrow"><label class="datef"><span id="evdl">${dateLabel2(todayISO())}</span>${cal}<input id="evdt" type="date" value="${todayISO()}" aria-label="Fecha del evento"></label></div>
-      <div class="rrow"><label class="datef"><span id="evtl">Hora (opcional)</span>${clock}<input id="evtm" type="time" value="" aria-label="Hora del evento"></label><button class="send" id="evgo" aria-label="Añadir evento"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <div class="rrow"><label class="datef dd"><span id="evdl">${dateLabel2(todayISO())}</span>${cal}<input id="evdt" type="date" value="${todayISO()}" aria-label="Fecha del evento"></label><label class="datef tt"><span id="evtl">Hora</span>${clock}<input id="evtm" type="time" value="" aria-label="Hora del evento"></label><button class="send" id="evgo" aria-label="Añadir evento"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
       <div class="evmsg" id="evmsg">${API_URL ? '' : 'Por ahora se guarda solo en este dispositivo.'}</div>
     </div>
     <div class="evlist" id="evl"></div>
@@ -1667,7 +1802,7 @@ function showEvents() {
   dt.addEventListener('input', syncLabel); dt.addEventListener('change', syncLabel);
   dt.addEventListener('click', () => { try { if (dt.showPicker) dt.showPicker(); } catch (e) {} });
   const tm = $('evtm');
-  const syncTime = () => { $('evtl').textContent = tm.value ? fmtTime(tm.value) : 'Hora (opcional)'; };
+  const syncTime = () => { $('evtl').textContent = tm.value ? fmtTime(tm.value) : 'Hora'; };
   tm.addEventListener('input', syncTime); tm.addEventListener('change', syncTime);
   tm.addEventListener('click', () => { try { if (tm.showPicker) tm.showPicker(); } catch (e) {} });
   const idle = () => (API_URL ? '' : 'Por ahora se guarda solo en este dispositivo.');
@@ -1740,7 +1875,7 @@ if (INTRO_ENABLED) {
 } else {
   renderHome();
 }
-loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadTodos(); flushLog();
+loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
 </script>
 </body>
