@@ -68,7 +68,7 @@
   .screen.center { align-self: center; margin: auto 0; }
   .screen.out { opacity: 0; transform: translateY(14px); }
   .screen.pre { opacity: 0; transform: translateY(-14px); transition: none; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } }
+  @keyframes fadeIn { from { opacity: 0; } }
 
   /* ---------- Cristal ---------- */
   .glass, .choice, .opt, .btn.wide, .question, .bar, .sub, .bye, .intro-title, .score-card, footer span {
@@ -385,8 +385,8 @@
   .hint { position: absolute; left: 50%; top: 73%; transform: translateX(-50%); font-size: .82rem; font-weight: 600; color: var(--muted); z-index: 4; transition: opacity .3s; animation: hintp 1.8s ease-in-out infinite; }
   .stage.opened .hint { opacity: 0; animation: none; }
   @keyframes hintp { 50% { opacity: .45; } }
-  .note { position: absolute; z-index: 2; width: 34%; max-width: 136px; padding: 12px 10px 12px; border-radius: 3px; background: var(--nb); color: #5b3b40; font-family: "Bradley Hand", "Segoe Print", "Segoe Script", "Marker Felt", "Comic Sans MS", cursive; font-size: .8rem; line-height: 1.25; text-align: center; transform: rotate(var(--r)); box-shadow: 0 6px 12px rgba(90,40,60,.16); }
-  .note::before { content: ""; position: absolute; top: -6px; left: 50%; width: 34px; height: 12px; transform: translateX(-50%) rotate(-3deg); background: rgba(255,255,255,.6); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .pnote { position: absolute; z-index: 2; width: 34%; max-width: 136px; padding: 12px 10px 12px; border-radius: 3px; background: var(--nb); color: #5b3b40; font-family: "Bradley Hand", "Segoe Print", "Segoe Script", "Marker Felt", "Comic Sans MS", cursive; font-size: .8rem; line-height: 1.25; text-align: center; transform: rotate(var(--r)); box-shadow: 0 6px 12px rgba(90,40,60,.16); }
+  .pnote::before { content: ""; position: absolute; top: -6px; left: 50%; width: 34px; height: 12px; transform: translateX(-50%) rotate(-3deg); background: rgba(255,255,255,.6); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
   .paper { position: absolute; left: 50%; top: 50%; width: 80%; max-width: 340px; height: 90%; z-index: 10; display: flex; flex-direction: column; border-radius: 6px; background: #fffdf7; box-shadow: 0 18px 40px rgba(90,40,60,.28), 0 2px 4px rgba(0,0,0,.08); opacity: 0; pointer-events: none; transform: translate(-50%, -42%) scale(.5); transition: transform .6s cubic-bezier(.2,.9,.3,1), opacity .35s ease; overflow: hidden; }
   .paper::before { content: ""; position: absolute; top: 0; bottom: 0; left: 34px; width: 1px; background: rgba(226,110,130,.4); }
   .stage.read .paper { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
@@ -524,6 +524,46 @@
   .pill.gold svg { color: #a8740a; }
   @keyframes pshine { 0% { background-position: -80px 0, 0 0; } 55%, 100% { background-position: calc(100% + 80px) 0, 0 0; } }
   @media (prefers-reduced-motion: reduce) { .pill.gold { animation: none; } }
+
+
+  /* ===== Notas pegadas, Juegos, Triki ===== */
+  .app { height: var(--ah, 100dvh); min-height: 0; }
+  .cnotes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; padding: 4px 2px 10px; }
+  .cnote { position: relative; min-height: 88px; padding: 14px 12px 12px; border-radius: 4px 4px 14px 4px; font-size: .86rem; font-weight: 600; line-height: 1.35; color: #4a3a12; overflow-wrap: anywhere; box-shadow: 0 6px 12px rgba(90,60,20,.18); transform: rotate(var(--r, -1.5deg)); }
+  .cnote::before { content: ""; position: absolute; top: -7px; left: 50%; width: 38px; height: 14px; margin-left: -19px; background: rgba(255,255,255,.55); border-radius: 3px; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
+  .cnote .nx { position: absolute; top: 4px; right: 6px; border: 0; background: none; font-size: 18px; line-height: 1; color: rgba(74,58,18,.55); cursor: pointer; }
+  .noteh { margin: 16px 2px 0; font-size: 1.1rem; font-weight: 700; }
+  .tile.mini.wide { grid-column: 1 / -1; justify-content: space-between; }
+  .coins { display: inline-flex; align-items: center; gap: 4px; font-weight: 800; color: #a8740a; }
+  .jwho { display: flex; gap: 8px; margin: 12px 0; }
+  .jwho button { flex: 1; font: inherit; font-weight: 700; padding: 10px; border: 0; border-radius: 16px; background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); cursor: pointer; }
+  .jwho button.on { color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); }
+  .wal { display: flex; gap: 10px; margin-bottom: 12px; }
+  .wal div { flex: 1; background: #fff; border-radius: 18px; padding: 10px 12px; font-size: .8rem; color: var(--muted); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .wal b { display: block; font-size: 1.15rem; color: #a8740a; }
+  .tboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 300px; margin: 14px auto; }
+  .tc { aspect-ratio: 1; border: 0; border-radius: 20px; font: inherit; font-size: 2.6rem; font-weight: 800; background: #fff; color: var(--accent); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.1); }
+  .tc.o { color: #6a5acd; }
+  .tc:disabled { cursor: default; }
+  .tmsg { text-align: center; font-weight: 700; min-height: 1.4em; }
+  .tact { display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+  .tact input { width: 84px; font: inherit; font-size: 16px; padding: 10px 12px; border: 0; border-radius: 999px; background: #f2edef; text-align: center; }
+  .tact .btn { padding: 12px 20px; font-size: .9rem; }
+
+
+  .rcol { position: relative; flex: none; }
+  .lc { position: absolute; right: 4px; bottom: calc(100% + 3px); display: flex; align-items: center; gap: 4px; font-weight: 800; font-size: .86rem; color: #a8740a; white-space: nowrap; }
+  .lc .coin, .coins .coin { filter: drop-shadow(0 1px 2px rgba(160,110,10,.4)); }
+  .pstats, .ppick small .st { display: flex; gap: 12px; justify-content: center; align-items: center; font-weight: 700; font-size: .86rem; color: #a8740a; }
+  .ppick small .st { justify-content: flex-start; margin-top: 2px; }
+  .st i { font-style: normal; display: inline-flex; align-items: center; gap: 4px; }
+  .cjopt { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; padding: 13px 16px; margin-bottom: 8px; border: 0; border-radius: 18px; background: #fff; font: inherit; font-weight: 600; text-align: left; color: var(--ink); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .cjopt:active { transform: scale(.98); }
+  .cjopt .pr { display: inline-flex; align-items: center; gap: 5px; font-weight: 800; color: #a8740a; white-space: nowrap; }
+  .cjopt.dis { opacity: .45; }
+  .cjh { margin: 18px 2px 8px; font-size: 1rem; font-weight: 700; }
+  .cjh small { color: var(--muted); font-weight: 600; font-size: .78rem; margin-left: 6px; }
+  .code { text-align: center; font-size: 2rem; font-weight: 800; letter-spacing: .08em; color: #a8740a; padding: 16px; margin: 14px 0; border-radius: 22px; background: linear-gradient(120deg, #f7f3e6, #fff1b8 55%, #e9d17a); box-shadow: 0 5px 16px rgba(160,120,20,.28); }
 
   /* ===== Raspa y Gana ===== */
   .raspa { position: relative; overflow: hidden; display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 12px; padding: 16px 18px; border: 0; border-radius: 26px; font: inherit; text-align: left; color: #4a3a12; cursor: pointer; background: linear-gradient(120deg, #f7f3e6 0%, #e3e6ec 30%, #fff1b8 58%, #e9d17a 80%, #f3f5f8 100%); box-shadow: 0 5px 16px rgba(160,120,20,.28), inset 0 0 0 1px rgba(255,255,255,.9); transition: transform .2s; }
@@ -980,7 +1020,7 @@ function postApi(body) {
   if (!API_URL) return;
   try { fetch(API_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ clave: API_KEY, ...body }) }).catch(() => {}); } catch (e) {}
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog(); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); loadMonedas(); flushLog(); } });
 
 
 const readPhoto = (f, max = 640, q = .7) => new Promise(res => {
@@ -1009,7 +1049,7 @@ function homeHead() {
   const spark = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
   return `${dateTop()}
     <div class="jtop"><h2 class="big">Nuestro diario</h2>
-      <button class="pill gold" id="rsp">${spark}Raspa y Gana${cupToday() ? '' : '<i class="dot" id="rgb"></i>'}</button></div>`;
+      <div class="rcol"><div class="lc">${COIN(16)}<span class="lcv">${fmt(miSaldo())}</span></div><button class="pill gold" id="rsp">${spark}Raspa y Gana${cupToday() ? '' : '<i class="dot" id="rgb"></i>'}</button></div></div>`;
 }
 const bindRaspa = () => { $('rsp').onclick = () => go(showRaspa, { hideTitle: true }); };
 const escH = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\n/g, '<br>');
@@ -1090,6 +1130,8 @@ function renderHome2() {
     <div class="tiles p2">
       <button class="tile" id="pf"><span class="ti">${user}</span><b>Perfil</b><small>Nuestras redes</small></button>
       <button class="tile" id="pd"><span class="ti">${list}</span><b>Pendientes</b><small id="pdn">${todoLabel()}</small></button>
+      <button class="tile mini" id="jg"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4M16 11h.01M18.5 14h.01"/></svg></span><b>Juegos</b></button>
+      <button class="tile mini" id="cj"><span class="ti">${COIN(20)}</span><b>Canjear</b></button>
     </div>
     <div style="flex:1"></div>
     <div class="tiles nav"><button class="tile mini arrow" id="pv" aria-label="Página anterior">${left}</button><span></span></div>
@@ -1099,6 +1141,9 @@ function renderHome2() {
   $('pv').onclick = () => go(renderHome, { hideTitle: true });
   $('pf').onclick = () => go(showPerfil, { hideTitle: true });
   $('pd').onclick = () => go(showTodos, { hideTitle: true });
+  $('jg').onclick = () => go(showJuegos, { hideTitle: true });
+  $('cj').onclick = () => go(showCanje, { hideTitle: true });
+  loadMonedas();
   loadCupones();
   loadTodos();
 }
@@ -1400,13 +1445,13 @@ function showCard(id) {
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
     <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><h2 class="big" style="flex:1">Perfil</h2><button class="rbtn" id="gear" aria-label="Editar redes">${GEAR}</button></div>
-    <div class="phead"><div class="pavatar" id="pav"></div><div class="pname2" id="pnm"></div></div>
+    <div class="phead"><div class="pavatar" id="pav"></div><div class="pname2" id="pnm"></div><div class="pstats" id="pst"></div></div>
     <div class="evlist" id="bars"></div>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   const paint = () => {
     const p = getPerfil(id);
-    $('pav').innerHTML = avatarInner(p); $('pnm').textContent = p.nombre;
+    $('pav').innerHTML = avatarInner(p); $('pnm').textContent = p.nombre; $('pst').innerHTML = statsHTML(id);
     $('bars').innerHTML = p.redes.length ? p.redes.map((r, i) => { const st = netStyle(r), has = !!netUrl(r.red, r.enlace);
       return `<button class="nbar${has ? '' : ' empty'}" data-i="${i}" style="--nc:${st.c};--ni:${st.ink}"><span class="nn">${escH(r.red)}</span><small>${has ? 'Ver QR' : 'Añadir enlace'}</small></button>`; }).join('')
       : '<div class="evempty">No hay redes. Toca la tuerca para añadir.</div>';
@@ -1427,7 +1472,7 @@ function showPerfil() {
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Perfil</h2><div class="date">Elige una tarjeta</div></div></div>
-    <div class="evlist">${PERSONAS.map(x => { const p = getPerfil(x.id); return `<button class="ppick" data-id="${x.id}"><span class="pavatar sm">${avatarInner(p)}</span><span class="pt"><b>${escH(p.nombre)}</b><small>Ver tarjeta de presentación</small></span>${chev}</button>`; }).join('')}</div>
+    <div class="evlist">${PERSONAS.map(x => { const p = getPerfil(x.id); return `<button class="ppick" data-id="${x.id}"><span class="pavatar sm">${avatarInner(p)}</span><span class="pt"><b>${escH(p.nombre)}</b><small>${statsHTML(x.id)}</small></span>${chev}</button>`; }).join('')}</div>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
@@ -1725,7 +1770,7 @@ function showMailbox(noLoad) {
     'left:-2%;top:38%;--r:-6deg;width:23%', 'right:-2%;top:46%;--r:7deg;width:23%',
   ];
   const COL = ['#fff3a8', '#ffd3df', '#cdf0dc', '#e4d9fb', '#ffe0b8', '#d4e8ff'];
-  const notes = B.notas.slice(0, 6).map((t, i) => `<div class="note" style="${POS[i]};--nb:${COL[i]}">${escH(t)}</div>`).join('');
+  const notes = B.notas.slice(0, 6).map((t, i) => `<div class="pnote" style="${POS[i]};--nb:${COL[i]}">${escH(t)}</div>`).join('');
   screen.innerHTML = `<div class="home">
     ${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><h2 class="big">Buzón</h2></div>
@@ -1767,8 +1812,14 @@ function showCalendar() {
     ${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><div><h2 class="big">Calendario</h2><div class="date">Universidad</div></div></div>
     <div class="cgrid one">${SCHEDULE.map(d => `<div class="day${d.dow === wd ? ' today' : ''}" style="--c:${d.color};background:${d.bg}"><div class="dn">${d.day}</div>${d.items.map(([t, n]) => `<div class="cls"><span>${t}</span><b>${n}</b></div>`).join('')}</div>`).join('')}</div>
+    <div class="req" style="margin-top:16px"><h4>Notas a tener en cuenta</h4><p>Se pegan aquí y se guardan en Google.</p><div class="rrow"><input id="nti" type="text" maxlength="160" placeholder="Ej: hoy tengo clase en la mañana" enterkeyhint="send" autocomplete="off"><button class="send" id="ntg" aria-label="Añadir nota"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+    <div class="cnotes" id="nts"></div>
   </div>`;
   $('back').onclick = goHome;
+  const addN = () => { const i = $('nti'), t = i.value.trim().replace(/[<>]/g, ''); if (!t) { i.focus(); return; } addNota(t); i.value = ''; renderNotas(); };
+  $('ntg').onclick = addN; $('nti').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); addN(); } };
+  $('nts').onclick = e => { const b = e.target.closest('.nx'); if (b) { delNota(b.dataset.id); renderNotas(); } };
+  renderNotas(); loadNotas();
 }
 
 /* ===================== Eventos ===================== */
@@ -1916,7 +1967,176 @@ document.addEventListener('touchmove', e => {
   e.preventDefault();
 }, { passive: false });
 
+
+/* ===================== Notas pegadas del calendario ===================== */
+const NCOL = ['#fff3a3', '#ffd1dc', '#cdeefd', '#d5f5c8', '#e8dcff'];
+const notasAll = () => { const del = store.get('qn_notas_del', {}); return store.get('qn_notas', []).filter(n => !del[n.id]); };
+function addNota(t) {
+  const n = { id: newId(), t, c: NCOL[Math.floor(Math.random() * NCOL.length)], ts: Date.now() };
+  store.set('qn_notas', [n, ...store.get('qn_notas', [])]);
+  postApi({ tipo: 'nota', id: n.id, texto: n.t, color: n.c });
+}
+function delNota(id) {
+  const del = store.get('qn_notas_del', {}); del[id] = Date.now(); store.set('qn_notas_del', del);
+  store.set('qn_notas', store.get('qn_notas', []).filter(n => n.id !== id));
+  postApi({ tipo: 'nota_borrar', id });
+}
+function renderNotas() {
+  const el = $('nts'); if (!el) return;
+  const l = notasAll();
+  el.innerHTML = l.length ? l.map((n, i) => `<div class="cnote" style="background:${n.c};--r:${[-2, 1.5, -1, 2][i % 4]}deg"><button class="nx" data-id="${n.id}" aria-label="Quitar nota">×</button>${escH(n.t)}</div>`).join('') : '<div class="evempty" style="grid-column:1/-1;padding:14px">Aún no hay notas.</div>';
+}
+async function loadNotas() {
+  const res = await apiGet({ hoja: 'notas' });
+  if (!res || !res.ok) return;
+  const now = Date.now(), del = store.get('qn_notas_del', {}), loc = store.get('qn_notas', []);
+  const srv = res.rows.slice(1).filter(r => String(r[0]).trim() && String(r[1]).trim()).map(r => ({ id: String(r[0]).trim(), t: String(r[1]), c: /^#[0-9a-f]{6}$/i.test(r[2]) ? r[2] : NCOL[0], ts: 0 }));
+  Object.keys(del).forEach(id => { if (!srv.find(n => n.id === id) || now - del[id] > 30 * 60000) delete del[id]; else if (now - del[id] > 20000) postApi({ tipo: 'nota_borrar', id }); });
+  const fresh = loc.filter(n => now - n.ts < 60000 && !srv.find(x => x.id === n.id));
+  store.set('qn_notas_del', del);
+  store.set('qn_notas', [...fresh, ...srv.filter(n => !del[n.id]).reverse()]);
+  renderNotas();
+}
+
+/* ===================== LoveCoins, perfiles y Juegos ===================== */
+const yo = () => store.get('qn_yo', '');
+const nombreDe = id => (getPerfil(id).nombre || (id === 'ella' ? 'Ella' : 'Él'));
+const saldos = () => store.get('qn_monedas', { ella: 100, el: 100 });
+const miSaldo = () => yo() ? saldos()[yo()] : saldos().ella;
+async function loadMonedas(rows) {
+  if (!rows) { const r = await apiGet({ hoja: 'monedas' }); rows = r && r.ok ? r.rows : null; }
+  if (!rows) return;
+  const m = { ...saldos() };
+  const w = { ...wins() };
+  rows.slice(1).forEach(r => { const k = normP(r[0]); if (k === 'ella' || k === 'el') { m[k] = Number(r[1]) || 0; w[k] = Number(r[2]) || 0; } });
+  store.set('qn_monedas', m); store.set('qn_wins', w); updLC();
+}
+let jTimer = 0;
+const stopPoll = () => { clearInterval(jTimer); jTimer = 0; };
+function showJuegos() {
+  stopPoll();
+  const w = () => { const m = saldos(); return ['ella', 'el'].map(id => `<div>${escH(nombreDe(id))}<b>${COIN(16)} ${fmt(m[id])}${wins()[id] ? ` · 🏆 ${wins()[id]}` : ''}</b></div>`).join(''); };
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Juegos</h2><div class="date">LoveCoins</div></div></div>
+    <div class="jwho" id="jw"></div><div class="wal" id="jwal">${w()}</div>
+    <button class="tile" id="gt" style="width:100%;flex-direction:row;align-items:center;gap:12px"><span class="ti" style="font-weight:800;font-size:1rem">#</span><span><b>Triki</b><br><small>En tiempo real · apuesta LoveCoins</small></span></button></div>`;
+  const who = () => { $('jw').innerHTML = ['ella', 'el'].map(id => `<button data-id="${id}" class="${yo() === id ? 'on' : ''}">Soy ${escH(nombreDe(id))}</button>`).join(''); };
+  who();
+  $('jw').onclick = e => { const b = e.target.closest('button'); if (b) { store.set('qn_yo', b.dataset.id); who(); } };
+  $('back').onclick = () => go(renderHome2, { hideTitle: true });
+  $('gt').onclick = () => { if (!yo()) { alert('Primero elige quién eres 💗'); return; } go(showTriki, { hideTitle: true }); };
+  loadMonedas().then(() => { const e = $('jwal'); if (e) e.innerHTML = w(); });
+}
+let trk = null;
+function parseTriki(r) {
+  const v = r.rows[1]; if (!v) return { estado: 'vacio', tab: '---------', turno: 'x', x: '', o: '', ap: 0, gan: '' };
+  return { estado: v[1], tab: v[2] || '---------', turno: v[3], x: v[4], o: v[5], ap: Number(v[6]) || 0, gan: v[7] };
+}
+function showTriki() {
+  stopPoll();
+  const me = yo(); let busy = 0;
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Triki</h2><div class="date">${escH(nombreDe(me))} · ${COIN(14)} <span id="tsal">${fmt(miSaldo())}</span></div></div></div>
+    <div class="tmsg" id="tmsg">Conectando…</div><div class="tboard" id="trk"></div><div class="tact" id="tact"></div></div>`;
+  const send = (tipo, extra = {}) => { busy = Date.now(); return postApiP({ tipo, persona: me, ...extra }).then(() => new Promise(r => setTimeout(r, 700))).then(tick); };
+  function draw() {
+    const t = trk; if (!t || !$('trk')) return;
+    const yoS = t.x === me ? 'x' : (t.o === me ? 'o' : ''), otro = id => nombreDe(id), m = $('tmsg');
+    $('trk').innerHTML = [...t.tab].map((c, i) => `<button class="tc ${c}" data-i="${i}" ${t.estado === 'juego' && t.turno === yoS && c === '-' ? '' : 'disabled'}>${c === 'x' ? '✕' : c === 'o' ? '○' : ''}</button>`).join('');
+    let msg = '', act = '';
+    const bet = t.ap ? ` · apuesta ${t.ap} LoveCoins` : ' · sin apuesta';
+    if (t.estado === 'espera') {
+      if (t.x === me) { msg = 'Esperando a que acepte…' + bet; act = '<button class="btn glass" data-a="cancelar">Cancelar</button>'; }
+      else { msg = `${otro(t.x)} te reta${bet}`; act = '<button class="btn wide" style="width:auto" data-a="unirse">Aceptar reto</button>'; }
+    } else if (t.estado === 'juego') {
+      const mine = t.turno === yoS;
+      msg = (yoS ? (mine ? 'Tu turno ✨' : `Turno de ${otro(t.turno === 'x' ? t.x : t.o)}`) : 'Partida en curso') + bet;
+      if (yoS) act = '<button class="btn glass" data-a="rendirse">Rendirme</button>';
+    } else {
+      if (t.estado === 'fin') {
+        const w = t.gan === 'empate' ? 'empate' : (t.gan === 'x' ? t.x : t.o);
+        msg = w === 'empate' ? 'Empate 🤝' : (w === me ? `¡Ganaste${t.ap ? ' ' + t.ap + ' LoveCoins' : ''}! 🎉` : `Ganó ${otro(w)}${t.ap && w !== me ? ` · perdiste ${t.ap} LoveCoins` : ''}`);
+      } else msg = 'Nadie está jugando. ¡Reta!';
+      act = `<input id="tap" type="number" inputmode="numeric" min="0" max="1000" value="${Math.min(10, miSaldo())}" aria-label="Apuesta"><button class="btn wide" style="width:auto" data-a="crear">${t.estado === 'fin' ? 'Nueva partida' : 'Retar'}</button>`;
+    }
+    if (m.dataset.k !== msg) { m.dataset.k = msg; m.textContent = msg; }
+    const a = $('tact'); if (a.dataset.k !== act && !(document.activeElement && document.activeElement.id === 'tap')) { a.dataset.k = act; a.innerHTML = act; }
+    $('tsal').textContent = fmt(miSaldo());
+  }
+  async function tick() {
+    if (!$('trk')) return stopPoll();
+    if (Date.now() - busy < 600) return;
+    const r = await apiGet({ hoja: 'triki' });
+    if (!r || !r.ok || !$('trk')) return;
+    const prev = trk && trk.estado; trk = parseTriki(r);
+    if (r.monedas) loadMonedas(r.monedas);
+    draw();
+  }
+  $('trk').onclick = e => { const b = e.target.closest('.tc'); if (!b || b.disabled) return; const i = +b.dataset.i, yoS = trk.x === me ? 'x' : 'o'; trk.tab = trk.tab.slice(0, i) + yoS + trk.tab.slice(i + 1); trk.turno = yoS === 'x' ? 'o' : 'x'; draw(); send('triki_mover', { pos: i }); };
+  $('tact').onclick = e => { const b = e.target.closest('[data-a]'); if (!b) return; const a = b.dataset.a;
+    if (a === 'crear') { const ap = Math.max(0, Math.floor(+$('tap').value || 0)); if (ap > miSaldo()) { $('tmsg').textContent = 'No te alcanzan las LoveCoins'; return; } send('triki_crear', { apuesta: ap }); }
+    else if (a === 'rendirse') { if (confirm('¿Rendirte? Perderás la apuesta.')) send('triki_rendirse'); }
+    else send('triki_' + a); };
+  $('back').onclick = () => { stopPoll(); go(showJuegos, { hideTitle: true }); };
+  tick(); jTimer = setInterval(tick, 2000);
+}
+
+
+/* ===================== Símbolo LoveCoin y Canjear ===================== */
+const COIN = (n = 18) => `<svg class="coin" width="${n}" height="${n}" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="lcg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".5" stop-color="#f4c542"/><stop offset="1" stop-color="#c58a10"/></linearGradient></defs><circle cx="12" cy="12" r="11" fill="url(#lcg)"/><circle cx="12" cy="12" r="8.7" fill="none" stroke="#fff8d6" stroke-opacity=".85" stroke-width="1"/><path d="M12 17.4l-4.6-4.4a2.9 2.9 0 0 1 4.1-4.1l.5.5.5-.5a2.9 2.9 0 0 1 4.1 4.1z" fill="#c2485c"/><path d="M6.6 7.4A7 7 0 0 1 11 5" stroke="#fff" stroke-opacity=".8" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>`;
+const fmt = n => Number(n || 0).toLocaleString('es-CO');
+const wins = () => store.get('qn_wins', { ella: 0, el: 0 });
+const statsHTML = id => `<span class="st" style="display:flex;gap:12px;justify-content:inherit"><i>${COIN(15)} ${fmt(saldos()[id])}</i><i>🏆 ${wins()[id] || 0}</i></span>`;
+const updLC = () => document.querySelectorAll('.lcv').forEach(e => { e.textContent = fmt(miSaldo()); });
+const quitaVale = t => { const x = String(t).replace(/^Vale por /i, ''); return x[0].toUpperCase() + x.slice(1); };
+async function loadCatalogo() {
+  const r = await apiGet({ catalogo: 1 });
+  if (r && r.ok) store.set('qn_cat', { lista: r.lista, costos: r.costos });
+  return store.get('qn_cat', null);
+}
+function showCanje() {
+  stopPoll();
+  const me = yo(), back = () => go(renderHome2, { hideTitle: true });
+  if (!me) {
+    screen.innerHTML = `<div class="home">${dateTop()}<div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><h2 class="big">Canjear</h2></div><div class="evempty">Primero elige quién eres en Juegos 💗</div></div>`;
+    $('back').onclick = back; return;
+  }
+  const paint = cat => {
+    const sal = miSaldo(), cop = [1000, 5000, 10000, 50000];
+    const tier = { oro: 'Oro', plata: 'Plata', bronce: 'Bronce' }, cos = (cat && cat.costos) || { oro: 6000, plata: 3000, bronce: 1000 };
+    const row = (att, label, price) => `<button class="cjopt${price > sal ? ' dis' : ''}" ${att}><span>${label}</span><span class="pr">${COIN(16)} ${fmt(price)}</span></button>`;
+    $('cjb').innerHTML = `<div class="cjh">Dinero real<small>1.000 LoveCoins = $100 COP</small></div>${cop.map(c => row(`data-t="cop" data-m="${c}"`, `$${fmt(c / 10)} COP`, c)).join('')}
+      <div class="cjh">Regalos</div>${cat ? ['oro', 'plata', 'bronce'].map(n => cat.lista.filter(x => x[1] === n).map(x => row(`data-t="regalo" data-d="${escA(x[0])}"`, `${quitaVale(x[0])} <small style="color:var(--muted)">${tier[n]}</small>`, cos[n])).join('')).join('') : '<div class="evempty">Necesito internet para cargar los regalos.</div>'}`;
+  };
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Canjear</h2><div class="date">${escH(nombreDe(me))} · ${COIN(14)} <span class="lcv">${fmt(miSaldo())}</span></div></div></div><div id="cjb"></div></div>`;
+  $('back').onclick = back;
+  paint(store.get('qn_cat', null));
+  loadMonedas().then(() => loadCatalogo()).then(c => { if ($('cjb')) paint(c); });
+  $('cjb').onclick = async e => {
+    const b = e.target.closest('.cjopt'); if (!b || b.dataset.busy) return;
+    const t = b.dataset.t, cat = store.get('qn_cat', null), label = b.firstElementChild.textContent.trim();
+    const coste = t === 'cop' ? +b.dataset.m : (cat.costos[cat.lista.find(x => x[0] === b.dataset.d)[1]]);
+    if (coste > miSaldo()) { alert('Aún no te alcanzan las LoveCoins 💗'); return; }
+    if (!confirm(`¿Canjear "${label}" por ${fmt(coste)} LoveCoins?`)) return;
+    b.dataset.busy = 1; b.style.opacity = .5;
+    const r = await apiGet({ canjear: 1, clave: API_KEY, persona: me, tipo: t, ...(t === 'cop' ? { monedas: coste } : { detalle: b.dataset.d }) });
+    if (!r || !r.ok) { b.dataset.busy = ''; b.style.opacity = ''; alert(r && r.error === 'saldo' ? 'No te alcanzan las LoveCoins.' : 'No se pudo canjear. Revisa tu conexión e intenta de nuevo.'); return; }
+    const m = { ...saldos(), [me]: r.saldo }; store.set('qn_monedas', m); updLC();
+    const msg = `🎟️ Canje ${r.codigo}\n${nombreDe(me)} canjeó: ${r.detalle}${r.cop ? ' (dinero real)' : ''}\n−${fmt(r.coste)} LoveCoins · Saldo: ${fmt(r.saldo)}`;
+    const link = waLink(msg);
+    screen.innerHTML = `<div class="home">${dateTop()}<h2 class="big" style="margin-top:6px">¡Canje listo! 🎉</h2><div class="date">${escH(r.detalle)}</div><div class="code">${r.codigo}</div>
+      <a class="btn wide" href="${link}" target="_blank" rel="noopener">Enviar a mi WhatsApp 💌</a>
+      <p class="evempty" style="padding:14px 6px">Este código es tu comprobante. Se descontaron ${fmt(r.coste)} LoveCoins y te quedan ${fmt(r.saldo)}.</p><button class="btn glass full" id="ok">Listo</button></div>`;
+    $('ok').onclick = back;
+    try { window.open(link, '_blank'); } catch (x) {}
+  };
+}
+
 /* ===================== Arranque ===================== */
+const fixH = () => { document.documentElement.style.setProperty('--ah', window.innerHeight + 'px'); window.scrollTo(0, 0); };
+fixH(); ['resize', 'orientationchange', 'pageshow', 'load'].forEach(ev => window.addEventListener(ev, fixH));
+if (window.visualViewport) window.visualViewport.addEventListener('resize', fixH);
 renderHome();
 loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
