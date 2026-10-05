@@ -1512,9 +1512,11 @@ async function loadPerfil() {
 }
 async function loadPerfiles() {
   if (!API_URL) return;
+  const t0 = Date.now();
   try {
     const rows = await fetchTab('perfiles', '');
     if (!rows) return;
+    if (t0 < perfilCambio) return;   // respuesta vieja (salió antes de crear o entrar): no se usa
     perfilesCargados = true;
     const srv = rows.slice(1).filter(r => String(r[0] || '').trim()).map(r => ({ id: String(r[0]).trim(), nombre: String(r[1] || '').trim() || '?', tiene: String(r[3] || '').trim() === '1' }));
     const before = perfiles();
@@ -1657,7 +1659,7 @@ function showCard(id) {
   };
   paint(); cardPaint = paint;
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
-  $('lout').onclick = () => { cerrarSesion(); go(showPerfil, { hideTitle: true }); };
+  $('lout').onclick = () => { perfilCambio = Date.now(); cerrarSesion(); go(showPerfil, { hideTitle: true }); };
   const editar = () => { if (yo() === id) { openSheet(id, paint); return; } alert('Inicia sesión para editar tu perfil.'); };
   $('gear').onclick = editar;
   $('bars').onclick = e => {
@@ -1669,7 +1671,7 @@ function showCard(id) {
 }
 
 /* ===================== Perfil: un solo perfil, con inicio de sesión ===================== */
-let perfilesCargados = false, loginPaint = null, yaHay = false;
+let perfilesCargados = false, loginPaint = null, yaHay = false, perfilCambio = 0;
 function showPerfil() {
   if (yo()) { showCard(yo()); return; }
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
@@ -1681,7 +1683,7 @@ function showPerfil() {
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
   let modo = '';
   const entrar = (id, nombre, token, nuevo) => {
-    setToken(id, token); store.set('qn_yo', id);
+    perfilCambio = Date.now(); setToken(id, token); store.set('qn_yo', id);
     if (!perfiles().some(p => p.id === id)) setPerfiles([...perfiles(), { id, nombre, tiene: true }]);
     if (nuevo) store.set('qn_monedas', { ...store.get('qn_monedas', {}), [id]: 100 });
     updLC(); loadMonedas();
