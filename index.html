@@ -494,7 +494,64 @@
   .evadd .rrow .datef svg { width: 18px; height: 18px; }
   .evadd .rrow .datef.dd { flex: 1.45; }
   .evadd .rrow .datef.tt { flex: 1; }
+
+  /* ===== Editor de tarjeta: scroll, color y barras solo con nombre ===== */
+  .sheet { padding-top: 0; -webkit-overflow-scrolling: touch; }
+  .shh { position: sticky; top: 0; z-index: 3; background: #fff; padding: 16px 0 10px; margin: 0; }
+  .sw { flex: none; width: 40px; height: 40px; padding: 0; border: 2px solid #fff; border-radius: 50%; background: none; box-shadow: 0 0 0 1px #e4d6dc; cursor: pointer; -webkit-appearance: none; appearance: none; overflow: hidden; }
+  .sw::-webkit-color-swatch-wrapper { padding: 0; }
+  .sw::-webkit-color-swatch { border: 0; border-radius: 50%; }
+  .sw::-moz-color-swatch { border: 0; border-radius: 50%; }
+  .srow { align-items: flex-end; }
+  .srow .xbtn { margin-bottom: 2px; }
+  .nbar .nn { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ===== Recuadros simétricos: mismo tamaño de icono y alineación ===== */
+  .tile .ti svg { width: 20px; height: 20px; display: block; }
+  .tile.mini .ti svg { width: 18px; height: 18px; }
+  .tile { justify-content: flex-start; }
+  .tile.main small { color: rgba(255,255,255,.85); }
+  .tiles .tile:not(.mini) { min-height: 98px; }
+
+  /* ===== Raspa y Gana ===== */
+  .raspa { position: relative; overflow: hidden; display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 12px; padding: 16px 18px; border: 0; border-radius: 26px; font: inherit; text-align: left; color: #4a3a12; cursor: pointer; background: linear-gradient(120deg, #f7f3e6 0%, #e3e6ec 30%, #fff1b8 58%, #e9d17a 80%, #f3f5f8 100%); box-shadow: 0 5px 16px rgba(160,120,20,.28), inset 0 1.5px 0 rgba(255,255,255,.9); transition: transform .2s; }
+  .raspa:active { transform: scale(.98); }
+  .raspa::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent); transform: skewX(-18deg); animation: rsh 3.2s ease-in-out infinite; pointer-events: none; }
+  @keyframes rsh { 0% { left: -60%; } 55%, 100% { left: 130%; } }
+  .raspa .ri { flex: none; width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.45); }
+  .raspa .ri svg { width: 26px; height: 26px; }
+  .raspa .rt { flex: 1; min-width: 0; }
+  .raspa b { display: block; font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+  .raspa small { display: block; margin-top: 3px; font-size: .78rem; font-weight: 600; opacity: .75; }
+  .raspa .badge { position: absolute; top: 10px; right: 12px; font-size: .66rem; font-weight: 700; color: #fff; background: #ff4d6d; border-radius: 999px; padding: 3px 8px; z-index: 1; }
+  .scwrap { flex: 1 1 0; min-height: 0; display: grid; place-items: center; }
+  .scratch { position: relative; width: 100%; max-width: 330px; aspect-ratio: 16 / 11; border-radius: 26px; overflow: hidden; box-shadow: 0 8px 24px rgba(90,40,60,.2); background: #fff; }
+  .scratch .prize { position: absolute; inset: 0; }
+  .scratch canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+  .scratch .shine { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%); background-size: 250% 100%; animation: scsh 2.6s linear infinite; mix-blend-mode: soft-light; }
+  @keyframes scsh { from { background-position: 150% 0; } to { background-position: -100% 0; } }
+  .pzc { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 16px 20px; text-align: center; color: var(--ink); background: linear-gradient(135deg, var(--a), var(--b)); }
+  .pzc::before { content: ""; position: absolute; inset: 9px; border: 2px dashed color-mix(in srgb, var(--ink) 45%, transparent); border-radius: 18px; pointer-events: none; }
+  .pzc.carton { background: repeating-linear-gradient(45deg, var(--a) 0 6px, color-mix(in srgb, var(--a) 88%, var(--b)) 6px 12px); }
+  .pzi { font-size: 2rem; line-height: 1; }
+  .pzn { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
+  .pzt { font-size: 1.3rem; font-weight: 800; line-height: 1.2; letter-spacing: -.01em; }
+  .pzf { font-size: .72rem; font-weight: 600; opacity: .75; margin-top: 2px; }
+  .scmsg { flex: none; text-align: center; font-weight: 700; font-size: 1rem; margin: 14px 0 12px; min-height: 1.4em; }
+  .confetti { position: fixed; inset: 0; z-index: 200; pointer-events: none; overflow: hidden; }
+  .confetti i { position: absolute; top: -30px; font-style: normal; animation: cfall linear forwards; }
+  @keyframes cfall { to { transform: translateY(105vh) rotate(540deg); opacity: .85; } }
+  .cup { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; color: var(--ink); background: linear-gradient(135deg, var(--a), var(--b)); box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 12px rgba(90,40,60,.1); }
+  .cup.used { opacity: .5; }
+  .cup.used b { text-decoration: line-through; }
+  .cupi { flex: none; font-size: 1.6rem; }
+  .cupt { flex: 1; min-width: 0; }
+  .cupt small { display: block; font-size: .68rem; font-weight: 700; opacity: .75; }
+  .cupt b { display: block; font-size: 1rem; line-height: 1.2; }
+  .cupx { flex: none; border: 0; border-radius: 999px; padding: 8px 12px; font: inherit; font-size: .74rem; font-weight: 700; color: var(--ink); background: rgba(255,255,255,.6); cursor: pointer; }
+  @media (max-height: 740px) { .tiles.p2 .tile { min-height: 84px; } .raspa { padding: 12px 16px; margin-top: 8px; } }
 </style>
+
 </head>
 <body>
 
@@ -1044,7 +1101,7 @@ async function loadDaily() {
     }
   } catch (e) { /* sin internet: se queda con la última pregunta guardada */ }
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadTodos(); flushLog(); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog(); } });
 
 
 const readPhoto = (f, max = 640, q = .7) => new Promise(res => {
@@ -1088,7 +1145,7 @@ function renderHome(page = 0) {
   const plus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
   const tdy = todayISO(), evs = allEvents(), evToday = evs.filter(e => e.date === tdy).length, evNext = evs.filter(e => e.date >= tdy).length;
   const tiles = `<div class="tiles">
-    <button class="tile main" id="tq"><span class="ti"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 4.8 6.2 4.8c2 0 3.5 1.1 4.3 2.4h3c.8-1.3 2.3-2.4 4.3-2.4 3.5 0 5.3 3.6 3.8 7C19.5 16.4 12 21 12 21z" transform="translate(-.5 .5) scale(.96)"/></svg></span><b>Hacer nuestro test</b></button>
+    <button class="tile main" id="tq"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0016.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 002 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></svg></span><b>Test</b><small>${PER_TEST} preguntas</small></button>
     <button class="tile" id="evb"><span class="ti"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13.2l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 15.3l2-.3z"/></svg></span><b>Eventos</b><small>${evNext ? evNext + (evNext > 1 ? ' próximos' : ' próximo') : 'Sin eventos aún'}</small>${evToday ? '<i class="badge">Hoy</i>' : ''}</button>
   </div>
   <div class="tiles nav">
@@ -1156,6 +1213,7 @@ function renderHome2() {
       <button class="tile" id="pf"><span class="ti">${user}</span><b>Perfil</b><small>Nuestras redes</small></button>
       <button class="tile" id="pd"><span class="ti">${list}</span><b>Pendientes</b><small id="pdn">${todoLabel()}</small></button>
     </div>
+    <button class="raspa" id="rg"><span class="ri"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></span><span class="rt"><b>Raspa y Gana</b><small>Un intento al día · ¡prueba tu suerte!</small></span>${cupToday() ? '' : '<i class="badge" id="rgb">¡Hoy!</i>'}</button>
     <div style="flex:1"></div>
     <div class="tiles nav"><button class="tile mini arrow" id="pv" aria-label="Página anterior">${left}</button><span></span></div>
   </div>`;
@@ -1164,6 +1222,8 @@ function renderHome2() {
   $('pv').onclick = () => go(renderHome, { hideTitle: true });
   $('pf').onclick = () => go(showPerfil, { hideTitle: true });
   $('pd').onclick = () => go(showTodos, { hideTitle: true });
+  $('rg').onclick = () => go(showRaspa, { hideTitle: true });
+  loadCupones();
   loadTodos();
 }
 
@@ -1332,6 +1392,9 @@ const NETS = {
   telegram:  { c: '#229ed9', n: 'Telegram', l: 'TG', u: v => 'https://t.me/' + v },
   spotify:   { c: '#1db954', n: 'Spotify', l: '♪' },
 };
+const NET_HEX = { instagram: '#e1306c', facebook: '#1877f2', tiktok: '#111111', snapchat: '#fffc00', x: '#111111', whatsapp: '#25d366', youtube: '#ff0033', telegram: '#229ed9', spotify: '#1db954' };
+const isHex = v => /^#[0-9a-f]{6}$/i.test(String(v || ''));
+const inkFor = hex => { const n = parseInt(hex.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) > 170 ? '#111' : '#fff'; };
 const netKey = r => { const k = String(r || '').toLowerCase().replace(/[^a-z]/g, ''); return k === 'twitter' ? 'x' : k; };
 const netInfo = r => NETS[netKey(r)] || { c: '#c2485c', n: String(r || ''), l: (String(r || '?')[0] || '?').toUpperCase() };
 function netUrl(red, v) {
@@ -1341,6 +1404,8 @@ function netUrl(red, v) {
   if (n && n.u) return n.u(netKey(red) === 'whatsapp' ? u : encodeURIComponent(u));
   return /\./.test(v) && !/\s/.test(v) ? 'https://' + v : '';
 }
+const netStyle = r => { const n = netInfo(r.red); return isHex(r.color) ? { c: r.color, ink: inkFor(r.color) } : { c: n.c, ink: n.ink || '#fff' }; };
+const hexOf = r => isHex(r.color) ? r.color : (NET_HEX[netKey(r.red)] || '#c2485c');
 const escA = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const GEAR = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.7 7.7 0 000-3l2-1.5-2-3.4-2.3.9a7.5 7.5 0 00-2.6-1.5L14 2.5h-4l-.5 2.5a7.5 7.5 0 00-2.6 1.5l-2.3-.9-2 3.4 2 1.5a7.7 7.7 0 000 3l-2 1.5 2 3.4 2.3-.9a7.5 7.5 0 002.6 1.5l.5 2.5h4l.5-2.5a7.5 7.5 0 002.6-1.5l2.3.9 2-3.4z"/></svg>';
 const BACK = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
@@ -1362,7 +1427,7 @@ function setPerfil(p) {
   clearTimeout(perfT[p.id]); perfT[p.id] = setTimeout(() => postPerfil(p.id), 900);
 }
 const normP = v => String(v || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-const perfSig = (nombre, redes) => JSON.stringify([nombre, redes.map(r => [String(r.red).toLowerCase(), r.enlace])]);
+const perfSig = (nombre, redes) => JSON.stringify([nombre, redes.map(r => [String(r.red).toLowerCase(), r.enlace, isHex(r.color) ? r.color.toLowerCase() : ''])]);
 async function loadPerfil() {
   if (!API_URL) return;
   try {
@@ -1374,7 +1439,7 @@ async function loadPerfil() {
       if (p !== 'ella' && p !== 'el') return;
       if (!red || red.toLowerCase() === 'red') return;
       by[p] = by[p] || { nombre: '', redes: [] };
-      if (red === '_nombre') by[p].nombre = en; else by[p].redes.push({ red, enlace: en });
+      if (red === '_nombre') by[p].nombre = en; else by[p].redes.push({ red, enlace: en, color: String(r[3] || '').trim() });
     });
     const d = store.get('qn_perfil2', {}), dirty = store.get('qn_perfil_dirty', {}), now = Date.now();
     PERSONAS.forEach(({ id }) => {
@@ -1395,8 +1460,8 @@ async function loadPerfil() {
 }
 const avatarInner = p => p.foto ? `<img src="${p.foto}" alt="">` : escH((p.nombre[0] || '?').toUpperCase());
 
-function showQR(persona, red, enlace) {
-  const url = netUrl(red, enlace), svg = url ? qrSvg(url) : '', n = netInfo(red);
+function showQR(persona, red, enlace, color) {
+  const url = netUrl(red, enlace), svg = url ? qrSvg(url) : '', n0 = netInfo(red), n = isHex(color) ? { ...n0, c: color, ink: inkFor(color) } : n0;
   const ov = document.createElement('div'); ov.className = 'qrov';
   ov.innerHTML = `<div class="qrbox"><div class="qrbar" style="background:${n.c};color:${n.ink || '#fff'}">${escH(n.n || red)}<button class="qrx" aria-label="Cerrar">✕</button></div>
     <div class="qrbody"><div class="qrt">${escH(persona)}</div>
@@ -1414,32 +1479,38 @@ function openSheet(id, onClose) {
   const box = document.createElement('div'); box.className = 'sheet'; ov.appendChild(box);
   const file = document.createElement('input'); file.type = 'file'; file.accept = 'image/*'; file.style.display = 'none'; ov.appendChild(file);
   const close = () => { ov.classList.remove('in'); setTimeout(() => { ov.remove(); onClose && onClose(); }, 320); };
+  const $s = k => box.querySelector('#' + k);
+  let touched = false;
   const render = () => {
     const p = getPerfil(id), have = new Set(p.redes.map(r => netKey(r.red))), avail = Object.keys(NETS).filter(k => !have.has(k));
+    touched = false;
     box.innerHTML = `<div class="shh"><b>Editar tarjeta</b><button class="btn" id="sx" style="padding:10px 20px">Listo</button></div>
       <div class="slab">Nombre</div><input class="sinp" id="snm" maxlength="24" value="${escA(p.nombre)}" autocomplete="off">
       <div class="slab">Foto de perfil</div>
       <div class="rrow"><span class="pavatar sm">${avatarInner(p)}</span><button class="btn glass" id="sph" style="flex:1;padding:12px 16px">${p.foto ? 'Cambiar foto' : 'Elegir foto'}</button>${p.foto ? '<button class="btn glass" id="spx" style="padding:12px 16px">Quitar</button>' : ''}</div>
-      <div class="slab">Redes (usuario sin @ o el enlace completo)</div>
-      ${p.redes.map((r, i) => { const n = netInfo(r.red); return `<div class="srow"><span class="nl" style="background:${n.c};color:${n.ink || '#fff'}">${escH(n.l)}</span><div class="sc"><b>${escH(r.red)}</b><input class="sinp" data-i="${i}" value="${escA(r.enlace)}" placeholder="${netKey(r.red) === 'whatsapp' ? 'Número con código de país' : 'Usuario o enlace'}" autocomplete="off" autocapitalize="off"></div><button class="xbtn" data-del="${i}" aria-label="Quitar red">${TRASH}</button></div>`; }).join('')}
       <div class="slab">Añadir red</div>
-      <div class="rrow"><select class="sinp" id="sadd">${avail.map(k => `<option value="${k}">${NETS[k].n}</option>`).join('')}<option value="_otra">Otra red…</option></select><button class="send" id="sa" aria-label="Añadir red"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
-      <input class="sinp" id="soth" placeholder="Nombre de la red (ej. Pinterest)" maxlength="20" style="display:${avail.length ? 'none' : 'block'};margin-top:8px">`;
+      <div class="rrow"><select class="sinp" id="sadd">${avail.map(k => `<option value="${k}">${NETS[k].n}</option>`).join('')}<option value="_otra">Otra red…</option></select><input type="color" class="sw" id="scol" value="${avail.length ? NET_HEX[avail[0]] : '#c2485c'}" aria-label="Color del botón"><button class="send" id="sa" aria-label="Añadir red"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <input class="sinp" id="soth" placeholder="Nombre de la red (ej. Pinterest)" maxlength="20" style="display:${avail.length ? 'none' : 'block'};margin-top:8px">
+      <div class="slab">Tus redes · color, usuario o enlace completo</div>
+      ${p.redes.map((r, i) => `<div class="srow"><input type="color" class="sw" data-c="${i}" value="${hexOf(r)}" aria-label="Color de ${escA(r.red)}"><div class="sc"><b>${escH(r.red)}</b><input class="sinp" data-i="${i}" value="${escA(r.enlace)}" placeholder="${netKey(r.red) === 'whatsapp' ? 'Número con código de país' : 'Usuario o enlace'}" autocomplete="off" autocapitalize="off"></div><button class="xbtn" data-del="${i}" aria-label="Quitar red">${TRASH}</button></div>`).join('')}`;
     $s('sx').onclick = close;
     $s('snm').oninput = e => { const q = getPerfil(id); q.nombre = e.target.value.trim().replace(/[<>]/g, '') || PERSONAS.find(x => x.id === id).nombre; setPerfil(q); };
     $s('sph').onclick = () => file.click();
     if ($s('spx')) $s('spx').onclick = () => { delFotosTipo('perfil:' + id); render(); };
     box.querySelectorAll('input[data-i]').forEach(inp => inp.oninput = () => { const q = getPerfil(id); q.redes[+inp.dataset.i].enlace = inp.value.trim(); setPerfil(q); });
+    box.querySelectorAll('input[data-c]').forEach(inp => inp.oninput = () => { const q = getPerfil(id); q.redes[+inp.dataset.c].color = inp.value; setPerfil(q); });
     box.querySelectorAll('[data-del]').forEach(b => b.onclick = () => armDelete(b, () => { const q = getPerfil(id); q.redes.splice(+b.dataset.del, 1); setPerfil(q); render(); }));
-    const sel = $s('sadd'), oth = $s('soth');
-    sel.onchange = () => { oth.style.display = sel.value === '_otra' ? 'block' : 'none'; };
+    const sel = $s('sadd'), oth = $s('soth'), col = $s('scol');
+    sel.onchange = () => { oth.style.display = sel.value === '_otra' ? 'block' : 'none'; if (NET_HEX[sel.value]) { col.value = NET_HEX[sel.value]; touched = false; } };
+    col.oninput = () => { touched = true; };
     $s('sa').onclick = () => {
-      const q = getPerfil(id); let red = sel.value;
-      if (red === '_otra') { red = oth.value.trim().replace(/[<>]/g, ''); if (!red) { oth.focus(); return; } } else red = NETS[red].n;
-      q.redes.push({ red, enlace: '' }); setPerfil(q); render();
+      const q = getPerfil(id); let red = sel.value, color = '';
+      if (red === '_otra') { red = oth.value.trim().replace(/[<>]/g, ''); if (!red) { oth.focus(); return; } color = col.value; }
+      else { const k = red; red = NETS[k].n; if (touched && col.value.toLowerCase() !== NET_HEX[k]) color = col.value; }
+      q.redes.push(color ? { red, enlace: '', color } : { red, enlace: '' }); setPerfil(q); render();
+      box.scrollTop = box.scrollHeight;
     };
   };
-  const $s = k => box.querySelector('#' + k);
   file.onchange = async () => { const f = file.files[0]; if (!f) return; const src = await readPhoto(f, 400, .8); if (src) { addFoto('perfil:' + id, src); render(); } file.value = ''; };
   ov.onclick = e => { if (e.target === ov) close(); };
   render();
@@ -1460,8 +1531,8 @@ function showCard(id) {
   const paint = () => {
     const p = getPerfil(id);
     $('pav').innerHTML = avatarInner(p); $('pnm').textContent = p.nombre;
-    $('bars').innerHTML = p.redes.length ? p.redes.map((r, i) => { const n = netInfo(r.red), has = !!netUrl(r.red, r.enlace);
-      return `<button class="nbar${has ? '' : ' empty'}" data-i="${i}" style="--nc:${n.c};--ni:${n.ink || '#fff'}"><span class="nl">${escH(n.l)}</span><span>${escH(r.red)}</span><small>${has ? 'Ver QR' : 'Añadir enlace'}</small></button>`; }).join('')
+    $('bars').innerHTML = p.redes.length ? p.redes.map((r, i) => { const st = netStyle(r), has = !!netUrl(r.red, r.enlace);
+      return `<button class="nbar${has ? '' : ' empty'}" data-i="${i}" style="--nc:${st.c};--ni:${st.ink}"><span class="nn">${escH(r.red)}</span><small>${has ? 'Ver QR' : 'Añadir enlace'}</small></button>`; }).join('')
       : '<div class="evempty">No hay redes. Toca la tuerca para añadir.</div>';
   };
   paint(); cardPaint = paint;
@@ -1471,7 +1542,7 @@ function showCard(id) {
     const b = e.target.closest('.nbar'); if (!b) return;
     const p = getPerfil(id), r = p.redes[+b.dataset.i];
     if (!r) return;
-    if (netUrl(r.red, r.enlace)) showQR(p.nombre, r.red, r.enlace); else openSheet(id, paint);
+    if (netUrl(r.red, r.enlace)) showQR(p.nombre, r.red, r.enlace, r.color); else openSheet(id, paint);
   };
 }
 
@@ -1485,6 +1556,141 @@ function showPerfil() {
   screen.classList.remove('center'); screen.classList.add('full');
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
   screen.querySelectorAll('.ppick').forEach(b => b.onclick = () => go(() => showCard(b.dataset.id), { hideTitle: true }));
+}
+
+/* ===================== Raspa y Gana ===================== */
+// El sorteo y el límite de un intento al día los hace el Apps Script; aquí solo se muestra el resultado.
+const TIERS = {
+  oro:    { name: 'Cupón dorado',    a: '#fff3b0', b: '#f0b400', ink: '#5e3d00', ico: '👑' },
+  plata:  { name: 'Cupón plateado',  a: '#fafbfd', b: '#b3bdcb', ink: '#344052', ico: '✨' },
+  bronce: { name: 'Cupón bronce',    a: '#f8d9b8', b: '#c9854d', ink: '#5a3211', ico: '🎟️' },
+  carton: { name: 'Sigue intentando', a: '#e9d6b5', b: '#c4a273', ink: '#5a4426', ico: '📦' },
+};
+const cuponesLocal = () => store.get('qn_cupones', []);
+const cupToday = () => cuponesLocal().find(x => x.f === todayISO());
+const cupList = () => { const o = store.get('qn_cup_ovr', {}); return cuponesLocal().map(x => o[x.f] ? { ...x, x: o[x.f].v } : x); };
+async function loadCupones() {
+  if (!API_URL) return;
+  try {
+    const rows = await fetchTab('cupones', '');
+    if (!rows) return;
+    const srv = rows.map(r => ({ f: isoOf(r[0]), c: String(r[1] || '').trim(), n: String(r[2] || '').trim().toLowerCase() || 'carton', x: /^(1|true|si|sí|x|✓)$/i.test(String(r[3] || '').trim()) ? 1 : 0 })).filter(x => x.f);
+    const ovr = store.get('qn_cup_ovr', {}), now = Date.now();
+    Object.keys(ovr).forEach(f => {
+      const sr = srv.find(x => x.f === f);
+      if (!sr || sr.x === ovr[f].v || now - ovr[f].ts > 30 * 60000) delete ovr[f];
+      else if (now - ovr[f].ts > 20000) postApi({ tipo: 'cupon_canjear', fecha: f, canjeado: ovr[f].v });
+    });
+    store.set('qn_cup_ovr', ovr); store.set('qn_cupones', srv);
+    const bd = $('rgb'); if (bd) bd.style.display = cupToday() ? 'none' : '';
+    if ($('cpl')) renderCupList();
+  } catch (e) { /* sin internet: se queda con lo último guardado */ }
+}
+async function jugarRaspa() {
+  const res = await apiGet({ hoja: 'cupones', jugar: 1, clave: API_KEY });
+  if (!res || !res.ok) return null;
+  const r = { f: todayISO(), c: res.cupon || '', n: TIERS[res.nivel] ? res.nivel : 'carton', x: 0 };
+  store.set('qn_cupones', [...cuponesLocal().filter(y => y.f !== r.f), r]);
+  return { ...r, ya: !!res.ya };
+}
+function prizeHTML(r) {
+  const t = TIERS[r.n] || TIERS.carton, win = r.n !== 'carton';
+  return `<div class="pzc ${r.n}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="pzi">${t.ico}</div><div class="pzn">${t.name}</div>
+    <div class="pzt">${win ? escH(r.c) : 'Hoy no hubo suerte.<br>¡Vuelve mañana!'}</div>${win ? '<div class="pzf">Muéstralo para canjearlo ♥</div>' : ''}</div>`;
+}
+function confetti(n) {
+  const box = document.createElement('div'); box.className = 'confetti';
+  const em = ['🎉', '✨', '💖', '⭐', '🎊'];
+  for (let i = 0; i < n; i++) { const e = document.createElement('i'); e.textContent = em[i % em.length]; e.style.cssText = `left:${Math.random() * 100}%;animation-delay:${Math.random() * .6}s;animation-duration:${1.8 + Math.random() * 1.4}s;font-size:${16 + Math.random() * 14}px`; box.appendChild(e); }
+  document.body.appendChild(box); setTimeout(() => box.remove(), 3800);
+}
+function showRaspa() {
+  const base = `${dateTop()}<div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div style="flex:1"><h2 class="big">Raspa y Gana</h2><div class="date">Un intento por día</div></div></div>`;
+  screen.classList.remove('center'); screen.classList.add('full');
+  if (!API_URL) {
+    screen.innerHTML = `<div class="home" style="padding-bottom:20px">${base}<div class="evempty">Este juego necesita la hoja de Google (SCRIPT_URL) para guardar los intentos y los cupones.</div></div>`;
+    $('back').onclick = () => go(renderHome2, { hideTitle: true }); return;
+  }
+  const played = cupToday();
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">${base}
+    <div class="scwrap"><div class="scratch" id="sc"><div class="prize" id="pz"></div>${played ? '' : '<canvas id="cv"></canvas><div class="shine"></div>'}</div></div>
+    <div class="scmsg" id="scm"></div><div id="scb"></div></div>`;
+  $('back').onclick = () => go(renderHome2, { hideTitle: true });
+  const finish = (r, ya) => {
+    const win = r.n !== 'carton';
+    $('scm').textContent = ya ? (win ? 'Hoy ya jugaste. Este es tu cupón 🎟️' : 'Hoy ya jugaste. ¡Vuelve mañana!') : (win ? '¡Ganaste! 🎉' : 'Esta vez no, ¡mañana otro intento!');
+    $('scb').innerHTML = `${win ? `<a class="btn wide" href="${waLink(`🎟️ ¡Gané un ${(TIERS[r.n] || TIERS.bronce).name.toLowerCase()} en Raspa y Gana!\n${r.c}`)}" target="_blank" rel="noopener">Avisarle por WhatsApp 💌</a>` : ''}
+      <button class="btn glass full" id="mc" style="margin-top:10px">Mis cupones</button>`;
+    $('mc').onclick = () => go(showCupones, { hideTitle: true });
+  };
+  if (played) { $('pz').innerHTML = prizeHTML(played); finish(played, true); loadCupones(); return; }
+  $('pz').innerHTML = '<div class="pzc carton" style="--a:#f4ecff;--b:#d9c6f5;--ink:#5b3f8a"><div class="pzi">🎁</div><div class="pzt">¿Qué habrá aquí?</div></div>';
+  $('scm').textContent = 'Rasca con el dedo para descubrir tu premio';
+  const cv = $('cv'), sc = $('sc'), dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = cv.width = Math.round(sc.clientWidth * dpr), H = cv.height = Math.round(sc.clientHeight * dpr), ctx = cv.getContext('2d');
+  const paint = () => {
+    ctx.globalCompositeOperation = 'source-over';
+    const g = ctx.createLinearGradient(0, 0, W, H);
+    [[0, '#cfd4dc'], [.22, '#f8f9fb'], [.45, '#aab3bf'], [.68, '#eef0f4'], [.85, '#b6bec9'], [1, '#e4e8ee']].forEach(([o, c]) => g.addColorStop(o, c));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 260; i++) { ctx.fillStyle = Math.random() < .5 ? 'rgba(255,255,255,.7)' : 'rgba(120,130,145,.22)'; ctx.beginPath(); ctx.arc(Math.random() * W, Math.random() * H, (Math.random() * 1.8 + .4) * dpr, 0, 7); ctx.fill(); }
+    ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = dpr;
+    for (let x = -H; x < W; x += 14 * dpr) { ctx.beginPath(); ctx.moveTo(x, H); ctx.lineTo(x + H, 0); ctx.stroke(); }
+    ctx.fillStyle = 'rgba(70,82,100,.85)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = `800 ${24 * dpr}px -apple-system, "SF Pro Display", Arial, sans-serif`; ctx.fillText('¡RASCA AQUÍ!', W / 2, H / 2 - 8 * dpr);
+    ctx.font = `600 ${13 * dpr}px -apple-system, Arial, sans-serif`; ctx.fillText('✨ con tu dedo ✨', W / 2, H / 2 + 20 * dpr);
+  };
+  paint();
+  let down = false, started = false, done = false, last = null, result = null, tCheck = 0;
+  const pos = e => { const b = cv.getBoundingClientRect(); return [(e.clientX - b.left) * (W / b.width), (e.clientY - b.top) * (H / b.height)]; };
+  const stroke = (a, b) => { ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 46 * dpr; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); };
+  const cleared = () => { const d = ctx.getImageData(0, 0, W, H).data; let n = 0, t = 0; for (let i = 3; i < d.length; i += 64) { t++; if (d[i] < 40) n++; } return n / t; };
+  const reveal = r => {
+    if (done) return; done = true;
+    cv.style.transition = 'opacity .6s ease'; cv.style.opacity = 0; const sh = sc.querySelector('.shine'); if (sh) sh.remove();
+    setTimeout(() => cv.remove(), 650);
+    finish(r, r.ya);
+    if (r.n !== 'carton') confetti(r.n === 'oro' ? 46 : r.n === 'plata' ? 30 : 20);
+  };
+  const check = force => {
+    const now = Date.now(); if (!force && now - tCheck < 140) return; tCheck = now;
+    if (result && cleared() > .5) reveal(result);
+  };
+  cv.onpointerdown = e => {
+    if (done) return; e.preventDefault(); try { cv.setPointerCapture(e.pointerId); } catch (x) {}
+    down = true; last = pos(e); stroke(last, last);
+    if (!started) {
+      started = true;
+      jugarRaspa().then(r => {
+        if (!r) { started = false; result = null; paint(); $('scm').textContent = 'No hay conexión. Inténtalo de nuevo (no se gastó tu intento).'; return; }
+        result = r; $('pz').innerHTML = prizeHTML(r); check(true);
+      });
+    }
+  };
+  cv.onpointermove = e => { if (!down || done) return; const p = pos(e); stroke(last, p); last = p; check(); };
+  cv.onpointerup = cv.onpointercancel = () => { down = false; check(true); };
+}
+
+function renderCupList() {
+  const l = cupList().filter(x => x.c).sort((a, b) => a.f < b.f ? 1 : -1), all = cupList().length;
+  const row = x => { const t = TIERS[x.n] || TIERS.bronce, [y, m, d] = x.f.split('-').map(Number);
+    return `<div class="cup${x.x ? ' used' : ''}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="cupi">${t.ico}</div><div class="cupt"><small>${t.name} · ${d}/${m}/${y}</small><b>${escH(x.c)}</b></div><button class="cupx" data-f="${x.f}">${x.x ? 'Canjeado ✓' : 'Canjear'}</button></div>`; };
+  $('cpl').innerHTML = `<div class="evh">${all} ${all === 1 ? 'intento' : 'intentos'} · ${l.length} ${l.length === 1 ? 'cupón ganado' : 'cupones ganados'}</div>` + (l.length ? l.map(row).join('') : '<div class="evempty">Aún no hay cupones. ¡Sigue intentando! ♥</div>');
+}
+function showCupones() {
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
+    <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><h2 class="big" style="flex:1">Mis cupones</h2></div>
+    <div class="evlist" id="cpl"></div></div>`;
+  screen.classList.remove('center'); screen.classList.add('full');
+  renderCupList();
+  $('back').onclick = () => go(showRaspa, { hideTitle: true });
+  $('cpl').onclick = e => {
+    const b = e.target.closest('.cupx'); if (!b) return;
+    const x = cupList().find(y => y.f === b.dataset.f); if (!x) return;
+    const v = x.x ? 0 : 1, o = store.get('qn_cup_ovr', {}); o[x.f] = { v, ts: Date.now() }; store.set('qn_cup_ovr', o);
+    postApi({ tipo: 'cupon_canjear', fecha: x.f, canjeado: v }); renderCupList();
+  };
+  loadCupones();
 }
 
 /* ===================== Pendientes ===================== */
@@ -1864,8 +2070,9 @@ function showDaily() {
 /* Bloquea el movimiento vertical de la página (solo se mueve el carrusel, o el contenido si no cabe) */
 document.addEventListener('touchmove', e => {
   if (e.target.closest('.pager')) return;
-  const m = e.target.closest('main');
-  if (m && !screen.classList.contains('full') && m.scrollHeight > m.clientHeight + 1) return;
+  for (let el = e.target; el && el !== document.body; el = el.parentElement) {
+    if (el.scrollHeight > el.clientHeight + 1) { const o = getComputedStyle(el).overflowY; if (o === 'auto' || o === 'scroll') return; }
+  }
   e.preventDefault();
 }, { passive: false });
 
@@ -1875,7 +2082,7 @@ if (INTRO_ENABLED) {
 } else {
   renderHome();
 }
-loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadTodos(); flushLog();
+loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
 </script>
 </body>
