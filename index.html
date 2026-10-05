@@ -637,6 +637,79 @@
   .mc.ok { background: #dcf6ea; box-shadow: inset 0 0 0 2px #9fdcc0; }
   .tapbtn { width: 100%; height: 100%; border: 0; font: inherit; font-size: 2.2rem; font-weight: 800; line-height: 1.1; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); touch-action: none; }
   .tapbtn:active { filter: brightness(1.1); }
+
+  /* ===== Cabecera fija en páginas internas: el contenido pasa por debajo ===== */
+  .screen.full > .home.subp { display: block; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; scrollbar-width: none;
+    margin: -10px -20px calc(-30px - env(safe-area-inset-bottom)); padding: 0 20px calc(34px + env(safe-area-inset-bottom)) !important; }
+  .home.subp::-webkit-scrollbar { display: none; }
+  .shead { position: sticky; top: 0; z-index: 30; margin: 0 -20px 6px; padding: 10px 20px 8px;
+    background: rgba(247,244,245,0); -webkit-backdrop-filter: blur(20px) saturate(170%); backdrop-filter: blur(20px) saturate(170%);
+    transition: box-shadow .25s ease, background .25s ease; }
+  .shead::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: rgba(90,40,60,.12); opacity: 0; transition: opacity .25s ease; pointer-events: none; }
+  .shead.stuck { background: rgba(247,244,245,.8); box-shadow: 0 10px 24px -14px rgba(90,40,60,.38); }
+  .shead.stuck::after { opacity: 1; }
+  .shead .jtop { margin-bottom: 4px; }
+  .screen.full .home.subp .evlist { flex: none; min-height: 0; overflow: visible; padding: 4px 0 0; margin: 0; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .shead { background: rgba(247,244,245,.97); } }
+
+  /* ===== Selector de perfil (esquina de Perfil) ===== */
+  .sess { flex: none; margin-left: auto; display: flex; align-items: center; gap: 7px; max-width: 48%; height: 42px; padding: 0 12px 0 8px; border-radius: 999px; border: 1px solid var(--edge); background: var(--glass); box-shadow: var(--glass-shadow); color: var(--ink); font: inherit; font-weight: 700; font-size: .84rem; cursor: pointer; transition: transform .2s; }
+  .sess:active { transform: scale(.96); }
+  .sess svg { flex: none; width: 17px; height: 17px; color: var(--accent); }
+  .sess .sn { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sess:not(.on) { padding-left: 12px; color: var(--accent); }
+  .pavatar.xs { width: 28px; height: 28px; margin: 0; flex: none; font-size: .8rem; box-shadow: none; }
+  .ppick.cur { box-shadow: 0 0 0 2px var(--accent), 0 6px 18px rgba(90,40,60,.08); }
+  .needlog { text-align: center; padding: 34px 12px 8px; color: var(--muted); font-size: .94rem; line-height: 1.55; }
+  .needlog .nli { width: 64px; height: 64px; margin: 0 auto 12px; border-radius: 22px; display: grid; place-items: center; color: var(--accent); background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .needlog .nli svg { width: 30px; height: 30px; }
+  .needlog b { display: block; color: var(--ink); font-size: 1.1rem; margin-bottom: 4px; }
+  .needlog .btn { margin-top: 16px; }
+
+  /* ===== Botón ¿Quieres ser millonario? (azul plateado con brillo) ===== */
+  .tiles.p2 .tile.mill { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 14px; min-height: 92px; padding: 14px 16px; overflow: hidden; color: #0f2a52;
+    background: linear-gradient(120deg, #f4f8ff 0%, #cfdcf0 26%, #93b2e1 56%, #6a8fcb 80%, #e1eaf7 100%);
+    box-shadow: 0 5px 16px rgba(70,110,180,.34), inset 0 0 0 1px rgba(255,255,255,.75); }
+  .tile.mill::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.8), transparent); transform: skewX(-18deg); animation: rsh 3.2s ease-in-out infinite; pointer-events: none; }
+  .tile.mill .mi { flex: none; width: 54px; height: 54px; border-radius: 17px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #3f6bb8, #1f3f7a); box-shadow: inset 0 0 0 1px rgba(255,255,255,.4), 0 3px 8px rgba(31,63,122,.35); }
+  .tile.mill .mi svg { width: 28px; height: 28px; }
+  .tile.mill .mt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .tile.mill b { font-size: 1.12rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+  .tile.mill small { color: rgba(15,42,82,.72); font-size: .76rem; font-weight: 600; margin: 0; }
+  .tile.mill .mc2 { flex: none; width: 20px; height: 20px; color: rgba(15,42,82,.55); }
+  @media (prefers-reduced-motion: reduce) { .tile.mill::after { animation: none; } }
+  @media (max-height: 740px) { .tiles.p2 .tile.mill { min-height: 76px; } }
+
+  /* ===== Juego: ¿Quieres ser millonario? ===== */
+  .mbal { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 4px 0 6px; padding: 12px 16px; border-radius: 20px; color: #0f2a52; background: linear-gradient(120deg, #f4f8ff 0%, #d5e1f3 40%, #a9c1e6 100%); box-shadow: 0 4px 14px rgba(70,110,180,.22), inset 0 0 0 1px rgba(255,255,255,.8); }
+  .mbal .ml { font-size: .74rem; font-weight: 700; opacity: .7; }
+  .mbal .mv { display: flex; align-items: center; gap: 7px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
+  .mbal .ms { text-align: right; font-size: .74rem; font-weight: 700; opacity: .75; line-height: 1.35; }
+  .mstage { position: relative; height: 200px; margin: 6px 0 0; user-select: none; -webkit-user-select: none; }
+  .mstage .mfloor { position: absolute; left: 2%; right: 2%; bottom: 14px; height: 18px; border-radius: 50%; background: radial-gradient(closest-side, rgba(40,70,120,.22), transparent); }
+  .mcup { position: absolute; bottom: 20px; width: 30%; padding: 0; border: 0; background: none; cursor: default; left: var(--x); transition: left .32s ease, transform .45s cubic-bezier(.3,.8,.3,1); z-index: 2; touch-action: manipulation; }
+  .mcup svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 8px rgba(40,70,120,.28)); }
+  .mcup.pick { cursor: pointer; animation: mbob 1.1s ease-in-out infinite; }
+  .mcup.pick:active { transform: scale(.96); }
+  .mcup.up { transform: translateY(-64px); animation: none; }
+  .mcup.hop { transform: translateY(-16px); z-index: 3; }
+  .mcup.chosen svg { filter: drop-shadow(0 0 10px rgba(79,126,200,.8)); }
+  @keyframes mbob { 50% { transform: translateY(-5px); } }
+  .mstone { position: absolute; bottom: 24px; width: 22px; height: 16px; margin-left: -11px; border-radius: 50% 50% 46% 46%; background: radial-gradient(circle at 35% 30%, #d9dde3, #7b8493 70%); box-shadow: 0 3px 5px rgba(40,50,70,.4); opacity: 0; transform: scale(.4); transition: opacity .25s ease, transform .3s ease; z-index: 1; }
+  .mstone.show { opacity: 1; transform: none; }
+  .mmsg { min-height: 2.7em; text-align: center; font-weight: 700; font-size: .98rem; line-height: 1.35; margin: 4px 4px 8px; }
+  .mmsg.win { color: #14825a; } .mmsg.lose { color: #d0505a; }
+  .mbet { background: #fff; border-radius: 22px; padding: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .mbet .ml { font-size: .76rem; font-weight: 700; color: var(--muted); margin: 0 4px 6px; }
+  .mbet input { width: 100%; font: inherit; font-size: 20px; font-weight: 800; text-align: center; color: #0f2a52; background: #eef3fb; border: 1px solid transparent; border-radius: 14px; padding: 10px 12px; outline: none; }
+  .mbet input:focus { background: #fff; border-color: rgba(63,107,184,.45); }
+  .mchips { display: flex; gap: 6px; margin-top: 8px; }
+  .mchips button { flex: 1; min-width: 0; font: inherit; font-weight: 700; font-size: .78rem; padding: 9px 4px; border: 0; border-radius: 12px; background: #eef3fb; color: #1f3f7a; cursor: pointer; }
+  .mchips button:active { transform: scale(.95); }
+  .mbet.off { opacity: .55; pointer-events: none; }
+  .btn.mgo { background: linear-gradient(180deg, #4a78c4, #2a4f93); box-shadow: 0 5px 14px rgba(42,79,147,.35), inset 0 0 0 1px rgba(255,255,255,.4); margin-top: 12px; }
+  .btn.mgo:disabled { opacity: .5; }
+  .mrule { text-align: center; color: var(--muted); font-size: .76rem; line-height: 1.45; margin: 12px 8px 0; }
 </style>
 
 </head>
@@ -1084,7 +1157,7 @@ function homeHead() {
   const spark = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
   return `${dateTop()}
     <div class="jtop"><h2 class="big">Nuestro diario</h2>
-      <div class="rcol"><div class="lc">${COIN(16)}<span class="lcv">${fmt(miSaldo())}</span></div><button class="pill gold" id="rsp">${spark}Raspa y Gana${cupToday() ? '' : '<i class="dot" id="rgb"></i>'}</button></div></div>`;
+      <div class="rcol">${yo() ? `<div class="lc">${COIN(16)}<span class="lcv">${fmt(miSaldo())}</span></div>` : ''}<button class="pill gold" id="rsp">${spark}Raspa y Gana${(!yo() || cupToday()) ? '' : '<i class="dot" id="rgb"></i>'}</button></div></div>`;
 }
 const bindRaspa = () => { $('rsp').onclick = () => go(showRaspa, { hideTitle: true }); };
 const escH = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\n/g, '<br>');
@@ -1165,6 +1238,7 @@ function renderHome2() {
     <div class="tiles p2">
       <button class="tile" id="pf"><span class="ti">${user}</span><b>Perfil</b><small>Nuestras redes</small></button>
       <button class="tile" id="pd"><span class="ti">${list}</span><b>Pendientes</b><small id="pdn">${todoLabel()}</small></button>
+      <button class="tile mill" id="mil"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h11l4 5.5L12 20.5 2.5 9.5z"/><path d="M2.5 9.5h19M9 4l-2 5.5 5 11 5-11L15 4"/></svg></span><span class="mt"><b>¿Quieres ser millonario?</b><small>Apuesta infinita · 3 tapitas, 1 piedrita</small></span><svg class="mc2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
       <button class="tile" id="jg"><span class="ti"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4M16 11h.01M18.5 14h.01"/></svg></span><b>Juegos</b><small>Gana LoveCoins</small></button>
       <button class="tile" id="cj"><span class="ti">${COIN(20)}</span><b>Canjear</b><small>LoveCoins por COP</small></button>
     </div>
@@ -1176,6 +1250,7 @@ function renderHome2() {
   $('pv').onclick = () => go(renderHome, { hideTitle: true });
   $('pf').onclick = () => go(showPerfil, { hideTitle: true });
   $('pd').onclick = () => go(showTodos, { hideTitle: true });
+  $('mil').onclick = () => go(showMillonario, { hideTitle: true });
   $('jg').onclick = () => go(showJuegos, { hideTitle: true });
   $('cj').onclick = () => go(showCanje, { hideTitle: true });
   loadMonedas();
@@ -1428,7 +1503,7 @@ async function loadPerfiles() {
   try {
     const rows = await fetchTab('perfiles', '');
     if (!rows) return;
-    const srv = rows.slice(1).filter(r => String(r[0] || '').trim()).map(r => ({ id: String(r[0]).trim(), nombre: String(r[1] || '').trim() || '?' }));
+    const srv = rows.slice(1).filter(r => String(r[0] || '').trim()).map(r => ({ id: String(r[0]).trim(), nombre: String(r[1] || '').trim() || '?', tiene: String(r[3] || '').trim() === '1' }));
     const before = perfiles();
     if (JSON.stringify(before) === JSON.stringify(srv)) return;
     before.filter(p => !srv.some(x => x.id === p.id)).forEach(p => quitarLocal(p.id));   // eliminados desde otro celular
@@ -1449,6 +1524,7 @@ function quitarLocal(id) {
   const m = store.get('qn_monedas', {}); delete m[id]; store.set('qn_monedas', m);
   const w = store.get('qn_wins', {}); delete w[id]; store.set('qn_wins', w);
   if (store.get('qn_yo', '') === id) store.set('qn_yo', '');
+  setToken(id, null);
   fotosMem = fotosSrv().filter(x => x.tipo !== 'perfil:' + id); store.set('qn_fotos_srv', fotosMem);
   store.set('qn_fotos_ops', fotoOps().filter(o => o.tipo !== 'perfil:' + id));
 }
@@ -1458,8 +1534,9 @@ async function renamePerfil(id, raw) {
   if (v === cur) return { ok: true };
   if (nameTaken(v, id)) return { ok: false, error: 'repetido' };
   if (API_URL) {
-    const r = await apiGet({ perfil_renombrar: 1, clave: API_KEY, id, nombre: v });
+    const r = await apiGet({ perfil_renombrar: 1, clave: API_KEY, id, token: tokens()[id] || '', nombre: v });
     if (!r) return { ok: false, error: 'red' };
+    if (tokenMalo(r)) return { ok: false, error: 'token' };
     if (!r.ok) return { ok: false, error: r.error };
   }
   setPerfiles(perfiles().map(p => p.id === id ? { ...p, nombre: v } : p));
@@ -1517,8 +1594,8 @@ function openSheet(id, onClose) {
       const nm = getPerfil(id).nombre;
       if (!confirm(`¿Eliminar el perfil de ${nm}? Se borran sus redes, su foto, sus LoveCoins y sus puntos. No se puede deshacer.`)) return;
       if (API_URL) {
-        const r = await apiGet({ perfil_borrar: 1, clave: API_KEY, id });
-        if (!r || !r.ok) { alert('No se pudo eliminar. Revisa tu conexión e intenta de nuevo.'); return; }
+        const r = await apiGet({ perfil_borrar: 1, clave: API_KEY, id, token: tokens()[id] || '' });
+        if (!r || !r.ok) { alert(r && r.error === 'token' ? 'Tu sesión venció. Vuelve a entrar a este perfil.' : 'No se pudo eliminar. Revisa tu conexión e intenta de nuevo.'); return; }
       }
       quitarLocal(id); close(true);
       go(showPerfil, { hideTitle: true });
@@ -1566,12 +1643,13 @@ function showCard(id) {
   };
   paint(); cardPaint = paint;
   $('back').onclick = () => go(showPerfil, { hideTitle: true });
-  $('gear').onclick = () => openSheet(id, paint);
+  const editar = () => { if (yo() === id) { openSheet(id, paint); return; } alert('Para editar este perfil entra con su contraseña desde la esquina de arriba a la derecha de Perfil.'); };
+  $('gear').onclick = editar;
   $('bars').onclick = e => {
     const b = e.target.closest('.nbar'); if (!b) return;
     const p = getPerfil(id), r = p.redes[+b.dataset.i];
     if (!r) return;
-    if (netUrl(r.red, r.enlace)) showQR(p.nombre, r.red, r.enlace, r.color); else openSheet(id, paint);
+    if (netUrl(r.red, r.enlace)) showQR(p.nombre, r.red, r.enlace, r.color); else editar();
   };
 }
 
@@ -1580,9 +1658,11 @@ function openAddPerfil() {
   const ov = document.createElement('div'); ov.className = 'qrov sheetov';
   ov.innerHTML = `<div class="sheet"><div class="shh"><b>Agregar perfil</b><button class="btn glass" id="ax" style="padding:10px 18px">Cancelar</button></div>
     <div class="slab">Nombre</div><input class="sinp" id="anm" maxlength="24" placeholder="Ej. Camila" autocomplete="off">
+    <div class="slab">Contraseña (mínimo 4 caracteres)</div><input class="sinp" id="apw" type="password" maxlength="40" placeholder="Contraseña" autocomplete="new-password">
+    <input class="sinp" id="apw2" type="password" maxlength="40" placeholder="Repite la contraseña" autocomplete="new-password" style="margin-top:8px">
     <div class="evmsg show" id="aerr" style="padding:8px 4px 0"></div>
     <button class="btn wide" id="aok" style="margin-top:14px">Crear perfil</button>
-    <p class="pnone" style="padding-top:12px">Cada perfil tiene sus propias redes, foto, LoveCoins y puntos. No puede haber dos con el mismo nombre.</p></div>`;
+    <p class="pnone" style="padding-top:12px">Cada perfil tiene sus propias redes, foto, LoveCoins y puntos, y se protege con su contraseña. No puede haber dos con el mismo nombre.</p></div>`;
   const $a = k => ov.querySelector('#' + k), close = () => { ov.classList.remove('in'); setTimeout(() => ov.remove(), 320); };
   $a('ax').onclick = close;
   ov.onclick = e => { if (e.target === ov) close(); };
@@ -1591,20 +1671,88 @@ function openAddPerfil() {
     const v = cleanName($a('anm').value), err = t => { $a('aerr').textContent = t; };
     if (!v) { err('Escribe un nombre.'); return; }
     if (nameTaken(v, '')) { err(MSG_REPETIDO); return; }
+    const pw = $a('apw').value;
+    if (pw.length < 4) { err('La contraseña debe tener al menos 4 caracteres.'); return; }
+    if (pw !== $a('apw2').value) { err('Las contraseñas no coinciden.'); return; }
     const btn = $a('aok'); btn.disabled = true; btn.style.opacity = .6;
     let id;
     if (API_URL) {
-      const r = await apiGet({ perfil_crear: 1, clave: API_KEY, nombre: v });
-      if (!r || !r.ok) { btn.disabled = false; btn.style.opacity = ''; err(!r ? 'Sin conexión. Intenta de nuevo.' : r.error === 'repetido' ? MSG_REPETIDO : 'No se pudo crear el perfil.'); return; }
-      id = r.id;
+      const r = await apiGet({ perfil_crear: 1, clave: API_KEY, nombre: v, pw });
+      if (!r || !r.ok) { btn.disabled = false; btn.style.opacity = ''; err(!r ? 'Sin conexión. Intenta de nuevo.' : r.error === 'repetido' ? MSG_REPETIDO : r.error === 'pw_corta' ? 'La contraseña debe tener al menos 4 caracteres.' : 'No se pudo crear el perfil.'); return; }
+      id = r.id; setToken(id, r.token);
     } else id = 'p' + newId();
-    setPerfiles([...perfiles(), { id, nombre: v }]);
+    setPerfiles([...perfiles(), { id, nombre: v, tiene: true }]);
     store.set('qn_monedas', { ...store.get('qn_monedas', {}), [id]: 100 });
-    if (!store.get('qn_yo', '') || confirm(`¿"${v}" es tu perfil en este celular?`)) store.set('qn_yo', id);
+    if (!yo() || confirm(`¿Entrar ahora como "${v}"?`)) store.set('qn_yo', id);
     close(); go(() => showCard(id), { hideTitle: true });
   };
   document.body.appendChild(ov);
   requestAnimationFrame(() => requestAnimationFrame(() => { ov.classList.add('in'); $a('anm').focus(); }));
+}
+
+const CARET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+function sessBtn() {
+  const me = yo();
+  if (!me) return `<button class="sess" id="sess" aria-label="Elegir mi perfil">${LOCKI}<span class="sn">Entrar</span></button>`;
+  const p = getPerfil(me);
+  return `<button class="sess on" id="sess" aria-label="Cambiar de perfil"><span class="pavatar xs">${avatarInner(p)}</span><span class="sn">${escH(p.nombre)}</span>${CARET}</button>`;
+}
+/* Ventana para elegir "quién eres" con contraseña. El perfil elegido es el que muestra y usa las LoveCoins. */
+function openSession(onDone) {
+  const ov = document.createElement('div'); ov.className = 'qrov sheetov';
+  const box = document.createElement('div'); box.className = 'sheet'; ov.appendChild(box);
+  const close = () => { ov.classList.remove('in'); setTimeout(() => ov.remove(), 320); };
+  const $s = k => box.querySelector('#' + k);
+  const list = () => {
+    const me = yo(), ps = perfiles();
+    box.innerHTML = `<div class="shh"><b>¿Quién eres?</b><button class="btn glass" id="sx" style="padding:10px 18px">Cerrar</button></div>
+      <p class="pnone" style="padding:2px 4px 12px">Elige tu perfil e ingresa tu contraseña. El perfil activo es el que juega, apuesta y canjea con sus LoveCoins.</p>
+      ${ps.map(x => { const q = getPerfil(x.id); return `<button class="ppick${me === x.id ? ' cur' : ''}" data-id="${x.id}" style="margin-bottom:10px"><span class="pavatar sm">${avatarInner(q)}</span><span class="pt"><b>${escH(q.nombre)}</b><small>${me === x.id ? 'Sesión iniciada ✓' : x.tiene ? 'Entrar con contraseña' : 'Crear contraseña'}</small></span>${me === x.id ? '' : CHEV}</button>`; }).join('') || '<div class="evempty">Aún no hay perfiles. Crea uno con «Agregar perfil».</div>'}
+      ${me ? '<button class="btn glass" id="sout" style="width:100%;margin-top:4px;color:#d6334f">Cerrar sesión</button>' : ''}`;
+    $s('sx').onclick = close;
+    if ($s('sout')) $s('sout').onclick = () => { cerrarSesion(); close(); onDone && onDone(); };
+    box.querySelectorAll('.ppick[data-id]').forEach(b => b.onclick = () => { if (yo() === b.dataset.id) { close(); return; } pedir(b.dataset.id); });
+  };
+  const pedir = id => {
+    const x = perfiles().find(y => y.id === id); if (!x) return;
+    const nuevo = !x.tiene;
+    box.innerHTML = `<div class="shh"><b>${escH(getPerfil(id).nombre)}</b><button class="btn glass" id="sb" style="padding:10px 18px">Atrás</button></div>
+      <p class="pnone" style="padding:2px 4px 12px">${nuevo ? 'Este perfil todavía no tiene contraseña. Crea una (mínimo 4 caracteres) y no la olvides.' : 'Escribe la contraseña de este perfil.'}</p>
+      <input class="sinp" id="pw1" type="password" maxlength="40" placeholder="${nuevo ? 'Nueva contraseña' : 'Contraseña'}" autocomplete="${nuevo ? 'new-password' : 'current-password'}">
+      ${nuevo ? '<input class="sinp" id="pw2" type="password" maxlength="40" placeholder="Repite la contraseña" autocomplete="new-password" style="margin-top:8px">' : ''}
+      <div class="evmsg show" id="perr" style="padding:8px 4px 0"></div>
+      <button class="btn wide" id="pgo" style="margin-top:12px">${nuevo ? 'Crear y entrar' : 'Entrar'}</button>`;
+    $s('sb').onclick = list;
+    const err = t => { $s('perr').textContent = t; };
+    const go1 = async () => {
+      const pw = $s('pw1').value;
+      if (!API_URL) { err('Necesita la conexión con la hoja de Google.'); return; }
+      if (nuevo) { if (pw.length < 4) { err('Mínimo 4 caracteres.'); return; } if (pw !== $s('pw2').value) { err('Las contraseñas no coinciden.'); return; } }
+      else if (!pw) { err('Escribe la contraseña.'); return; }
+      const btn = $s('pgo'); btn.disabled = true; btn.style.opacity = .6; err('');
+      const r = await apiGet(nuevo ? { perfil_clave_nueva: 1, clave: API_KEY, id, pw } : { perfil_entrar: 1, clave: API_KEY, id, pw });
+      btn.disabled = false; btn.style.opacity = '';
+      if (r && r.ok && r.token) {
+        setToken(id, r.token); store.set('qn_yo', id);
+        setPerfiles(perfiles().map(y => y.id === id ? { ...y, tiene: true } : y));
+        updLC(); close(); onDone && onDone(); return;
+      }
+      if (!r) err('Sin conexión. Intenta de nuevo.');
+      else if (r.error === 'pw') err(`Contraseña incorrecta.${r.quedan > 0 ? ` Te quedan ${r.quedan} intentos.` : ''}`);
+      else if (r.error === 'bloqueado') err('Demasiados intentos. Espera 5 minutos y vuelve a probar.');
+      else if (r.error === 'yatiene') { setPerfiles(perfiles().map(y => y.id === id ? { ...y, tiene: true } : y)); pedir(id); }
+      else if (r.error === 'sinclave') { setPerfiles(perfiles().map(y => y.id === id ? { ...y, tiene: false } : y)); pedir(id); }
+      else if (r.error === 'pw_corta') err('Mínimo 4 caracteres.');
+      else err('No se pudo entrar. Revisa que el script esté actualizado.');
+    };
+    $s('pgo').onclick = go1;
+    box.querySelectorAll('input').forEach(i => i.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); go1(); } });
+    setTimeout(() => $s('pw1') && $s('pw1').focus(), 350);
+  };
+  ov.onclick = e => { if (e.target === ov) close(); };
+  list();
+  document.body.appendChild(ov);
+  requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('in')));
 }
 
 function showPerfil() {
@@ -1612,13 +1760,14 @@ function showPerfil() {
   const ps = perfiles();
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Perfil</h2><div class="date">${ps.length ? 'Elige una tarjeta' : 'Aún no hay perfiles'}</div></div></div>
-    <div class="evlist">${ps.map(x => { const p = getPerfil(x.id); return `<button class="ppick" data-id="${x.id}"><span class="pavatar sm">${avatarInner(p)}</span><span class="pt"><b>${escH(p.nombre)}</b><small>${statsHTML(x.id)}</small></span>${chev}</button>`; }).join('') || '<div class="evempty">No hay ningún perfil. Agrega el primero 💗</div>'}</div>
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div style="min-width:0"><h2 class="big">Perfil</h2><div class="date">${ps.length ? 'Elige una tarjeta' : 'Aún no hay perfiles'}</div></div>${sessBtn()}</div>
+    <div class="evlist">${ps.map(x => { const p = getPerfil(x.id); return `<button class="ppick${yo() === x.id ? ' cur' : ''}" data-id="${x.id}"><span class="pavatar sm">${avatarInner(p)}</span><span class="pt"><b>${escH(p.nombre)}</b><small>${statsHTML(x.id)}</small></span>${chev}</button>`; }).join('') || '<div class="evempty">No hay ningún perfil. Agrega el primero 💗</div>'}</div>
     <button class="ppick add" id="padd"><span class="pavatar sm">+</span><span class="pt"><b>Agregar perfil</b><small>Para que otra persona juegue</small></span></button>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
   $('padd').onclick = openAddPerfil;
+  $('sess').onclick = () => openSession(showPerfil);
   screen.querySelectorAll('.ppick[data-id]').forEach(b => b.onclick = () => go(() => showCard(b.dataset.id), { hideTitle: true }));
 }
 
@@ -1631,30 +1780,33 @@ const TIERS = {
   carton: { name: 'Sigue intentando', a: '#e9d6b5', b: '#c4a273', ink: '#5a4426', ico: '📦' },
 };
 const cuponesLocal = () => store.get('qn_cupones', []);
-const cupToday = () => cuponesLocal().find(x => x.f === todayISO());
-const cupList = () => { const o = store.get('qn_cup_ovr', {}); return cuponesLocal().map(x => o[x.f] ? { ...x, x: o[x.f].v } : x); };
+const cupToday = () => yo() ? cuponesLocal().find(x => x.f === todayISO() && x.p === yo()) : undefined;
+const cupKey = x => x.f + '|' + (x.p || '');
+const cupList = () => { const o = store.get('qn_cup_ovr', {}); return cuponesLocal().filter(x => !x.p || x.p === yo()).map(x => o[cupKey(x)] ? { ...x, x: o[cupKey(x)].v } : x); };
 async function loadCupones() {
   if (!API_URL) return;
   try {
     const rows = await fetchTab('cupones', '');
     if (!rows) return;
-    const srv = rows.map(r => ({ f: isoOf(r[0]), c: String(r[1] || '').trim(), n: String(r[2] || '').trim().toLowerCase() || 'carton', x: /^(1|true|si|sí|x|✓)$/i.test(String(r[3] || '').trim()) ? 1 : 0 })).filter(x => x.f);
+    const srv = rows.map(r => ({ f: isoOf(r[0]), c: String(r[1] || '').trim(), n: String(r[2] || '').trim().toLowerCase() || 'carton', x: /^(1|true|si|sí|x|✓)$/i.test(String(r[3] || '').trim()) ? 1 : 0, p: String(r[4] || '').trim().toLowerCase() })).filter(x => x.f);
     const ovr = store.get('qn_cup_ovr', {}), now = Date.now();
-    Object.keys(ovr).forEach(f => {
-      const sr = srv.find(x => x.f === f);
-      if (!sr || sr.x === ovr[f].v || now - ovr[f].ts > 30 * 60000) delete ovr[f];
-      else if (now - ovr[f].ts > 20000) postApi({ tipo: 'cupon_canjear', fecha: f, canjeado: ovr[f].v });
+    Object.keys(ovr).forEach(k => {
+      const [f, p = ''] = k.split('|'), sr = srv.find(x => x.f === f && x.p === p);
+      if (!sr || sr.x === ovr[k].v || now - ovr[k].ts > 30 * 60000) delete ovr[k];
+      else if (now - ovr[k].ts > 20000) postApi({ tipo: 'cupon_canjear', fecha: f, persona: p, canjeado: ovr[k].v });
     });
     store.set('qn_cup_ovr', ovr); store.set('qn_cupones', srv);
-    const bd = $('rgb'); if (bd) bd.style.display = cupToday() ? 'none' : '';
+    const bd = $('rgb'); if (bd) bd.style.display = (!yo() || cupToday()) ? 'none' : '';
     if ($('cpl')) renderCupList();
   } catch (e) { /* sin internet: se queda con lo último guardado */ }
 }
 async function jugarRaspa() {
-  const res = await apiGet({ hoja: 'cupones', jugar: 1, clave: API_KEY });
-  if (!res || !res.ok) return null;
-  const r = { f: todayISO(), c: res.cupon || '', n: TIERS[res.nivel] ? res.nivel : 'carton', x: 0 };
-  store.set('qn_cupones', [...cuponesLocal().filter(y => y.f !== r.f), r]);
+  const res = await apiGet({ hoja: 'cupones', jugar: 1, clave: API_KEY, ...authQ() });
+  if (!res) return { err: 'red' };
+  if (tokenMalo(res)) return { err: 'token' };
+  if (!res.ok) return { err: 'red' };
+  const r = { f: todayISO(), c: res.cupon || '', n: TIERS[res.nivel] ? res.nivel : 'carton', x: 0, p: yo() };
+  store.set('qn_cupones', [...cuponesLocal().filter(y => !(y.f === r.f && y.p === r.p)), r]);
   return { ...r, ya: !!res.ya };
 }
 function prizeHTML(r) {
@@ -1669,11 +1821,15 @@ function confetti(n) {
   document.body.appendChild(box); setTimeout(() => box.remove(), 3800);
 }
 function showRaspa() {
-  const base = `${dateTop()}<div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div style="flex:1"><h2 class="big">Raspa y Gana</h2><div class="date">Un intento por día</div></div></div>`;
+  const base = `${dateTop()}<div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div style="flex:1"><h2 class="big">Raspa y Gana</h2><div class="date">${yo() ? escH(nombreDe(yo())) + ' · ' : ''}Un intento por día</div></div></div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   if (!API_URL) {
     screen.innerHTML = `<div class="home" style="padding-bottom:20px">${base}<div class="evempty">Este juego necesita la hoja de Google (SCRIPT_URL) para guardar los intentos y los cupones.</div></div>`;
     $('back').onclick = goHome; return;
+  }
+  if (!yo()) {
+    screen.innerHTML = `<div class="home" style="padding-bottom:20px">${base}${needLogin('Cada perfil tiene su propio intento de Raspa y Gana cada día.')}</div>`;
+    $('back').onclick = goHome; bindNeedLogin(); return;
   }
   const played = cupToday();
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">${base}
@@ -1726,7 +1882,7 @@ function showRaspa() {
     if (!started) {
       started = true;
       jugarRaspa().then(r => {
-        if (!r) { started = false; result = null; paint(); $('scm').textContent = 'No hay conexión. Inténtalo de nuevo (no se gastó tu intento).'; return; }
+        if (r.err) { started = false; result = null; paint(); $('scm').textContent = r.err === 'token' ? 'Tu sesión venció. Vuelve a entrar desde Perfil.' : 'No hay conexión. Inténtalo de nuevo (no se gastó tu intento).'; return; }
         result = r; $('pz').innerHTML = prizeHTML(r); check(true);
       });
     }
@@ -1738,7 +1894,7 @@ function showRaspa() {
 function renderCupList() {
   const l = cupList().filter(x => x.c).sort((a, b) => a.f < b.f ? 1 : -1), all = cupList().length;
   const row = x => { const t = TIERS[x.n] || TIERS.bronce, [y, m, d] = x.f.split('-').map(Number);
-    return `<div class="cup${x.x ? ' used' : ''}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="cupi">${t.ico}</div><div class="cupt"><small>${t.name} · ${d}/${m}/${y}</small><b>${escH(x.c)}</b></div><button class="cupx" data-f="${x.f}">${x.x ? 'Canjeado ✓' : 'Canjear'}</button></div>`; };
+    return `<div class="cup${x.x ? ' used' : ''}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="cupi">${t.ico}</div><div class="cupt"><small>${t.name} · ${d}/${m}/${y}</small><b>${escH(x.c)}</b></div><button class="cupx" data-k="${cupKey(x)}">${x.x ? 'Canjeado ✓' : 'Canjear'}</button></div>`; };
   $('cpl').innerHTML = `<div class="evh">${all} ${all === 1 ? 'intento' : 'intentos'} · ${l.length} ${l.length === 1 ? 'cupón ganado' : 'cupones ganados'}</div>` + (l.length ? l.map(row).join('') : '<div class="evempty">Aún no hay cupones. ¡Sigue intentando! ♥</div>');
 }
 function showCupones() {
@@ -1750,9 +1906,9 @@ function showCupones() {
   $('back').onclick = () => go(showRaspa, { hideTitle: true });
   $('cpl').onclick = e => {
     const b = e.target.closest('.cupx'); if (!b) return;
-    const x = cupList().find(y => y.f === b.dataset.f); if (!x) return;
-    const v = x.x ? 0 : 1, o = store.get('qn_cup_ovr', {}); o[x.f] = { v, ts: Date.now() }; store.set('qn_cup_ovr', o);
-    postApi({ tipo: 'cupon_canjear', fecha: x.f, canjeado: v }); renderCupList();
+    const x = cupList().find(y => cupKey(y) === b.dataset.k); if (!x) return;
+    const v = x.x ? 0 : 1, o = store.get('qn_cup_ovr', {}); o[cupKey(x)] = { v, ts: Date.now() }; store.set('qn_cup_ovr', o);
+    postApi({ tipo: 'cupon_canjear', fecha: x.f, persona: x.p || '', canjeado: v }); renderCupList();
   };
   loadCupones();
 }
@@ -1829,7 +1985,7 @@ function showTodos() {
     const ti = $('tdt'), t = ti.value.trim().replace(/[<>]/g, '');
     if (!t) { ti.focus(); return; }
     todoOp({ k: 'add', id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), t });
-    ti.value = ''; renderTodoList(); $('tdl').scrollTop = 0;
+    ti.value = ''; renderTodoList(); { const sp = screen.querySelector('.subp'); if (sp) sp.scrollTop = 0; }
   };
   $('tdgo').onclick = add;
   $('tdt').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); add(); } };
@@ -2089,7 +2245,7 @@ function showEvents() {
     if (!date) return msg('Elige la fecha');
     addEvent(title, date, tm.value);
     ti.value = ''; ti.blur(); tm.value = ''; syncTime();
-    renderEvList(); $('evl').scrollTop = 0;
+    renderEvList(); { const sp = screen.querySelector('.subp'); if (sp) sp.scrollTop = 0; }
     msg('Evento añadido ♥');
   };
   $('evgo').onclick = add;
@@ -2147,7 +2303,17 @@ const CHEV = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke
 const fmt = n => Number(n || 0).toLocaleString('es-CO');
 const LC_POR_COP = 10;     // 1 COP = 10 LoveCoins (1.000 LoveCoins = $100 COP). Debe coincidir con el script.
 const CANJES_COP = [1000, 2000, 3000, 5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000];
-const yo = () => { const v = store.get('qn_yo', ''); return perfiles().some(p => p.id === v) ? v : ''; };
+/* Sesión: el perfil activo se elige (con contraseña) en la esquina de Perfil. Sin token, no hay perfil activo. */
+const tokens = () => store.get('qn_tok', {});
+const setToken = (id, t) => { const k = tokens(); if (t) k[id] = t; else delete k[id]; store.set('qn_tok', k); };
+const yo = () => { const v = store.get('qn_yo', ''); return perfiles().some(p => p.id === v) && tokens()[v] ? v : ''; };
+const authQ = () => ({ persona: yo(), token: yo() ? tokens()[yo()] : '' });
+const cerrarSesion = () => { store.set('qn_yo', ''); updLC(); };
+const LOCKI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 017 0v2.5"/></svg>';
+const needLogin = txt => `<div class="needlog"><div class="nli">${LOCKI}</div><b>Entra a tu perfil</b>${txt || 'Elige tu perfil con contraseña en la esquina de arriba a la derecha de <b style="display:inline;font-size:inherit">Perfil</b>.'}<button class="btn wide" id="nlg">Ir a Perfil</button></div>`;
+const bindNeedLogin = () => { const b = $('nlg'); if (b) b.onclick = () => go(showPerfil, { hideTitle: true }); };
+/* Si el servidor dice que el token ya no vale (cambiaron la contraseña, etc.), se cierra la sesión */
+const tokenMalo = r => { if (r && r.error === 'token') { cerrarSesion(); return true; } return false; };
 const nombreDe = id => getPerfil(id).nombre || '?';
 const saldos = () => store.get('qn_monedas', {});
 const wins = () => store.get('qn_wins', {});
@@ -2186,18 +2352,19 @@ function paintJuegos() {
   const ps = perfiles();
   if (!ps.length) { el.innerHTML = '<div class="evempty">Aún no hay perfiles. Crea uno en Perfil 💗</div>'; return; }
   if (!API_URL) { el.innerHTML = '<div class="evempty">Los juegos necesitan la hoja de Google conectada.</div>'; return; }
-  const m = saldos(), w = wins(), me = yo(), ay = (jgState && jgState.ayer) || {}, premio = jgState ? jgState.premio : 300;
+  const m = saldos(), w = wins(), me = yo(), ay = (jgState && jgState.ayer) || {}, premio = jgState ? jgState.premio : 3000;
   const ayer = Object.keys(JG).filter(k => ay[k] && ay[k].monto > 0).map(k => `<div class="gwin">🏆 Ayer ganó <b>${ay[k].ganadores.map(id => escH(nombreDe(id))).join(' y ')}</b> en ${JG[k].n}: +${fmt(ay[k].monto)} ${COIN(14)}</div>`).join('');
   const cards = Object.keys(JG).map(k => {
     const g = JG[k], top = rowsHoy(k).slice().sort((a, b) => b[1] - a[1])[0], f = miFila(k);
-    const mine = !me ? 'Elige quién eres para jugar' : f ? `Tu mejor hoy: ${f[1]} · te quedan ${Math.max(0, restantes(k))} intentos` : `Aún no juegas hoy · ${intentosMax()} intentos`;
+    const mine = !me ? 'Entra a tu perfil para jugar' : f ? `Tu mejor hoy: ${f[1]} · te quedan ${Math.max(0, restantes(k))} intentos` : `Aún no juegas hoy · ${intentosMax()} intentos`;
     const lead = top && top[1] > 0 ? `Va ganando: ${escH(nombreDe(top[0]))} (${top[1]})` : 'Nadie ha jugado hoy';
     return `<button class="gcard" data-j="${k}"><span class="gic">${g.ic}</span><span class="gtx"><b>${g.n}</b><small>${g.d}</small><span class="gst">${mine}</span><span class="gst2">${lead}</span></span>${CHEV}</button>`;
   }).join('');
-  el.innerHTML = `<div class="slab" style="margin:4px 4px 0">¿Quién eres en este celular?</div><div class="jwho" id="jw">${whoHTML()}</div>
+  el.innerHTML = `${me ? '' : needLogin('Para jugar y sumar puntos entra a tu perfil con su contraseña.')}
     <div class="wal" id="jwal">${ps.map(p => `<div>${escH(p.nombre)}<b>${COIN(16)} ${fmt(m[p.id])}${w[p.id] ? ` · 🏆 ${w[p.id]}` : ''}</b></div>`).join('')}</div>
     <div class="jrule">Al terminar el día, quien tenga el <b>mejor puntaje</b> de cada juego gana ${COIN(14)} <b>${fmt(premio)}</b>. Juegan cuando quieran, sin esperarse. Cuenta tu mejor intento (${intentosMax()} por juego al día) y tienen que haber jugado al menos 2 perfiles.</div>
     ${ayer}${cards}`;
+  bindNeedLogin();
 }
 function showJuegos() {
   stopGame();
@@ -2206,10 +2373,8 @@ function showJuegos() {
     <div id="jgb"></div></div>`;
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
   $('jgb').onclick = e => {
-    const c = e.target.closest('#jw button');
-    if (c) { store.set('qn_yo', c.dataset.id); updLC(); paintJuegos(); return; }
     const g = e.target.closest('.gcard'); if (!g) return;
-    if (!yo()) { alert('Primero elige quién eres 💗'); return; }
+    if (!yo()) { alert('Primero entra a tu perfil (Perfil, esquina de arriba a la derecha) 💗'); return; }
     if (restantes(g.dataset.j) <= 0) { alert('Ya usaste tus intentos de hoy en este juego. ¡Mañana hay más!'); return; }
     go(() => showJuego(g.dataset.j), { hideTitle: true });
   };
@@ -2235,10 +2400,11 @@ function showJuego(key) {
     gStop = g.run($('garea'), ui, async score => {
       gStop = null;
       if ($('gmsg')) $('gmsg').textContent = 'Guardando…';
-      const r = await apiGet({ puntaje: 1, clave: API_KEY, persona: me, juego: key, puntos: score });
+      const r = await apiGet({ puntaje: 1, clave: API_KEY, ...authQ(), juego: key, puntos: score });
       let msg;
       if (!r) msg = 'Sin conexión: este puntaje no se guardó 😕';
       else if (r.ok) { msg = `Hiciste ${score}. Tu mejor de hoy: ${r.mejor} ⭐`; await loadJuegos(); }
+      else if (tokenMalo(r)) msg = 'Tu sesión venció. Vuelve a entrar desde Perfil; este puntaje no se guardó.';
       else if (r.error === 'intentos') { msg = 'Ya usaste tus intentos de hoy en este juego.'; await loadJuegos(); }
       else msg = 'No se pudo guardar el puntaje.';
       if (!$('gmsg')) return;
@@ -2298,6 +2464,95 @@ function playTap(area, ui, done) {
   return () => clearInterval(timer);
 }
 
+
+/* ---------- ¿Quieres ser millonario? · 3 tapitas, una piedrita, apuesta infinita ---------- */
+function showMillonario() {
+  stopGame();
+  const head = `${dateTop()}<div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div style="min-width:0"><h2 class="big" style="font-size:1.28rem;white-space:normal;line-height:1.1">¿Quieres ser millonario?</h2><div class="date">Apuesta infinita</div></div></div>`;
+  const back = () => go(renderHome2, { hideTitle: true });
+  if (!API_URL) { screen.innerHTML = `<div class="home">${head}<div class="evempty">Este juego necesita la hoja de Google conectada.</div></div>`; $('back').onclick = back; return; }
+  if (!yo()) { screen.innerHTML = `<div class="home">${head}${needLogin('Para apostar tus LoveCoins entra a tu perfil con su contraseña.')}</div>`; $('back').onclick = back; bindNeedLogin(); return; }
+  const X = [3, 35, 67], cupSvg = '<svg viewBox="0 0 100 120"><path d="M22 108 L33 26 Q50 8 67 26 L78 108 Z" fill="url(#mcg)"/><path d="M38 32 Q45 70 41 100" stroke="rgba(255,255,255,.75)" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="12" y="102" width="76" height="13" rx="6.5" fill="#bccde8"/><rect x="12" y="102" width="76" height="4" rx="2" fill="rgba(255,255,255,.6)"/></svg>';
+  screen.innerHTML = `<div class="home">${head}
+    <div class="mbal"><div><div class="ml">Tus LoveCoins</div><div class="mv">${COIN(24)}<span class="lcv">${fmt(miSaldo())}</span></div></div><div class="ms">${escH(nombreDe(yo()))}<br><span id="mst2">Sin apuestas aún</span></div></div>
+    <div class="mstage" id="mst"><svg width="0" height="0" style="position:absolute"><defs><linearGradient id="mcg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eef3fc"/><stop offset=".42" stop-color="#9db9e4"/><stop offset="1" stop-color="#4f78b8"/></linearGradient></defs></svg><div class="mfloor"></div>
+      <div class="mstone" id="mstone"></div>
+      ${[0, 1, 2].map(i => `<button class="mcup" data-c="${i}" style="--x:${X[i]}%" aria-label="Tapita ${i + 1}">${cupSvg}</button>`).join('')}</div>
+    <div class="mmsg" id="mmsg">Elige cuánto apostar y toca «Apostar»</div>
+    <div class="mbet" id="mbet"><div class="ml">Cantidad a apostar</div><input id="mamt" type="text" inputmode="numeric" autocomplete="off" placeholder="0">
+      <div class="mchips"><button data-a="half">½</button><button data-a="dbl">×2</button><button data-a="100">+100</button><button data-a="1000">+1.000</button><button data-a="all">Todo</button></div></div>
+    <button class="btn wide mgo" id="mgo">Apostar</button>
+    <p class="mrule">Si aciertas dónde está la piedrita te entregan el <b>doble</b> de lo que apostaste. Si fallas, no se te devuelve lo apostado. Puedes jugar sin límite mientras te alcancen las LoveCoins.</p></div>`;
+  $('back').onclick = () => { stopGame(); back(); };
+  const cups = [...screen.querySelectorAll('.mcup')], stone = $('mstone'), msg = $('mmsg'), amt = $('mamt'), go2 = $('mgo');
+  const slot = [0, 1, 2];                         // slot[copa] = posición actual (0 izquierda … 2 derecha)
+  let state = 'idle', won = 0, lost = 0, alive = true;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const say = (t, cls) => { msg.textContent = t; msg.className = 'mmsg' + (cls ? ' ' + cls : ''); };
+  const bet = () => Math.floor(Number(String(amt.value).replace(/\D/g, ''))) || 0;
+  const setBet = n => { amt.value = n > 0 ? fmt(Math.min(n, miSaldo())) : ''; };
+  const lock = on => { $('mbet').classList.toggle('off', on); go2.disabled = on; };
+  const place = () => cups.forEach((c, i) => c.style.setProperty('--x', X[slot[i]] + '%'));
+  const stats = () => { $('mst2').textContent = won + lost ? `${won} ganada${won === 1 ? '' : 's'} · ${lost} perdida${lost === 1 ? '' : 's'}` : 'Sin apuestas aún'; };
+  const reset = () => { cups.forEach(c => c.classList.remove('up', 'pick', 'chosen', 'hop')); stone.classList.remove('show'); };
+  setBet(Math.min(100, miSaldo()));
+  amt.oninput = () => { const n = bet(); amt.value = n ? fmt(n) : ''; };
+  $('mbet').onclick = e => {
+    const b = e.target.closest('[data-a]'); if (!b) return;
+    const a = b.dataset.a, cur = bet(), sal = miSaldo();
+    setBet(a === 'half' ? Math.max(1, Math.floor(cur / 2)) : a === 'dbl' ? cur * 2 : a === 'all' ? sal : cur + (+a));
+  };
+  async function shuffle() {
+    for (let k = 0; k < 9 && alive; k++) {
+      const a = Math.floor(Math.random() * 3); let b = Math.floor(Math.random() * 3); if (b === a) b = (a + 1) % 3;
+      const ca = slot.indexOf(a), cb = slot.indexOf(b);
+      slot[ca] = b; slot[cb] = a; cups[ca].classList.add('hop'); place();
+      await sleep(330); cups[ca].classList.remove('hop'); await sleep(40);
+    }
+  }
+  async function empezar() {
+    const n = bet(), sal = miSaldo();
+    if (n < 1) { say('Escribe cuánto quieres apostar.'); return; }
+    if (n > sal) { say(sal < 1 ? 'No tienes LoveCoins para apostar. ¡Gana más en Juegos!' : 'No te alcanzan las LoveCoins para esa apuesta.', 'lose'); return; }
+    state = 'shuffle'; lock(true); reset(); say('Mezclando las tapitas…');
+    await sleep(350); await shuffle(); if (!alive) return;
+    state = 'pick'; cups.forEach(c => c.classList.add('pick')); say('¿Dónde está la piedrita? Toca una tapita 👆');
+  }
+  async function elegir(c) {
+    if (state !== 'pick') return;
+    state = 'busy'; const n = bet(), eleccion = slot[c];
+    cups.forEach(x => x.classList.remove('pick')); cups[c].classList.add('chosen'); say('Revelando…');
+    const r = await apiGet({ apostar: 1, clave: API_KEY, ...authQ(), apuesta: n, eleccion });
+    if (!alive) return;
+    if (!r || !r.ok) {
+      reset(); state = 'idle'; lock(false);
+      if (tokenMalo(r)) { say('Tu sesión venció. Vuelve a entrar desde Perfil.', 'lose'); return; }
+      say(!r ? 'Sin conexión: no se hizo la apuesta, no perdiste nada.' : r.error === 'saldo' ? 'No te alcanzan las LoveCoins para esa apuesta.' : 'No se pudo apostar. Revisa que el script esté actualizado.', 'lose');
+      if (r && r.error === 'saldo') loadMonedas();
+      return;
+    }
+    store.set('qn_monedas', { ...saldos(), [yo()]: r.saldo }); updLC();
+    const pc = slot.indexOf(r.piedra);                       // copa que esconde la piedrita
+    stone.style.left = (X[r.piedra] + 15) + '%';
+    if (r.gano) {
+      cups[c].classList.remove('chosen'); cups[c].classList.add('up'); stone.classList.add('show');
+      won++; say(`¡Acertaste! 🎉 Te entregan ${fmt(r.pago)} LoveCoins (apostaste ${fmt(r.apuesta)}).`, 'win');
+      confetti(r.apuesta >= 1000 ? 44 : 26);
+    } else {
+      cups[c].classList.remove('chosen'); cups[c].classList.add('up'); await sleep(650); if (!alive) return;
+      cups[pc].classList.add('up'); stone.classList.add('show');
+      lost++; say(`La piedrita estaba en otra tapita 😕 Perdiste ${fmt(r.apuesta)} LoveCoins.`, 'lose');
+    }
+    stats(); state = 'idle'; lock(false); go2.textContent = 'Apostar otra vez';
+    if (miSaldo() < 1) { say('Te quedaste sin LoveCoins. ¡Gana más en Juegos y vuelve! 💗', 'lose'); go2.disabled = true; }
+    else if (bet() > miSaldo()) setBet(miSaldo());
+  }
+  go2.onclick = () => { if (state === 'idle') empezar(); };
+  screen.querySelector('.mstage').onclick = e => { const c = e.target.closest('.mcup'); if (c) elegir(+c.dataset.c); };
+  gStop = () => { alive = false; };                           // al salir de la pantalla se frenan las animaciones
+  loadMonedas().then(() => { if (!$('mamt')) return; if (state === 'idle') { if (bet() > miSaldo() || !bet()) setBet(Math.min(100, miSaldo())); } });
+}
+
 /* ---------- Canjear: LoveCoins por dinero real (de $1.000 a $100.000 COP) ---------- */
 function showCanje() {
   const back = () => go(renderHome2, { hideTitle: true });
@@ -2308,21 +2563,19 @@ function showCanje() {
     const me = yo(), sal = miSaldo();
     $('cjd').innerHTML = me ? `${escH(nombreDe(me))} · ${COIN(14)} <span class="lcv">${fmt(sal)}</span>` : 'LoveCoins';
     if (!perfiles().length) { $('cjb').innerHTML = '<div class="evempty">Aún no hay perfiles. Crea uno en Perfil 💗</div>'; return; }
-    $('cjb').innerHTML = `<div class="slab" style="margin:4px 4px 0">¿Quién eres en este celular?</div><div class="jwho" id="jw">${whoHTML()}</div>
-      ${me ? `<div class="cjh">Dinero real<small>1.000 LoveCoins = $100 COP</small></div>${CANJES_COP.map(c => `<button class="cjopt${c * LC_POR_COP > sal ? ' dis' : ''}" data-cop="${c}"><span>$${fmt(c)} COP</span><span class="pr">${COIN(16)} ${fmt(c * LC_POR_COP)}</span></button>`).join('')}` : '<div class="evempty">Elige quién eres para canjear 💗</div>'}`;
+    $('cjb').innerHTML = `${me ? `<div class="cjh">Dinero real<small>1.000 LoveCoins = $100 COP</small></div>${CANJES_COP.map(c => `<button class="cjopt${c * LC_POR_COP > sal ? ' dis' : ''}" data-cop="${c}"><span>$${fmt(c)} COP</span><span class="pr">${COIN(16)} ${fmt(c * LC_POR_COP)}</span></button>`).join('')}` : needLogin('Para canjear tus LoveCoins entra a tu perfil con su contraseña.')}`;
+    bindNeedLogin();
   };
   paint();
   loadPerfiles().then(() => loadMonedas()).then(() => { if ($('cjb')) paint(); });
   $('cjb').onclick = async e => {
-    const c = e.target.closest('#jw button');
-    if (c) { store.set('qn_yo', c.dataset.id); paint(); return; }
     const b = e.target.closest('.cjopt'); if (!b || b.dataset.busy) return;
     const me = yo(), cop = +b.dataset.cop, coste = cop * LC_POR_COP;
     if (coste > miSaldo()) { alert('Aún no te alcanzan las LoveCoins 💗'); return; }
     if (!confirm(`¿Canjear $${fmt(cop)} COP por ${fmt(coste)} LoveCoins?`)) return;
     b.dataset.busy = 1; b.style.opacity = .5;
-    const r = await apiGet({ canjear: 1, clave: API_KEY, persona: me, cop });
-    if (!r || !r.ok) { b.dataset.busy = ''; b.style.opacity = ''; alert(r && r.error === 'saldo' ? 'No te alcanzan las LoveCoins.' : r && r.error === 'persona' ? 'Ese perfil ya no existe.' : 'No se pudo canjear. Revisa tu conexión e intenta de nuevo.'); return; }
+    const r = await apiGet({ canjear: 1, clave: API_KEY, ...authQ(), cop });
+    if (!r || !r.ok) { b.dataset.busy = ''; b.style.opacity = ''; if (tokenMalo(r)) { alert('Tu sesión venció. Vuelve a entrar desde Perfil.'); paint(); return; } alert(r && r.error === 'saldo' ? 'No te alcanzan las LoveCoins.' : r && r.error === 'persona' ? 'Ese perfil ya no existe.' : 'No se pudo canjear. Revisa tu conexión e intenta de nuevo.'); return; }
     store.set('qn_monedas', { ...saldos(), [me]: r.saldo }); updLC();
     const msg = `🎟️ Canje ${r.codigo}\n${nombreDe(me)} canjeó: ${r.detalle} (dinero real)\n−${fmt(r.coste)} LoveCoins · Saldo: ${fmt(r.saldo)}`;
     const link = waLink(msg);
@@ -2333,6 +2586,26 @@ function showCanje() {
     try { window.open(link, '_blank'); } catch (x) {}
   };
 }
+
+
+/* ===================== Cabecera fija en las páginas internas =====================
+   Fecha + título + botón de atrás se quedan arriba (cristal esmerilado) y el contenido pasa por debajo al hacer scroll. */
+const appEl = document.querySelector('.app'), mainEl = document.querySelector('main');
+new MutationObserver(() => {
+  const h = screen.querySelector(':scope > .home');
+  const date = h && h.querySelector(':scope > .tdate'), top = h && h.querySelector(':scope > .jtop');
+  if (!h || h.querySelector('.stage') || !date || !top || !top.querySelector('#back')) { mainEl.style.marginTop = ''; return; }
+  if (h.classList.contains('subp')) return;
+  // El cristal de la cabecera sube hasta el borde de la pantalla: se mide cuánto espacio había arriba y se compensa con relleno
+  mainEl.style.marginTop = '';
+  const up = Math.max(0, Math.round(mainEl.getBoundingClientRect().top - appEl.getBoundingClientRect().top));
+  mainEl.style.marginTop = (-10 - up) + 'px';
+  const wrap = document.createElement('div'); wrap.className = 'shead'; wrap.style.paddingTop = (up + 10) + 'px';
+  h.insertBefore(wrap, date); wrap.append(date, top);
+  h.classList.add('subp');
+  screen.classList.remove('center'); screen.classList.add('full');
+  h.addEventListener('scroll', () => wrap.classList.toggle('stuck', h.scrollTop > 2), { passive: true });
+}).observe(screen, { childList: true });
 
 /* ===================== Arranque ===================== */
 const fixH = () => { document.documentElement.style.setProperty('--ah', window.innerHeight + 'px'); window.scrollTo(0, 0); };
