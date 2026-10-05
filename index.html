@@ -710,6 +710,16 @@
   .btn.mgo { background: linear-gradient(180deg, #4a78c4, #2a4f93); box-shadow: 0 5px 14px rgba(42,79,147,.35), inset 0 0 0 1px rgba(255,255,255,.4); margin-top: 12px; }
   .btn.mgo:disabled { opacity: .5; }
   .mrule { text-align: center; color: var(--muted); font-size: .76rem; line-height: 1.45; margin: 12px 8px 0; }
+
+  /* ===== Perfil con inicio de sesión · Calendario fijo · Botón de notas ===== */
+  .pform { display: grid; gap: 8px; max-width: 420px; margin: 0 auto; }
+  .pform .evmsg { padding: 2px 6px 0; text-align: center; }
+  .plogin .needlog { padding-top: 22px; }
+  .notebtn .ic { background: linear-gradient(135deg, #ffd86b, #f0b400); }
+  .screen.full .calbtn.notebtn { margin-bottom: 0; }
+  .tiles.p2 ~ .req { margin-top: 12px; }
+  .screen.full > .home.subp.calfix { overflow-y: hidden; }
+  @media (max-height: 700px) { .home.calfix .cgrid.one { gap: 6px; } .home.calfix .cgrid.one .day { padding: 9px 14px; } .home.calfix .cgrid.one .dn { margin-bottom: 4px; } }
 </style>
 
 </head>
@@ -1180,7 +1190,7 @@ function renderHome(page = 0) {
   </div>`;
   let list = '';
   const extra = `<button class="calbtn" id="cb"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span class="tx"><b>Calendario Universidad</b><small>Toca para ver los horarios</small><span class="dots">${SCHEDULE.map(d => `<i style="background:${d.color}"></i>`).join('')}</span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-    <div class="req"><h4>Petición</h4><p>Si necesitas algún ajuste o añadir algo, puedes pedirlo acá.</p><div class="rrow"><input id="rq" type="text" placeholder="Escribe tu petición…" enterkeyhint="send" autocomplete="off"><button class="send" id="rs" aria-label="Enviar petición"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div>`;
+    <button class="calbtn notebtn" id="nb"><span class="ic"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8.5 12h7M8.5 15.5h5"/></svg></span><span class="tx"><b>Notas a tener en cuenta</b><small>Toca para ver tus notitas</small></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>`;
   for (let c = 0; c < cards; c++) {
     const chunk = items.slice(c * 5, c * 5 + 5);
     const slots = [0, 1, 2, 3, 4].map(j => {
@@ -1205,14 +1215,7 @@ function renderHome(page = 0) {
   $('tq').onclick = startTest;
   $('cb').onclick = () => go(showCalendar, { hideTitle: true });
   $('evb').onclick = () => go(showEvents, { hideTitle: true });
-  const sendReq = () => {
-    const i = $('rq'), t = i.value.trim();
-    if (!t) { i.focus(); return; }
-    window.open(waLink(`Petición 💬\n${t}`), '_blank');
-    i.value = '';
-  };
-  $('rs').onclick = sendReq;
-  $('rq').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); sendReq(); } };
+  $('nb').onclick = () => go(showNotas, { hideTitle: true });
   bindRaspa();
   $('mb').onclick = () => go(showMailbox, { hideTitle: true });
   $('nx').onclick = () => go(renderHome2, { hideTitle: true });
@@ -1243,10 +1246,19 @@ function renderHome2() {
       <button class="tile" id="cj"><span class="ti">${COIN(20)}</span><b>Canjear</b><small>LoveCoins por COP</small></button>
     </div>
     <div style="flex:1"></div>
+    <div class="req"><h4>Petición</h4><p>Si necesitas algún ajuste o añadir algo, puedes pedirlo acá.</p><div class="rrow"><input id="rq" type="text" placeholder="Escribe tu petición…" enterkeyhint="send" autocomplete="off"><button class="send" id="rs" aria-label="Enviar petición"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div>
     <div class="tiles nav"><button class="tile mini arrow" id="pv" aria-label="Página anterior">${left}</button><span></span></div>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   bindRaspa();
+  const sendReq = () => {
+    const i = $('rq'), t = i.value.trim();
+    if (!t) { i.focus(); return; }
+    window.open(waLink(`Petición 💬\n${t}`), '_blank');
+    i.value = '';
+  };
+  $('rs').onclick = sendReq;
+  $('rq').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); sendReq(); } };
   $('pv').onclick = () => go(renderHome, { hideTitle: true });
   $('pf').onclick = () => go(showPerfil, { hideTitle: true });
   $('pd').onclick = () => go(showTodos, { hideTitle: true });
@@ -1377,7 +1389,7 @@ const fotosSig = () => fotos().map(x => x.id).join();
 function refreshFotoViews() {
   if ($('pg')) renderHome(pageOf($('pg')));
   else if ($('pav') && typeof cardPaint === 'function') cardPaint();
-  else if (screen.querySelector('.ppick')) showPerfil();
+  else if ($('plg') && typeof loginPaint === 'function') loginPaint();
 }
 async function loadFotos() {
   if (!API_URL || fotosBusy) return;
@@ -1444,7 +1456,7 @@ const BACK = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke
 /* Las dos personas y sus redes por defecto (todas las redes, con el enlace vacío para llenarlo desde la tuerca) */
 /* Lista de perfiles (se agregan y se eliminan desde Perfil). La hoja "perfiles" es la fuente; aquí va una copia para verla rápido.
    Los dos de siempre (ella y el) arrancan como perfiles normales: se pueden renombrar y eliminar. */
-const perfiles = () => store.get('qn_perfiles', [{ id: 'ella', nombre: 'Ella' }, { id: 'el', nombre: 'Él' }]);
+const perfiles = () => store.get('qn_perfiles', []);
 const setPerfiles = l => store.set('qn_perfiles', l);
 // Dos nombres son iguales si coinciden sin mayúsculas, sin tildes y sin espacios ("Ana María" = "anamaria")
 const normName = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '');
@@ -1495,7 +1507,7 @@ async function loadPerfil() {
     });
     store.set('qn_perfil2', d); store.set('qn_perfil_dirty', dirty);
     if ($('pav') && typeof cardPaint === 'function') cardPaint();
-    else if (screen.querySelector('.ppick')) showPerfil();
+    else if ($('plg') && typeof loginPaint === 'function') loginPaint();
   } catch (e) { /* sin internet: se queda con lo último guardado */ }
 }
 async function loadPerfiles() {
@@ -1503,6 +1515,7 @@ async function loadPerfiles() {
   try {
     const rows = await fetchTab('perfiles', '');
     if (!rows) return;
+    perfilesCargados = true;
     const srv = rows.slice(1).filter(r => String(r[0] || '').trim()).map(r => ({ id: String(r[0]).trim(), nombre: String(r[1] || '').trim() || '?', tiene: String(r[3] || '').trim() === '1' }));
     const before = perfiles();
     if (JSON.stringify(before) === JSON.stringify(srv)) return;
@@ -1511,7 +1524,7 @@ async function loadPerfiles() {
     loadMonedas();
     if ($('pav') && cardId && !srv.some(x => x.id === cardId)) go(showPerfil, { hideTitle: true });
     else if ($('pav') && typeof cardPaint === 'function') cardPaint();
-    else if (screen.querySelector('.ppick')) showPerfil();
+    else if ($('plg') && typeof loginPaint === 'function') loginPaint();
     else if ($('jgb')) paintJuegos();
   } catch (e) { /* sin internet: se queda con lo último guardado */ }
 }
@@ -1632,6 +1645,7 @@ function showCard(id) {
     <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><h2 class="big" style="flex:1">Perfil</h2><button class="rbtn" id="gear" aria-label="Editar redes">${GEAR}</button></div>
     <div class="phead"><div class="pavatar" id="pav"></div><div class="pname2" id="pnm"></div><div class="pstats" id="pst"></div></div>
     <div class="evlist" id="bars"></div>
+    <button class="btn glass" id="lout" style="width:100%;margin-top:18px;color:#d6334f">Cerrar sesión</button>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   const paint = () => {
@@ -1642,8 +1656,9 @@ function showCard(id) {
       : '<div class="evempty">No hay redes. Toca la tuerca para añadir.</div>';
   };
   paint(); cardPaint = paint;
-  $('back').onclick = () => go(showPerfil, { hideTitle: true });
-  const editar = () => { if (yo() === id) { openSheet(id, paint); return; } alert('Para editar este perfil entra con su contraseña desde la esquina de arriba a la derecha de Perfil.'); };
+  $('back').onclick = () => go(renderHome2, { hideTitle: true });
+  $('lout').onclick = () => { cerrarSesion(); go(showPerfil, { hideTitle: true }); };
+  const editar = () => { if (yo() === id) { openSheet(id, paint); return; } alert('Inicia sesión para editar tu perfil.'); };
   $('gear').onclick = editar;
   $('bars').onclick = e => {
     const b = e.target.closest('.nbar'); if (!b) return;
@@ -1653,122 +1668,75 @@ function showCard(id) {
   };
 }
 
-/* Ventana para agregar un perfil nuevo: otra persona puede jugar, tener sus redes, su foto y sus puntos */
-function openAddPerfil() {
-  const ov = document.createElement('div'); ov.className = 'qrov sheetov';
-  ov.innerHTML = `<div class="sheet"><div class="shh"><b>Agregar perfil</b><button class="btn glass" id="ax" style="padding:10px 18px">Cancelar</button></div>
-    <div class="slab">Nombre</div><input class="sinp" id="anm" maxlength="24" placeholder="Ej. Camila" autocomplete="off">
-    <div class="slab">Contraseña (mínimo 4 caracteres)</div><input class="sinp" id="apw" type="password" maxlength="40" placeholder="Contraseña" autocomplete="new-password">
-    <input class="sinp" id="apw2" type="password" maxlength="40" placeholder="Repite la contraseña" autocomplete="new-password" style="margin-top:8px">
-    <div class="evmsg show" id="aerr" style="padding:8px 4px 0"></div>
-    <button class="btn wide" id="aok" style="margin-top:14px">Crear perfil</button>
-    <p class="pnone" style="padding-top:12px">Cada perfil tiene sus propias redes, foto, LoveCoins y puntos, y se protege con su contraseña. No puede haber dos con el mismo nombre.</p></div>`;
-  const $a = k => ov.querySelector('#' + k), close = () => { ov.classList.remove('in'); setTimeout(() => ov.remove(), 320); };
-  $a('ax').onclick = close;
-  ov.onclick = e => { if (e.target === ov) close(); };
-  $a('anm').oninput = e => { const v = cleanName(e.target.value); $a('aerr').textContent = v && nameTaken(v, '') ? MSG_REPETIDO : ''; };
-  $a('aok').onclick = async () => {
-    const v = cleanName($a('anm').value), err = t => { $a('aerr').textContent = t; };
-    if (!v) { err('Escribe un nombre.'); return; }
-    if (nameTaken(v, '')) { err(MSG_REPETIDO); return; }
-    const pw = $a('apw').value;
-    if (pw.length < 4) { err('La contraseña debe tener al menos 4 caracteres.'); return; }
-    if (pw !== $a('apw2').value) { err('Las contraseñas no coinciden.'); return; }
-    const btn = $a('aok'); btn.disabled = true; btn.style.opacity = .6;
-    let id;
-    if (API_URL) {
-      const r = await apiGet({ perfil_crear: 1, clave: API_KEY, nombre: v, pw });
-      if (!r || !r.ok) { btn.disabled = false; btn.style.opacity = ''; err(!r ? 'Sin conexión. Intenta de nuevo.' : r.error === 'repetido' ? MSG_REPETIDO : r.error === 'pw_corta' ? 'La contraseña debe tener al menos 4 caracteres.' : 'No se pudo crear el perfil.'); return; }
-      id = r.id; setToken(id, r.token);
-    } else id = 'p' + newId();
-    setPerfiles([...perfiles(), { id, nombre: v, tiene: true }]);
-    store.set('qn_monedas', { ...store.get('qn_monedas', {}), [id]: 100 });
-    if (!yo() || confirm(`¿Entrar ahora como "${v}"?`)) store.set('qn_yo', id);
-    close(); go(() => showCard(id), { hideTitle: true });
-  };
-  document.body.appendChild(ov);
-  requestAnimationFrame(() => requestAnimationFrame(() => { ov.classList.add('in'); $a('anm').focus(); }));
-}
-
-const CARET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
-function sessBtn() {
-  const me = yo();
-  if (!me) return `<button class="sess" id="sess" aria-label="Elegir mi perfil">${LOCKI}<span class="sn">Entrar</span></button>`;
-  const p = getPerfil(me);
-  return `<button class="sess on" id="sess" aria-label="Cambiar de perfil"><span class="pavatar xs">${avatarInner(p)}</span><span class="sn">${escH(p.nombre)}</span>${CARET}</button>`;
-}
-/* Ventana para elegir "quién eres" con contraseña. El perfil elegido es el que muestra y usa las LoveCoins. */
-function openSession(onDone) {
-  const ov = document.createElement('div'); ov.className = 'qrov sheetov';
-  const box = document.createElement('div'); box.className = 'sheet'; ov.appendChild(box);
-  const close = () => { ov.classList.remove('in'); setTimeout(() => ov.remove(), 320); };
-  const $s = k => box.querySelector('#' + k);
-  const list = () => {
-    const me = yo(), ps = perfiles();
-    box.innerHTML = `<div class="shh"><b>¿Quién eres?</b><button class="btn glass" id="sx" style="padding:10px 18px">Cerrar</button></div>
-      <p class="pnone" style="padding:2px 4px 12px">Elige tu perfil e ingresa tu contraseña. El perfil activo es el que juega, apuesta y canjea con sus LoveCoins.</p>
-      ${ps.map(x => { const q = getPerfil(x.id); return `<button class="ppick${me === x.id ? ' cur' : ''}" data-id="${x.id}" style="margin-bottom:10px"><span class="pavatar sm">${avatarInner(q)}</span><span class="pt"><b>${escH(q.nombre)}</b><small>${me === x.id ? 'Sesión iniciada ✓' : x.tiene ? 'Entrar con contraseña' : 'Crear contraseña'}</small></span>${me === x.id ? '' : CHEV}</button>`; }).join('') || '<div class="evempty">Aún no hay perfiles. Crea uno con «Agregar perfil».</div>'}
-      ${me ? '<button class="btn glass" id="sout" style="width:100%;margin-top:4px;color:#d6334f">Cerrar sesión</button>' : ''}`;
-    $s('sx').onclick = close;
-    if ($s('sout')) $s('sout').onclick = () => { cerrarSesion(); close(); onDone && onDone(); };
-    box.querySelectorAll('.ppick[data-id]').forEach(b => b.onclick = () => { if (yo() === b.dataset.id) { close(); return; } pedir(b.dataset.id); });
-  };
-  const pedir = id => {
-    const x = perfiles().find(y => y.id === id); if (!x) return;
-    const nuevo = !x.tiene;
-    box.innerHTML = `<div class="shh"><b>${escH(getPerfil(id).nombre)}</b><button class="btn glass" id="sb" style="padding:10px 18px">Atrás</button></div>
-      <p class="pnone" style="padding:2px 4px 12px">${nuevo ? 'Este perfil todavía no tiene contraseña. Crea una (mínimo 4 caracteres) y no la olvides.' : 'Escribe la contraseña de este perfil.'}</p>
-      <input class="sinp" id="pw1" type="password" maxlength="40" placeholder="${nuevo ? 'Nueva contraseña' : 'Contraseña'}" autocomplete="${nuevo ? 'new-password' : 'current-password'}">
-      ${nuevo ? '<input class="sinp" id="pw2" type="password" maxlength="40" placeholder="Repite la contraseña" autocomplete="new-password" style="margin-top:8px">' : ''}
-      <div class="evmsg show" id="perr" style="padding:8px 4px 0"></div>
-      <button class="btn wide" id="pgo" style="margin-top:12px">${nuevo ? 'Crear y entrar' : 'Entrar'}</button>`;
-    $s('sb').onclick = list;
-    const err = t => { $s('perr').textContent = t; };
-    const go1 = async () => {
-      const pw = $s('pw1').value;
-      if (!API_URL) { err('Necesita la conexión con la hoja de Google.'); return; }
-      if (nuevo) { if (pw.length < 4) { err('Mínimo 4 caracteres.'); return; } if (pw !== $s('pw2').value) { err('Las contraseñas no coinciden.'); return; } }
-      else if (!pw) { err('Escribe la contraseña.'); return; }
-      const btn = $s('pgo'); btn.disabled = true; btn.style.opacity = .6; err('');
-      const r = await apiGet(nuevo ? { perfil_clave_nueva: 1, clave: API_KEY, id, pw } : { perfil_entrar: 1, clave: API_KEY, id, pw });
-      btn.disabled = false; btn.style.opacity = '';
-      if (r && r.ok && r.token) {
-        setToken(id, r.token); store.set('qn_yo', id);
-        setPerfiles(perfiles().map(y => y.id === id ? { ...y, tiene: true } : y));
-        updLC(); close(); onDone && onDone(); return;
-      }
-      if (!r) err('Sin conexión. Intenta de nuevo.');
-      else if (r.error === 'pw') err(`Contraseña incorrecta.${r.quedan > 0 ? ` Te quedan ${r.quedan} intentos.` : ''}`);
-      else if (r.error === 'bloqueado') err('Demasiados intentos. Espera 5 minutos y vuelve a probar.');
-      else if (r.error === 'yatiene') { setPerfiles(perfiles().map(y => y.id === id ? { ...y, tiene: true } : y)); pedir(id); }
-      else if (r.error === 'sinclave') { setPerfiles(perfiles().map(y => y.id === id ? { ...y, tiene: false } : y)); pedir(id); }
-      else if (r.error === 'pw_corta') err('Mínimo 4 caracteres.');
-      else err('No se pudo entrar. Revisa que el script esté actualizado.');
-    };
-    $s('pgo').onclick = go1;
-    box.querySelectorAll('input').forEach(i => i.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); go1(); } });
-    setTimeout(() => $s('pw1') && $s('pw1').focus(), 350);
-  };
-  ov.onclick = e => { if (e.target === ov) close(); };
-  list();
-  document.body.appendChild(ov);
-  requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('in')));
-}
-
+/* ===================== Perfil: un solo perfil, con inicio de sesión ===================== */
+let perfilesCargados = false, loginPaint = null, yaHay = false;
 function showPerfil() {
-  const chev = '<svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color:#c9bcc1"><path d="M9 5l7 7-7 7"/></svg>';
-  const ps = perfiles();
+  if (yo()) { showCard(yo()); return; }
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div style="min-width:0"><h2 class="big">Perfil</h2><div class="date">${ps.length ? 'Elige una tarjeta' : 'Aún no hay perfiles'}</div></div>${sessBtn()}</div>
-    <div class="evlist">${ps.map(x => { const p = getPerfil(x.id); return `<button class="ppick${yo() === x.id ? ' cur' : ''}" data-id="${x.id}"><span class="pavatar sm">${avatarInner(p)}</span><span class="pt"><b>${escH(p.nombre)}</b><small>${statsHTML(x.id)}</small></span>${chev}</button>`; }).join('') || '<div class="evempty">No hay ningún perfil. Agrega el primero 💗</div>'}</div>
-    <button class="ppick add" id="padd"><span class="pavatar sm">+</span><span class="pt"><b>Agregar perfil</b><small>Para que otra persona juegue</small></span></button>
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div style="min-width:0"><h2 class="big">Perfil</h2><div class="date" id="pdt"></div></div></div>
+    <div class="plogin" id="plg"></div>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
-  $('padd').onclick = openAddPerfil;
-  $('sess').onclick = () => openSession(showPerfil);
-  screen.querySelectorAll('.ppick[data-id]').forEach(b => b.onclick = () => go(() => showCard(b.dataset.id), { hideTitle: true }));
+  let modo = '';
+  const entrar = (id, nombre, token, nuevo) => {
+    setToken(id, token); store.set('qn_yo', id);
+    if (!perfiles().some(p => p.id === id)) setPerfiles([...perfiles(), { id, nombre, tiene: true }]);
+    if (nuevo) store.set('qn_monedas', { ...store.get('qn_monedas', {}), [id]: 100 });
+    updLC(); loadMonedas();
+    go(() => showCard(id), { hideTitle: true });
+  };
+  const draw = m => {
+    const el = $('plg'); if (!el) return;
+    const info = (t, extra) => { el.innerHTML = `<div class="needlog"><div class="nli">${LOCKI}</div>${t}${extra || ''}</div>`; };
+    if (m === 'carga') { $('pdt').textContent = 'Un momento…'; info('Buscando tu perfil…'); return; }
+    if (m === 'nube') { $('pdt').textContent = 'Sin conexión'; info('Necesita la conexión con la hoja de Google para iniciar sesión.'); return; }
+    if (m === 'off') {
+      $('pdt').textContent = 'Sin conexión'; info('No pude conectar con Google. Revisa tu internet.', '<button class="btn wide" id="lre">Reintentar</button>');
+      $('lre').onclick = () => showPerfil(); return;
+    }
+    const crear = m === 'crear';
+    $('pdt').textContent = crear ? 'Crea tu perfil' : 'Iniciar sesión';
+    el.innerHTML = `<div class="needlog" style="padding-bottom:14px"><div class="nli">${LOCKI}</div><b>${crear ? 'Crea tu perfil' : 'Iniciar sesión'}</b>${crear ? 'Solo puede haber un perfil. Tu nombre y tu contraseña se guardan en Google.' : 'Escribe tu nombre y tu contraseña.'}</div>
+      <div class="pform">
+        <input class="sinp" id="lnm" maxlength="24" placeholder="Nombre" autocomplete="username" autocapitalize="words">
+        <input class="sinp" id="lpw" type="password" maxlength="40" placeholder="Contraseña" autocomplete="${crear ? 'new-password' : 'current-password'}">
+        ${crear ? '<input class="sinp" id="lpw2" type="password" maxlength="40" placeholder="Repite la contraseña" autocomplete="new-password">' : ''}
+        <div class="evmsg show" id="lerr"></div>
+        <button class="btn wide" id="lgo">${crear ? 'Crear perfil' : 'Iniciar sesión'}</button>
+      </div>`;
+    const err = t => { if ($('lerr')) $('lerr').textContent = t; };
+    const go1 = async () => {
+      const nombre = cleanName($('lnm').value), pw = $('lpw').value;
+      if (!nombre) { err('Escribe tu nombre.'); return; }
+      if (crear) {
+        if (pw.length < 4) { err('La contraseña debe tener al menos 4 caracteres.'); return; }
+        if (pw !== $('lpw2').value) { err('Las contraseñas no coinciden.'); return; }
+      } else if (!pw) { err('Escribe tu contraseña.'); return; }
+      const btn = $('lgo'); btn.disabled = true; btn.style.opacity = .6; err('');
+      const r = await apiGet(crear ? { perfil_crear: 1, clave: API_KEY, nombre, pw } : { perfil_entrar: 1, clave: API_KEY, nombre, pw });
+      if (!$('lgo')) return;
+      btn.disabled = false; btn.style.opacity = '';
+      if (r && r.ok && r.token) { entrar(r.id, r.nombre || nombre, r.token, crear); return; }
+      if (!r) err('Sin conexión. Intenta de nuevo.');
+      else if (r.error === 'yahay') { yaHay = true; modo = ''; loginPaint(); }
+      else if (r.error === 'pw') err(`Nombre o contraseña incorrectos.${r.quedan > 0 ? ` Te quedan ${r.quedan} intentos.` : ''}`);
+      else if (r.error === 'bloqueado') err('Demasiados intentos. Espera 5 minutos y vuelve a probar.');
+      else if (r.error === 'pw_corta') err('La contraseña debe tener al menos 4 caracteres.');
+      else if (r.error === 'nombre') err('Escribe un nombre.');
+      else err('No se pudo. Revisa que el script de Google esté actualizado.');
+    };
+    $('lgo').onclick = go1;
+    el.querySelectorAll('input').forEach(i => i.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); go1(); } });
+  };
+  loginPaint = () => {
+    const m = !API_URL ? 'nube' : !perfilesCargados ? 'carga' : (perfiles().length || yaHay) ? 'login' : 'crear';
+    if (m === modo || !$('plg')) return;
+    modo = m; draw(m);
+  };
+  loginPaint();
+  if (API_URL && !perfilesCargados) loadPerfiles().then(() => { if (!$('plg')) return; if (!perfilesCargados) { modo = 'off'; draw('off'); } else loginPaint(); });
 }
 
 /* ===================== Raspa y Gana ===================== */
@@ -2107,11 +2075,19 @@ function showMailbox(noLoad) {
 function showCalendar() {
   const wd = new Date().getDay();
   const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
-  screen.innerHTML = `<div class="home" style="padding-bottom:20px">
+  screen.innerHTML = `<div class="home calfix" style="padding-bottom:20px">
     ${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><div><h2 class="big">Calendario</h2><div class="date">Universidad</div></div></div>
     <div class="cgrid one">${SCHEDULE.map(d => `<div class="day${d.dow === wd ? ' today' : ''}" style="--c:${d.color};background:${d.bg}"><div class="dn">${d.day}</div>${d.items.map(([t, n]) => `<div class="cls"><span>${t}</span><b>${n}</b></div>`).join('')}</div>`).join('')}</div>
-    <div class="req" style="margin-top:16px"><h4>Notas a tener en cuenta</h4><p>Se pegan aquí y se guardan en Google.</p><div class="rrow"><input id="nti" type="text" maxlength="160" placeholder="Ej: hoy tengo clase en la mañana" enterkeyhint="send" autocomplete="off"><button class="send" id="ntg" aria-label="Añadir nota"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+  </div>`;
+  $('back').onclick = goHome;
+}
+
+function showNotas() {
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">
+    ${dateTop()}
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Notas</h2><div class="date">A tener en cuenta</div></div></div>
+    <div class="req" style="margin-top:16px"><h4>Nueva nota</h4><p>Se pegan aquí y se guardan en Google.</p><div class="rrow"><input id="nti" type="text" maxlength="160" placeholder="Ej: hoy tengo clase en la mañana" enterkeyhint="send" autocomplete="off"><button class="send" id="ntg" aria-label="Añadir nota"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
     <div class="cnotes" id="nts"></div>
   </div>`;
   $('back').onclick = goHome;
@@ -2310,7 +2286,7 @@ const yo = () => { const v = store.get('qn_yo', ''); return perfiles().some(p =>
 const authQ = () => ({ persona: yo(), token: yo() ? tokens()[yo()] : '' });
 const cerrarSesion = () => { store.set('qn_yo', ''); updLC(); };
 const LOCKI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 017 0v2.5"/></svg>';
-const needLogin = txt => `<div class="needlog"><div class="nli">${LOCKI}</div><b>Entra a tu perfil</b>${txt || 'Elige tu perfil con contraseña en la esquina de arriba a la derecha de <b style="display:inline;font-size:inherit">Perfil</b>.'}<button class="btn wide" id="nlg">Ir a Perfil</button></div>`;
+const needLogin = txt => `<div class="needlog"><div class="nli">${LOCKI}</div><b>Entra a tu perfil</b>${txt || 'Inicia sesión con tu nombre y contraseña en <b style="display:inline;font-size:inherit">Perfil</b>.'}<button class="btn wide" id="nlg">Ir a Perfil</button></div>`;
 const bindNeedLogin = () => { const b = $('nlg'); if (b) b.onclick = () => go(showPerfil, { hideTitle: true }); };
 /* Si el servidor dice que el token ya no vale (cambiaron la contraseña, etc.), se cierra la sesión */
 const tokenMalo = r => { if (r && r.error === 'token') { cerrarSesion(); return true; } return false; };
@@ -2374,7 +2350,7 @@ function showJuegos() {
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
   $('jgb').onclick = e => {
     const g = e.target.closest('.gcard'); if (!g) return;
-    if (!yo()) { alert('Primero entra a tu perfil (Perfil, esquina de arriba a la derecha) 💗'); return; }
+    if (!yo()) { alert('Primero inicia sesión en Perfil 💗'); return; }
     if (restantes(g.dataset.j) <= 0) { alert('Ya usaste tus intentos de hoy en este juego. ¡Mañana hay más!'); return; }
     go(() => showJuego(g.dataset.j), { hideTitle: true });
   };
@@ -2611,6 +2587,10 @@ new MutationObserver(() => {
 const fixH = () => { document.documentElement.style.setProperty('--ah', window.innerHeight + 'px'); window.scrollTo(0, 0); };
 fixH(); ['resize', 'orientationchange', 'pageshow', 'load'].forEach(ev => window.addEventListener(ev, fixH));
 if (window.visualViewport) window.visualViewport.addEventListener('resize', fixH);
+if (!store.get('qn_reset_perfiles1', false)) {
+  ['qn_perfiles', 'qn_perfil2', 'qn_perfil_dirty', 'qn_monedas', 'qn_wins', 'qn_yo', 'qn_tok', 'qn_cupones', 'qn_cup_ovr'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+  store.set('qn_reset_perfiles1', true);
+}
 renderHome();
 loadBuzon(); loadEventos(); loadPerfiles().then(() => { loadPerfil(); loadMonedas(); }); loadFotos(); loadCupones(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
