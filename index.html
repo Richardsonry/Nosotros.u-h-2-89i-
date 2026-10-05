@@ -541,10 +541,6 @@
   .wal { display: flex; gap: 10px; margin-bottom: 12px; }
   .wal div { flex: 1; background: #fff; border-radius: 18px; padding: 10px 12px; font-size: .8rem; color: var(--muted); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
   .wal b { display: block; font-size: 1.15rem; color: #a8740a; }
-  .tboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 300px; margin: 14px auto; }
-  .tc { aspect-ratio: 1; border: 0; border-radius: 20px; font: inherit; font-size: 2.6rem; font-weight: 800; background: #fff; color: var(--accent); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.1); }
-  .tc.o { color: #6a5acd; }
-  .tc:disabled { cursor: default; }
   .tmsg { text-align: center; font-weight: 700; min-height: 1.4em; }
   .tact { display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 8px; }
   .tact input { width: 84px; font: inherit; font-size: 16px; padding: 10px 12px; border: 0; border-radius: 999px; background: #f2edef; text-align: center; }
@@ -602,6 +598,45 @@
   .cupt b { display: block; font-size: 1rem; line-height: 1.2; }
   .cupx { flex: none; border: 0; border-radius: 999px; padding: 8px 12px; font: inherit; font-size: .74rem; font-weight: 700; color: var(--ink); background: rgba(255,255,255,.6); cursor: pointer; }
   @media (max-height: 740px) { .tiles.p2 .tile { min-height: 84px; } .raspa { padding: 12px 16px; margin-top: 8px; } }
+
+  /* ===== Perfiles dinámicos y juegos por puntos ===== */
+  .ppick.add { flex: none; margin-top: 12px; background: transparent; box-shadow: none; border: 2px dashed #e4d6dc; }
+  .ppick.add .pavatar { font-size: 1.9rem; font-weight: 600; }
+  .jwho { flex-wrap: wrap; }
+  .jwho button { flex: 1 1 auto; min-width: 84px; }
+  .wal { overflow-x: auto; scrollbar-width: none; padding: 2px 2px 14px; margin: 0 -2px -2px; }
+  .wal::-webkit-scrollbar { display: none; }
+  .wal div { flex: 0 0 auto; min-width: 112px; }
+  .jrule { background: #fff; border-radius: 18px; padding: 12px 14px; margin-bottom: 12px; font-size: .82rem; line-height: 1.45; color: var(--muted); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .jrule b { color: #a8740a; }
+  .jrule .coin { vertical-align: -3px; }
+  .gwin { margin-bottom: 10px; padding: 10px 14px; border-radius: 16px; font-size: .84rem; font-weight: 600; background: linear-gradient(120deg, #f7f3e6, #fff1b8 60%, #e9d17a); color: #4a3a12; }
+  .gwin .coin { vertical-align: -2px; }
+  .gcard { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; border: 0; border-radius: 24px; padding: 14px; margin-bottom: 10px; background: #fff; font: inherit; color: var(--ink); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); transition: transform .2s; }
+  .gcard:active { transform: scale(.98); }
+  .gcard .gic { flex: none; width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; font-size: 1.7rem; background: linear-gradient(135deg, #ffe3ec, #ffd0dc); }
+  .gcard .gtx { flex: 1; min-width: 0; }
+  .gcard b { display: block; font-size: 1.05rem; font-weight: 800; }
+  .gcard small { display: block; color: var(--muted); font-size: .78rem; line-height: 1.35; margin-top: 1px; }
+  .gcard .gst, .gcard .gst2 { display: block; font-size: .74rem; font-weight: 700; margin-top: 4px; }
+  .gcard .gst { color: #a8740a; }
+  .gcard .gst2 { color: var(--accent); margin-top: 1px; }
+  .ghud { display: flex; gap: 10px; margin: 6px 0 10px; }
+  .ghud div { flex: 1; background: #fff; border-radius: 18px; padding: 10px 12px; font-size: .8rem; color: var(--muted); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .ghud b { display: block; font-size: 1.35rem; color: var(--accent); }
+  .garea { position: relative; width: 100%; height: min(52vh, 380px); border-radius: 26px; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .gintro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 24px; text-align: center; color: var(--muted); font-weight: 600; line-height: 1.4; }
+  .gintro span { font-size: 3rem; }
+  .gh { position: absolute; border: 0; background: none; font-size: 2.3rem; line-height: 1; padding: 6px; touch-action: none; animation: gin .15s ease-out; transition: transform .15s, opacity .15s; }
+  .gh.pop { transform: scale(1.7); opacity: 0; }
+  @keyframes gin { from { transform: scale(.4); opacity: 0; } }
+  .mgrid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 8px; height: 100%; padding: 10px; }
+  .mc { border: 0; border-radius: 16px; font-size: 1.8rem; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); cursor: pointer; touch-action: manipulation; transition: transform .15s; }
+  .mc:active { transform: scale(.94); }
+  .mc.up { background: #fff7f9; box-shadow: inset 0 0 0 2px #f2d2da; }
+  .mc.ok { background: #dcf6ea; box-shadow: inset 0 0 0 2px #9fdcc0; }
+  .tapbtn { width: 100%; height: 100%; border: 0; font: inherit; font-size: 2.2rem; font-weight: 800; line-height: 1.1; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); touch-action: none; }
+  .tapbtn:active { filter: brightness(1.1); }
 </style>
 
 </head>
@@ -1020,7 +1055,7 @@ function postApi(body) {
   if (!API_URL) return;
   try { fetch(API_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ clave: API_KEY, ...body }) }).catch(() => {}); } catch (e) {}
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); loadMonedas(); flushLog(); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadBuzon(); loadEventos(); loadPerfiles().then(() => { loadPerfil(); loadMonedas(); }); loadFotos(); loadCupones(); loadTodos(); flushLog(); } });
 
 
 const readPhoto = (f, max = 640, q = .7) => new Promise(res => {
@@ -1130,8 +1165,8 @@ function renderHome2() {
     <div class="tiles p2">
       <button class="tile" id="pf"><span class="ti">${user}</span><b>Perfil</b><small>Nuestras redes</small></button>
       <button class="tile" id="pd"><span class="ti">${list}</span><b>Pendientes</b><small id="pdn">${todoLabel()}</small></button>
-      <button class="tile mini" id="jg"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4M16 11h.01M18.5 14h.01"/></svg></span><b>Juegos</b></button>
-      <button class="tile mini" id="cj"><span class="ti">${COIN(20)}</span><b>Canjear</b></button>
+      <button class="tile" id="jg"><span class="ti"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4M16 11h.01M18.5 14h.01"/></svg></span><b>Juegos</b><small>Gana LoveCoins</small></button>
+      <button class="tile" id="cj"><span class="ti">${COIN(20)}</span><b>Canjear</b><small>LoveCoins por COP</small></button>
     </div>
     <div style="flex:1"></div>
     <div class="tiles nav"><button class="tile mini arrow" id="pv" aria-label="Página anterior">${left}</button><span></span></div>
@@ -1332,11 +1367,20 @@ const GEAR = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke
 const BACK = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
 
 /* Las dos personas y sus redes por defecto (todas las redes, con el enlace vacío para llenarlo desde la tuerca) */
-const PERSONAS = [{ id: 'ella', nombre: 'Ella' }, { id: 'el', nombre: 'Él' }];
+/* Lista de perfiles (se agregan y se eliminan desde Perfil). La hoja "perfiles" es la fuente; aquí va una copia para verla rápido.
+   Los dos de siempre (ella y el) arrancan como perfiles normales: se pueden renombrar y eliminar. */
+const perfiles = () => store.get('qn_perfiles', [{ id: 'ella', nombre: 'Ella' }, { id: 'el', nombre: 'Él' }]);
+const setPerfiles = l => store.set('qn_perfiles', l);
+// Dos nombres son iguales si coinciden sin mayúsculas, sin tildes y sin espacios ("Ana María" = "anamaria")
+const normName = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '');
+const cleanName = s => { const x = String(s || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 24); return normName(x) ? x : ''; };
+const nameTaken = (n, exceptId) => perfiles().some(p => p.id !== exceptId && normName(p.nombre) === normName(n));
+const MSG_REPETIDO = 'Ya existe un perfil con ese nombre (aunque cambien mayúsculas o espacios).';
+let cardId = null;
 const defRedes = id => Object.keys(NETS).map(k => ({ red: NETS[k].n, enlace: id === 'el' && k === 'whatsapp' ? String(WHATSAPP_NUMBER).replace(/\D/g, '') : '' }));
 function getPerfil(id) {
-  const s = store.get('qn_perfil2', {})[id] || {}, base = PERSONAS.find(p => p.id === id);
-  return { id, nombre: s.nombre || base.nombre, foto: fotoPerfil(id), redes: Array.isArray(s.redes) ? s.redes : defRedes(id) };
+  const s = store.get('qn_perfil2', {})[id] || {}, base = perfiles().find(p => p.id === id);
+  return { id, nombre: base ? base.nombre : (s.nombre || ''), foto: fotoPerfil(id), redes: Array.isArray(s.redes) ? s.redes : defRedes(id) };
 }
 const perfT = {};
 const postPerfil = id => { const p = getPerfil(id); postApi({ tipo: 'perfil_guardar', persona: id, nombre: p.nombre, redes: p.redes }); };
@@ -1357,27 +1401,69 @@ async function loadPerfil() {
     const by = {};
     rows.forEach(r => {
       const p = normP(r[0]), red = String(r[1] || '').trim(), en = String(r[2] || '').trim();
-      if (p !== 'ella' && p !== 'el') return;
+      if (!perfiles().some(x => x.id === p)) return;
       if (!red || red.toLowerCase() === 'red') return;
       by[p] = by[p] || { nombre: '', redes: [] };
       if (red === '_nombre') by[p].nombre = en; else by[p].redes.push({ red, enlace: en, color: String(r[3] || '').trim() });
     });
     const d = store.get('qn_perfil2', {}), dirty = store.get('qn_perfil_dirty', {}), now = Date.now();
-    PERSONAS.forEach(({ id }) => {
+    perfiles().forEach(({ id }) => {
       const sh = by[id]; if (!sh) return;
       const cur = getPerfil(id);
       if (dirty[id] && now - dirty[id] < 10 * 60000) { // cambio nuestro todavía sin llegar a la hoja
-        if (perfSig(cur.nombre, cur.redes) === perfSig(sh.nombre || cur.nombre, sh.redes)) delete dirty[id];
+        if (perfSig(cur.nombre, cur.redes) === perfSig(cur.nombre, sh.redes)) delete dirty[id];
         else if (now - dirty[id] > 20000) postPerfil(id);
         return;
       }
       delete dirty[id];
-      d[id] = { nombre: sh.nombre || cur.nombre, redes: sh.redes };
+      d[id] = { nombre: cur.nombre, redes: sh.redes };
     });
     store.set('qn_perfil2', d); store.set('qn_perfil_dirty', dirty);
     if ($('pav') && typeof cardPaint === 'function') cardPaint();
     else if (screen.querySelector('.ppick')) showPerfil();
   } catch (e) { /* sin internet: se queda con lo último guardado */ }
+}
+async function loadPerfiles() {
+  if (!API_URL) return;
+  try {
+    const rows = await fetchTab('perfiles', '');
+    if (!rows) return;
+    const srv = rows.slice(1).filter(r => String(r[0] || '').trim()).map(r => ({ id: String(r[0]).trim(), nombre: String(r[1] || '').trim() || '?' }));
+    const before = perfiles();
+    if (JSON.stringify(before) === JSON.stringify(srv)) return;
+    before.filter(p => !srv.some(x => x.id === p.id)).forEach(p => quitarLocal(p.id));   // eliminados desde otro celular
+    setPerfiles(srv);
+    loadMonedas();
+    if ($('pav') && cardId && !srv.some(x => x.id === cardId)) go(showPerfil, { hideTitle: true });
+    else if ($('pav') && typeof cardPaint === 'function') cardPaint();
+    else if (screen.querySelector('.ppick')) showPerfil();
+    else if ($('jgb')) paintJuegos();
+  } catch (e) { /* sin internet: se queda con lo último guardado */ }
+}
+// Quita de este teléfono todo lo de un perfil (el de la hoja se borra con perfil_borrar)
+function quitarLocal(id) {
+  setPerfiles(perfiles().filter(p => p.id !== id));
+  const d = store.get('qn_perfil2', {}); delete d[id]; store.set('qn_perfil2', d);
+  const dd = store.get('qn_perfil_dirty', {}); delete dd[id]; store.set('qn_perfil_dirty', dd);
+  clearTimeout(perfT[id]);
+  const m = store.get('qn_monedas', {}); delete m[id]; store.set('qn_monedas', m);
+  const w = store.get('qn_wins', {}); delete w[id]; store.set('qn_wins', w);
+  if (store.get('qn_yo', '') === id) store.set('qn_yo', '');
+  fotosMem = fotosSrv().filter(x => x.tipo !== 'perfil:' + id); store.set('qn_fotos_srv', fotosMem);
+  store.set('qn_fotos_ops', fotoOps().filter(o => o.tipo !== 'perfil:' + id));
+}
+async function renamePerfil(id, raw) {
+  const v = cleanName(raw), cur = getPerfil(id).nombre;
+  if (!v) return { ok: false, error: 'nombre' };
+  if (v === cur) return { ok: true };
+  if (nameTaken(v, id)) return { ok: false, error: 'repetido' };
+  if (API_URL) {
+    const r = await apiGet({ perfil_renombrar: 1, clave: API_KEY, id, nombre: v });
+    if (!r) return { ok: false, error: 'red' };
+    if (!r.ok) return { ok: false, error: r.error };
+  }
+  setPerfiles(perfiles().map(p => p.id === id ? { ...p, nombre: v } : p));
+  return { ok: true };
 }
 const avatarInner = p => p.foto ? `<img src="${p.foto}" alt="">` : escH((p.nombre[0] || '?').toUpperCase());
 
@@ -1399,23 +1485,44 @@ function openSheet(id, onClose) {
   const ov = document.createElement('div'); ov.className = 'qrov sheetov';
   const box = document.createElement('div'); box.className = 'sheet'; ov.appendChild(box);
   const file = document.createElement('input'); file.type = 'file'; file.accept = 'image/*'; file.style.display = 'none'; ov.appendChild(file);
-  const close = () => { ov.classList.remove('in'); setTimeout(() => { ov.remove(); onClose && onClose(); }, 320); };
+  const close = skip => { ov.classList.remove('in'); setTimeout(() => { ov.remove(); !skip && onClose && onClose(); }, 320); };
+  let pending = null;
   const $s = k => box.querySelector('#' + k);
   let touched = false;
   const render = () => {
     const p = getPerfil(id), have = new Set(p.redes.map(r => netKey(r.red))), avail = Object.keys(NETS).filter(k => !have.has(k));
     touched = false;
     box.innerHTML = `<div class="shh"><b>Editar tarjeta</b><button class="btn" id="sx" style="padding:10px 20px">Listo</button></div>
-      <div class="slab">Nombre</div><input class="sinp" id="snm" maxlength="24" value="${escA(p.nombre)}" autocomplete="off">
+      <div class="slab">Nombre</div><input class="sinp" id="snm" maxlength="24" value="${escA(p.nombre)}" autocomplete="off"><div class="evmsg show" id="snerr" style="padding:6px 4px 0"></div>
       <div class="slab">Foto de perfil</div>
       <div class="rrow"><span class="pavatar sm">${avatarInner(p)}</span><button class="btn glass" id="sph" style="flex:1;padding:12px 16px">${p.foto ? 'Cambiar foto' : 'Elegir foto'}</button>${p.foto ? '<button class="btn glass" id="spx" style="padding:12px 16px">Quitar</button>' : ''}</div>
       <div class="slab">Añadir red</div>
       <div class="rrow"><select class="sinp" id="sadd">${avail.map(k => `<option value="${k}">${NETS[k].n}</option>`).join('')}<option value="_otra">Otra red…</option></select><input type="color" class="sw" id="scol" value="${avail.length ? NET_HEX[avail[0]] : '#c2485c'}" aria-label="Color del botón"><button class="send" id="sa" aria-label="Añadir red"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
       <input class="sinp" id="soth" placeholder="Nombre de la red (ej. Pinterest)" maxlength="20" style="display:${avail.length ? 'none' : 'block'};margin-top:8px">
       <div class="slab">Tus redes · color, usuario o enlace completo</div>
-      ${p.redes.map((r, i) => `<div class="srow"><input type="color" class="sw" data-c="${i}" value="${hexOf(r)}" aria-label="Color de ${escA(r.red)}"><div class="sc"><b>${escH(r.red)}</b><input class="sinp" data-i="${i}" value="${escA(r.enlace)}" placeholder="${netKey(r.red) === 'whatsapp' ? 'Número con código de país' : 'Usuario o enlace'}" autocomplete="off" autocapitalize="off"></div><button class="xbtn" data-del="${i}" aria-label="Quitar red">${TRASH}</button></div>`).join('')}`;
-    $s('sx').onclick = close;
-    $s('snm').oninput = e => { const q = getPerfil(id); q.nombre = e.target.value.trim().replace(/[<>]/g, '') || PERSONAS.find(x => x.id === id).nombre; setPerfil(q); };
+      ${p.redes.map((r, i) => `<div class="srow"><input type="color" class="sw" data-c="${i}" value="${hexOf(r)}" aria-label="Color de ${escA(r.red)}"><div class="sc"><b>${escH(r.red)}</b><input class="sinp" data-i="${i}" value="${escA(r.enlace)}" placeholder="${netKey(r.red) === 'whatsapp' ? 'Número con código de país' : 'Usuario o enlace'}" autocomplete="off" autocapitalize="off"></div><button class="xbtn" data-del="${i}" aria-label="Quitar red">${TRASH}</button></div>`).join('')}
+      <div class="slab" style="margin-top:22px">Zona delicada</div>
+      <button class="btn glass" id="sdel" style="width:100%;color:#d6334f">Eliminar este perfil</button>`;
+    $s('sx').onclick = async () => { if (pending) await pending; close(); };
+    $s('snm').oninput = e => { const v = cleanName(e.target.value); $s('snerr').textContent = v && nameTaken(v, id) ? MSG_REPETIDO : ''; };
+    $s('snm').onchange = e => {
+      const inp = e.target;
+      pending = renamePerfil(id, inp.value).then(r => {
+        if (!$s('snerr')) return;
+        $s('snerr').textContent = r.ok ? '' : (r.error === 'repetido' ? MSG_REPETIDO : r.error === 'red' ? 'Sin conexión: no se pudo cambiar el nombre.' : 'Escribe un nombre.');
+        inp.value = getPerfil(id).nombre;
+      });
+    };
+    $s('sdel').onclick = async () => {
+      const nm = getPerfil(id).nombre;
+      if (!confirm(`¿Eliminar el perfil de ${nm}? Se borran sus redes, su foto, sus LoveCoins y sus puntos. No se puede deshacer.`)) return;
+      if (API_URL) {
+        const r = await apiGet({ perfil_borrar: 1, clave: API_KEY, id });
+        if (!r || !r.ok) { alert('No se pudo eliminar. Revisa tu conexión e intenta de nuevo.'); return; }
+      }
+      quitarLocal(id); close(true);
+      go(showPerfil, { hideTitle: true });
+    };
     $s('sph').onclick = () => file.click();
     if ($s('spx')) $s('spx').onclick = () => { delFotosTipo('perfil:' + id); render(); };
     box.querySelectorAll('input[data-i]').forEach(inp => inp.oninput = () => { const q = getPerfil(id); q.redes[+inp.dataset.i].enlace = inp.value.trim(); setPerfil(q); });
@@ -1442,6 +1549,7 @@ function openSheet(id, onClose) {
 /* Tarjeta de presentación: foto arriba al centro y las redes en filas debajo */
 let cardPaint = null;
 function showCard(id) {
+  cardId = id;
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
     <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><h2 class="big" style="flex:1">Perfil</h2><button class="rbtn" id="gear" aria-label="Editar redes">${GEAR}</button></div>
@@ -1467,16 +1575,51 @@ function showCard(id) {
   };
 }
 
+/* Ventana para agregar un perfil nuevo: otra persona puede jugar, tener sus redes, su foto y sus puntos */
+function openAddPerfil() {
+  const ov = document.createElement('div'); ov.className = 'qrov sheetov';
+  ov.innerHTML = `<div class="sheet"><div class="shh"><b>Agregar perfil</b><button class="btn glass" id="ax" style="padding:10px 18px">Cancelar</button></div>
+    <div class="slab">Nombre</div><input class="sinp" id="anm" maxlength="24" placeholder="Ej. Camila" autocomplete="off">
+    <div class="evmsg show" id="aerr" style="padding:8px 4px 0"></div>
+    <button class="btn wide" id="aok" style="margin-top:14px">Crear perfil</button>
+    <p class="pnone" style="padding-top:12px">Cada perfil tiene sus propias redes, foto, LoveCoins y puntos. No puede haber dos con el mismo nombre.</p></div>`;
+  const $a = k => ov.querySelector('#' + k), close = () => { ov.classList.remove('in'); setTimeout(() => ov.remove(), 320); };
+  $a('ax').onclick = close;
+  ov.onclick = e => { if (e.target === ov) close(); };
+  $a('anm').oninput = e => { const v = cleanName(e.target.value); $a('aerr').textContent = v && nameTaken(v, '') ? MSG_REPETIDO : ''; };
+  $a('aok').onclick = async () => {
+    const v = cleanName($a('anm').value), err = t => { $a('aerr').textContent = t; };
+    if (!v) { err('Escribe un nombre.'); return; }
+    if (nameTaken(v, '')) { err(MSG_REPETIDO); return; }
+    const btn = $a('aok'); btn.disabled = true; btn.style.opacity = .6;
+    let id;
+    if (API_URL) {
+      const r = await apiGet({ perfil_crear: 1, clave: API_KEY, nombre: v });
+      if (!r || !r.ok) { btn.disabled = false; btn.style.opacity = ''; err(!r ? 'Sin conexión. Intenta de nuevo.' : r.error === 'repetido' ? MSG_REPETIDO : 'No se pudo crear el perfil.'); return; }
+      id = r.id;
+    } else id = 'p' + newId();
+    setPerfiles([...perfiles(), { id, nombre: v }]);
+    store.set('qn_monedas', { ...store.get('qn_monedas', {}), [id]: 100 });
+    if (!store.get('qn_yo', '') || confirm(`¿"${v}" es tu perfil en este celular?`)) store.set('qn_yo', id);
+    close(); go(() => showCard(id), { hideTitle: true });
+  };
+  document.body.appendChild(ov);
+  requestAnimationFrame(() => requestAnimationFrame(() => { ov.classList.add('in'); $a('anm').focus(); }));
+}
+
 function showPerfil() {
   const chev = '<svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color:#c9bcc1"><path d="M9 5l7 7-7 7"/></svg>';
+  const ps = perfiles();
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Perfil</h2><div class="date">Elige una tarjeta</div></div></div>
-    <div class="evlist">${PERSONAS.map(x => { const p = getPerfil(x.id); return `<button class="ppick" data-id="${x.id}"><span class="pavatar sm">${avatarInner(p)}</span><span class="pt"><b>${escH(p.nombre)}</b><small>${statsHTML(x.id)}</small></span>${chev}</button>`; }).join('')}</div>
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Perfil</h2><div class="date">${ps.length ? 'Elige una tarjeta' : 'Aún no hay perfiles'}</div></div></div>
+    <div class="evlist">${ps.map(x => { const p = getPerfil(x.id); return `<button class="ppick" data-id="${x.id}"><span class="pavatar sm">${avatarInner(p)}</span><span class="pt"><b>${escH(p.nombre)}</b><small>${statsHTML(x.id)}</small></span>${chev}</button>`; }).join('') || '<div class="evempty">No hay ningún perfil. Agrega el primero 💗</div>'}</div>
+    <button class="ppick add" id="padd"><span class="pavatar sm">+</span><span class="pt"><b>Agregar perfil</b><small>Para que otra persona juegue</small></span></button>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
-  screen.querySelectorAll('.ppick').forEach(b => b.onclick = () => go(() => showCard(b.dataset.id), { hideTitle: true }));
+  $('padd').onclick = openAddPerfil;
+  screen.querySelectorAll('.ppick[data-id]').forEach(b => b.onclick = () => go(() => showCard(b.dataset.id), { hideTitle: true }));
 }
 
 /* ===================== Raspa y Gana ===================== */
@@ -1998,132 +2141,190 @@ async function loadNotas() {
   renderNotas();
 }
 
-/* ===================== LoveCoins, perfiles y Juegos ===================== */
-const yo = () => store.get('qn_yo', '');
-const nombreDe = id => (getPerfil(id).nombre || (id === 'ella' ? 'Ella' : 'Él'));
-const saldos = () => store.get('qn_monedas', { ella: 100, el: 100 });
-const miSaldo = () => yo() ? saldos()[yo()] : saldos().ella;
+/* ===================== LoveCoins, Juegos por puntos y Canjear ===================== */
+const COIN = (n = 18) => `<svg class="coin" width="${n}" height="${n}" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="lcg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".5" stop-color="#f4c542"/><stop offset="1" stop-color="#c58a10"/></linearGradient></defs><circle cx="12" cy="12" r="11" fill="url(#lcg)"/><circle cx="12" cy="12" r="8.7" fill="none" stroke="#fff8d6" stroke-opacity=".85" stroke-width="1"/><path d="M12 17.4l-4.6-4.4a2.9 2.9 0 0 1 4.1-4.1l.5.5.5-.5a2.9 2.9 0 0 1 4.1 4.1z" fill="#c2485c"/><path d="M6.6 7.4A7 7 0 0 1 11 5" stroke="#fff" stroke-opacity=".8" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>`;
+const CHEV = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:#c9bcc1"><path d="M9 5l7 7-7 7"/></svg>';
+const fmt = n => Number(n || 0).toLocaleString('es-CO');
+const LC_POR_COP = 10;     // 1 COP = 10 LoveCoins (1.000 LoveCoins = $100 COP). Debe coincidir con el script.
+const CANJES_COP = [1000, 2000, 3000, 5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000];
+const yo = () => { const v = store.get('qn_yo', ''); return perfiles().some(p => p.id === v) ? v : ''; };
+const nombreDe = id => getPerfil(id).nombre || '?';
+const saldos = () => store.get('qn_monedas', {});
+const wins = () => store.get('qn_wins', {});
+const miSaldo = () => yo() ? (saldos()[yo()] || 0) : 0;
+const statsHTML = id => `<span class="st" style="display:flex;gap:12px;justify-content:inherit"><i>${COIN(15)} ${fmt(saldos()[id])}</i><i>🏆 ${wins()[id] || 0}</i></span>`;
+const updLC = () => document.querySelectorAll('.lcv').forEach(e => { e.textContent = fmt(miSaldo()); });
 async function loadMonedas(rows) {
   if (!rows) { const r = await apiGet({ hoja: 'monedas' }); rows = r && r.ok ? r.rows : null; }
   if (!rows) return;
-  const m = { ...saldos() };
-  const w = { ...wins() };
-  rows.slice(1).forEach(r => { const k = normP(r[0]); if (k === 'ella' || k === 'el') { m[k] = Number(r[1]) || 0; w[k] = Number(r[2]) || 0; } });
+  const ids = new Set(perfiles().map(p => p.id)), m = {}, w = {};
+  rows.slice(1).forEach(r => { const k = normP(r[0]); if (ids.has(k)) { m[k] = Number(r[1]) || 0; w[k] = Number(r[2]) || 0; } });
   store.set('qn_monedas', m); store.set('qn_wins', w); updLC();
+  if ($('jwal')) paintJuegos();
 }
-let jTimer = 0;
-const stopPoll = () => { clearInterval(jTimer); jTimer = 0; };
+/* Chips para elegir quién eres en este celular */
+const whoHTML = () => perfiles().map(p => `<button data-id="${p.id}" class="${yo() === p.id ? 'on' : ''}">${escH(p.nombre)}</button>`).join('');
+
+/* ---------- Juegos por puntos: nadie espera a nadie ----------
+   Cada quien juega cuando quiere (hasta 3 intentos por juego y día). Cuenta su mejor puntaje.
+   Al terminar el día, el mejor de cada juego se lleva las LoveCoins (lo paga el Apps Script). */
+const JG = {
+  corazones: { n: 'Atrapa corazones', ic: '💗', d: '30 segundos tocando corazones. Los dorados valen 3 y los rotos restan 2.', l1: 'Puntos', l2: 'Tiempo', run: playCorazones },
+  memoria:   { n: 'Memoria', ic: '🧠', d: 'Encuentra las 8 parejas con pocos movimientos y en poco tiempo.', l1: 'Movimientos', l2: 'Tiempo', run: playMemoria },
+  tap:       { n: 'Tap veloz', ic: '⚡', d: 'Toca lo más rápido que puedas durante 10 segundos.', l1: 'Toques', l2: 'Tiempo', run: playTap },
+};
+let jgState = store.get('qn_jstate', null), gStop = null;
+const stopGame = () => { if (gStop) { gStop(); gStop = null; } };
+async function loadJuegos() { const r = await apiGet({ juegos: 1 }); if (r && r.ok) { jgState = r; store.set('qn_jstate', r); } return jgState; }
+const rowsHoy = k => (jgState && jgState.hoy === todayISO() && jgState.tabla && jgState.tabla[k]) || [];
+const miFila = k => rowsHoy(k).find(r => r[0] === yo());
+const intentosMax = () => (jgState && jgState.intentos) || 3;
+const restantes = k => intentosMax() - (miFila(k) ? miFila(k)[2] : 0);
+
+function paintJuegos() {
+  const el = $('jgb'); if (!el) return;
+  const ps = perfiles();
+  if (!ps.length) { el.innerHTML = '<div class="evempty">Aún no hay perfiles. Crea uno en Perfil 💗</div>'; return; }
+  if (!API_URL) { el.innerHTML = '<div class="evempty">Los juegos necesitan la hoja de Google conectada.</div>'; return; }
+  const m = saldos(), w = wins(), me = yo(), ay = (jgState && jgState.ayer) || {}, premio = jgState ? jgState.premio : 300;
+  const ayer = Object.keys(JG).filter(k => ay[k] && ay[k].monto > 0).map(k => `<div class="gwin">🏆 Ayer ganó <b>${ay[k].ganadores.map(id => escH(nombreDe(id))).join(' y ')}</b> en ${JG[k].n}: +${fmt(ay[k].monto)} ${COIN(14)}</div>`).join('');
+  const cards = Object.keys(JG).map(k => {
+    const g = JG[k], top = rowsHoy(k).slice().sort((a, b) => b[1] - a[1])[0], f = miFila(k);
+    const mine = !me ? 'Elige quién eres para jugar' : f ? `Tu mejor hoy: ${f[1]} · te quedan ${Math.max(0, restantes(k))} intentos` : `Aún no juegas hoy · ${intentosMax()} intentos`;
+    const lead = top && top[1] > 0 ? `Va ganando: ${escH(nombreDe(top[0]))} (${top[1]})` : 'Nadie ha jugado hoy';
+    return `<button class="gcard" data-j="${k}"><span class="gic">${g.ic}</span><span class="gtx"><b>${g.n}</b><small>${g.d}</small><span class="gst">${mine}</span><span class="gst2">${lead}</span></span>${CHEV}</button>`;
+  }).join('');
+  el.innerHTML = `<div class="slab" style="margin:4px 4px 0">¿Quién eres en este celular?</div><div class="jwho" id="jw">${whoHTML()}</div>
+    <div class="wal" id="jwal">${ps.map(p => `<div>${escH(p.nombre)}<b>${COIN(16)} ${fmt(m[p.id])}${w[p.id] ? ` · 🏆 ${w[p.id]}` : ''}</b></div>`).join('')}</div>
+    <div class="jrule">Al terminar el día, quien tenga el <b>mejor puntaje</b> de cada juego gana ${COIN(14)} <b>${fmt(premio)}</b>. Juegan cuando quieran, sin esperarse. Cuenta tu mejor intento (${intentosMax()} por juego al día) y tienen que haber jugado al menos 2 perfiles.</div>
+    ${ayer}${cards}`;
+}
 function showJuegos() {
-  stopPoll();
-  const w = () => { const m = saldos(); return ['ella', 'el'].map(id => `<div>${escH(nombreDe(id))}<b>${COIN(16)} ${fmt(m[id])}${wins()[id] ? ` · 🏆 ${wins()[id]}` : ''}</b></div>`).join(''); };
+  stopGame();
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Juegos</h2><div class="date">LoveCoins</div></div></div>
-    <div class="jwho" id="jw"></div><div class="wal" id="jwal">${w()}</div>
-    <button class="tile" id="gt" style="width:100%;flex-direction:row;align-items:center;gap:12px"><span class="ti" style="font-weight:800;font-size:1rem">#</span><span><b>Triki</b><br><small>En tiempo real · apuesta LoveCoins</small></span></button></div>`;
-  const who = () => { $('jw').innerHTML = ['ella', 'el'].map(id => `<button data-id="${id}" class="${yo() === id ? 'on' : ''}">Soy ${escH(nombreDe(id))}</button>`).join(''); };
-  who();
-  $('jw').onclick = e => { const b = e.target.closest('button'); if (b) { store.set('qn_yo', b.dataset.id); who(); } };
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Juegos</h2><div class="date">Gana LoveCoins jugando</div></div></div>
+    <div id="jgb"></div></div>`;
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
-  $('gt').onclick = () => { if (!yo()) { alert('Primero elige quién eres 💗'); return; } go(showTriki, { hideTitle: true }); };
-  loadMonedas().then(() => { const e = $('jwal'); if (e) e.innerHTML = w(); });
-}
-let trk = null;
-function parseTriki(r) {
-  const v = r.rows[1]; if (!v) return { estado: 'vacio', tab: '---------', turno: 'x', x: '', o: '', ap: 0, gan: '' };
-  return { estado: v[1], tab: v[2] || '---------', turno: v[3], x: v[4], o: v[5], ap: Number(v[6]) || 0, gan: v[7] };
-}
-function showTriki() {
-  stopPoll();
-  const me = yo(); let busy = 0;
-  screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Triki</h2><div class="date">${escH(nombreDe(me))} · ${COIN(14)} <span id="tsal">${fmt(miSaldo())}</span></div></div></div>
-    <div class="tmsg" id="tmsg">Conectando…</div><div class="tboard" id="trk"></div><div class="tact" id="tact"></div></div>`;
-  const send = (tipo, extra = {}) => { busy = Date.now(); return postApiP({ tipo, persona: me, ...extra }).then(() => new Promise(r => setTimeout(r, 700))).then(tick); };
-  function draw() {
-    const t = trk; if (!t || !$('trk')) return;
-    const yoS = t.x === me ? 'x' : (t.o === me ? 'o' : ''), otro = id => nombreDe(id), m = $('tmsg');
-    $('trk').innerHTML = [...t.tab].map((c, i) => `<button class="tc ${c}" data-i="${i}" ${t.estado === 'juego' && t.turno === yoS && c === '-' ? '' : 'disabled'}>${c === 'x' ? '✕' : c === 'o' ? '○' : ''}</button>`).join('');
-    let msg = '', act = '';
-    const bet = t.ap ? ` · apuesta ${t.ap} LoveCoins` : ' · sin apuesta';
-    if (t.estado === 'espera') {
-      if (t.x === me) { msg = 'Esperando a que acepte…' + bet; act = '<button class="btn glass" data-a="cancelar">Cancelar</button>'; }
-      else { msg = `${otro(t.x)} te reta${bet}`; act = '<button class="btn wide" style="width:auto" data-a="unirse">Aceptar reto</button>'; }
-    } else if (t.estado === 'juego') {
-      const mine = t.turno === yoS;
-      msg = (yoS ? (mine ? 'Tu turno ✨' : `Turno de ${otro(t.turno === 'x' ? t.x : t.o)}`) : 'Partida en curso') + bet;
-      if (yoS) act = '<button class="btn glass" data-a="rendirse">Rendirme</button>';
-    } else {
-      if (t.estado === 'fin') {
-        const w = t.gan === 'empate' ? 'empate' : (t.gan === 'x' ? t.x : t.o);
-        msg = w === 'empate' ? 'Empate 🤝' : (w === me ? `¡Ganaste${t.ap ? ' ' + t.ap + ' LoveCoins' : ''}! 🎉` : `Ganó ${otro(w)}${t.ap && w !== me ? ` · perdiste ${t.ap} LoveCoins` : ''}`);
-      } else msg = 'Nadie está jugando. ¡Reta!';
-      act = `<input id="tap" type="number" inputmode="numeric" min="0" max="1000" value="${Math.min(10, miSaldo())}" aria-label="Apuesta"><button class="btn wide" style="width:auto" data-a="crear">${t.estado === 'fin' ? 'Nueva partida' : 'Retar'}</button>`;
-    }
-    if (m.dataset.k !== msg) { m.dataset.k = msg; m.textContent = msg; }
-    const a = $('tact'); if (a.dataset.k !== act && !(document.activeElement && document.activeElement.id === 'tap')) { a.dataset.k = act; a.innerHTML = act; }
-    $('tsal').textContent = fmt(miSaldo());
-  }
-  async function tick() {
-    if (!$('trk')) return stopPoll();
-    if (Date.now() - busy < 600) return;
-    const r = await apiGet({ hoja: 'triki' });
-    if (!r || !r.ok || !$('trk')) return;
-    const prev = trk && trk.estado; trk = parseTriki(r);
-    if (r.monedas) loadMonedas(r.monedas);
-    draw();
-  }
-  $('trk').onclick = e => { const b = e.target.closest('.tc'); if (!b || b.disabled) return; const i = +b.dataset.i, yoS = trk.x === me ? 'x' : 'o'; trk.tab = trk.tab.slice(0, i) + yoS + trk.tab.slice(i + 1); trk.turno = yoS === 'x' ? 'o' : 'x'; draw(); send('triki_mover', { pos: i }); };
-  $('tact').onclick = e => { const b = e.target.closest('[data-a]'); if (!b) return; const a = b.dataset.a;
-    if (a === 'crear') { const ap = Math.max(0, Math.floor(+$('tap').value || 0)); if (ap > miSaldo()) { $('tmsg').textContent = 'No te alcanzan las LoveCoins'; return; } send('triki_crear', { apuesta: ap }); }
-    else if (a === 'rendirse') { if (confirm('¿Rendirte? Perderás la apuesta.')) send('triki_rendirse'); }
-    else send('triki_' + a); };
-  $('back').onclick = () => { stopPoll(); go(showJuegos, { hideTitle: true }); };
-  tick(); jTimer = setInterval(tick, 2000);
-}
-
-
-/* ===================== Símbolo LoveCoin y Canjear ===================== */
-const COIN = (n = 18) => `<svg class="coin" width="${n}" height="${n}" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="lcg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".5" stop-color="#f4c542"/><stop offset="1" stop-color="#c58a10"/></linearGradient></defs><circle cx="12" cy="12" r="11" fill="url(#lcg)"/><circle cx="12" cy="12" r="8.7" fill="none" stroke="#fff8d6" stroke-opacity=".85" stroke-width="1"/><path d="M12 17.4l-4.6-4.4a2.9 2.9 0 0 1 4.1-4.1l.5.5.5-.5a2.9 2.9 0 0 1 4.1 4.1z" fill="#c2485c"/><path d="M6.6 7.4A7 7 0 0 1 11 5" stroke="#fff" stroke-opacity=".8" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>`;
-const fmt = n => Number(n || 0).toLocaleString('es-CO');
-const wins = () => store.get('qn_wins', { ella: 0, el: 0 });
-const statsHTML = id => `<span class="st" style="display:flex;gap:12px;justify-content:inherit"><i>${COIN(15)} ${fmt(saldos()[id])}</i><i>🏆 ${wins()[id] || 0}</i></span>`;
-const updLC = () => document.querySelectorAll('.lcv').forEach(e => { e.textContent = fmt(miSaldo()); });
-const quitaVale = t => { const x = String(t).replace(/^Vale por /i, ''); return x[0].toUpperCase() + x.slice(1); };
-async function loadCatalogo() {
-  const r = await apiGet({ catalogo: 1 });
-  if (r && r.ok) store.set('qn_cat', { lista: r.lista, costos: r.costos });
-  return store.get('qn_cat', null);
-}
-function showCanje() {
-  stopPoll();
-  const me = yo(), back = () => go(renderHome2, { hideTitle: true });
-  if (!me) {
-    screen.innerHTML = `<div class="home">${dateTop()}<div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><h2 class="big">Canjear</h2></div><div class="evempty">Primero elige quién eres en Juegos 💗</div></div>`;
-    $('back').onclick = back; return;
-  }
-  const paint = cat => {
-    const sal = miSaldo(), cop = [1000, 5000, 10000, 50000];
-    const tier = { oro: 'Oro', plata: 'Plata', bronce: 'Bronce' }, cos = (cat && cat.costos) || { oro: 6000, plata: 3000, bronce: 1000 };
-    const row = (att, label, price) => `<button class="cjopt${price > sal ? ' dis' : ''}" ${att}><span>${label}</span><span class="pr">${COIN(16)} ${fmt(price)}</span></button>`;
-    $('cjb').innerHTML = `<div class="cjh">Dinero real<small>1.000 LoveCoins = $100 COP</small></div>${cop.map(c => row(`data-t="cop" data-m="${c}"`, `$${fmt(c / 10)} COP`, c)).join('')}
-      <div class="cjh">Regalos</div>${cat ? ['oro', 'plata', 'bronce'].map(n => cat.lista.filter(x => x[1] === n).map(x => row(`data-t="regalo" data-d="${escA(x[0])}"`, `${quitaVale(x[0])} <small style="color:var(--muted)">${tier[n]}</small>`, cos[n])).join('')).join('') : '<div class="evempty">Necesito internet para cargar los regalos.</div>'}`;
+  $('jgb').onclick = e => {
+    const c = e.target.closest('#jw button');
+    if (c) { store.set('qn_yo', c.dataset.id); updLC(); paintJuegos(); return; }
+    const g = e.target.closest('.gcard'); if (!g) return;
+    if (!yo()) { alert('Primero elige quién eres 💗'); return; }
+    if (restantes(g.dataset.j) <= 0) { alert('Ya usaste tus intentos de hoy en este juego. ¡Mañana hay más!'); return; }
+    go(() => showJuego(g.dataset.j), { hideTitle: true });
   };
+  paintJuegos();
+  loadPerfiles().then(() => loadMonedas()); loadJuegos().then(paintJuegos);
+}
+function showJuego(key) {
+  stopGame();
+  const g = JG[key], me = yo();
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Canjear</h2><div class="date">${escH(nombreDe(me))} · ${COIN(14)} <span class="lcv">${fmt(miSaldo())}</span></div></div></div><div id="cjb"></div></div>`;
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">${g.n}</h2><div class="date">${escH(nombreDe(me))} · <span id="gint"></span></div></div></div>
+    <div class="ghud"><div>${g.l1}<b id="gp">0</b></div><div>${g.l2}<b id="gt">–</b></div></div>
+    <div class="garea" id="garea"><div class="gintro"><span>${g.ic}</span>${g.d}</div></div>
+    <div class="tmsg" id="gmsg"></div>
+    <div class="tact"><button class="btn wide" id="gstart" style="width:auto">¡Jugar!</button></div></div>`;
+  const ui = { score: v => { $('gp').textContent = v; }, time: v => { $('gt').textContent = v + 's'; } };
+  const info = () => { $('gint').textContent = `intentos: ${Math.max(0, restantes(key))}`; };
+  info();
+  $('back').onclick = () => { stopGame(); go(showJuegos, { hideTitle: true }); };
+  $('gstart').onclick = () => {
+    if (restantes(key) <= 0) { $('gmsg').textContent = 'Ya usaste tus intentos de hoy en este juego.'; return; }
+    $('gstart').style.display = 'none'; $('gmsg').textContent = ''; ui.score(0); $('gt').textContent = '–';
+    gStop = g.run($('garea'), ui, async score => {
+      gStop = null;
+      if ($('gmsg')) $('gmsg').textContent = 'Guardando…';
+      const r = await apiGet({ puntaje: 1, clave: API_KEY, persona: me, juego: key, puntos: score });
+      let msg;
+      if (!r) msg = 'Sin conexión: este puntaje no se guardó 😕';
+      else if (r.ok) { msg = `Hiciste ${score}. Tu mejor de hoy: ${r.mejor} ⭐`; await loadJuegos(); }
+      else if (r.error === 'intentos') { msg = 'Ya usaste tus intentos de hoy en este juego.'; await loadJuegos(); }
+      else msg = 'No se pudo guardar el puntaje.';
+      if (!$('gmsg')) return;
+      $('gmsg').textContent = msg; info();
+      $('gstart').textContent = 'Jugar otra vez'; $('gstart').style.display = restantes(key) > 0 ? '' : 'none';
+    });
+  };
+}
+function playCorazones(area, ui, done) {
+  let score = 0, t = 30, spawnT = 0, tickT = 0;
+  area.innerHTML = ''; ui.score(0); ui.time(t);
+  const spawn = () => {
+    const r = Math.random(), kind = r < .68 ? 'h' : r < .85 ? 'g' : 'b', el = document.createElement('button');
+    el.className = 'gh'; el.textContent = kind === 'h' ? '❤️' : kind === 'g' ? '💛' : '💔';
+    el.style.left = (Math.random() * 80 + 2) + '%'; el.style.top = (Math.random() * 76 + 2) + '%';
+    const life = setTimeout(() => el.remove(), 1100);
+    el.onpointerdown = ev => { ev.preventDefault(); el.onpointerdown = null; clearTimeout(life); score = Math.max(0, score + (kind === 'h' ? 1 : kind === 'g' ? 3 : -2)); ui.score(score); el.classList.add('pop'); setTimeout(() => el.remove(), 160); };
+    area.appendChild(el);
+  };
+  spawnT = setInterval(spawn, 600);
+  tickT = setInterval(() => { t--; ui.time(t); if (t <= 0) { clearInterval(spawnT); clearInterval(tickT); area.innerHTML = ''; done(score); } }, 1000);
+  return () => { clearInterval(spawnT); clearInterval(tickT); };
+}
+function playMemoria(area, ui, done) {
+  const emo = ['💗', '🌸', '🍓', '🦋', '🌙', '⭐', '🍫', '🎀'], deck = shuffle([...emo, ...emo]);
+  let first = -1, lock = false, moves = 0, found = 0, secs = 0, timer = 0, off = 0;
+  area.innerHTML = `<div class="mgrid">${deck.map((_, i) => `<button class="mc" data-i="${i}">❔</button>`).join('')}</div>`;
+  ui.score(0); ui.time(0);
+  const cards = [...area.querySelectorAll('.mc')];
+  area.firstChild.onclick = e => {
+    const b = e.target.closest('.mc'); if (!b || lock || b.classList.contains('up') || b.classList.contains('ok')) return;
+    if (!timer) timer = setInterval(() => { secs++; ui.time(secs); }, 1000);
+    const i = +b.dataset.i; b.textContent = deck[i]; b.classList.add('up');
+    if (first < 0) { first = i; return; }
+    moves++; ui.score(moves);
+    const a = first; first = -1;
+    if (deck[a] === deck[i]) {
+      [a, i].forEach(k => { cards[k].classList.remove('up'); cards[k].classList.add('ok'); });
+      if (++found === 8) { clearInterval(timer); done(Math.max(0, 1000 - Math.max(0, moves - 8) * 25 - secs * 5)); }
+    } else {
+      lock = true;
+      off = setTimeout(() => { [a, i].forEach(k => { cards[k].classList.remove('up'); cards[k].textContent = '❔'; }); lock = false; }, 750);
+    }
+  };
+  return () => { clearInterval(timer); clearTimeout(off); };
+}
+function playTap(area, ui, done) {
+  let n = 0, t = 10, timer = 0;
+  area.innerHTML = '<button class="tapbtn">TOCA<br>AQUÍ</button>';
+  ui.score(0); ui.time(t);
+  const b = area.firstChild;
+  b.onpointerdown = ev => {
+    ev.preventDefault();
+    if (!timer) timer = setInterval(() => { t--; ui.time(t); if (t <= 0) { clearInterval(timer); b.onpointerdown = null; b.disabled = true; done(n); } }, 1000);
+    n++; ui.score(n);
+  };
+  return () => clearInterval(timer);
+}
+
+/* ---------- Canjear: LoveCoins por dinero real (de $1.000 a $100.000 COP) ---------- */
+function showCanje() {
+  const back = () => go(renderHome2, { hideTitle: true });
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Canjear</h2><div class="date" id="cjd"></div></div></div><div id="cjb"></div></div>`;
   $('back').onclick = back;
-  paint(store.get('qn_cat', null));
-  loadMonedas().then(() => loadCatalogo()).then(c => { if ($('cjb')) paint(c); });
+  const paint = () => {
+    const me = yo(), sal = miSaldo();
+    $('cjd').innerHTML = me ? `${escH(nombreDe(me))} · ${COIN(14)} <span class="lcv">${fmt(sal)}</span>` : 'LoveCoins';
+    if (!perfiles().length) { $('cjb').innerHTML = '<div class="evempty">Aún no hay perfiles. Crea uno en Perfil 💗</div>'; return; }
+    $('cjb').innerHTML = `<div class="slab" style="margin:4px 4px 0">¿Quién eres en este celular?</div><div class="jwho" id="jw">${whoHTML()}</div>
+      ${me ? `<div class="cjh">Dinero real<small>1.000 LoveCoins = $100 COP</small></div>${CANJES_COP.map(c => `<button class="cjopt${c * LC_POR_COP > sal ? ' dis' : ''}" data-cop="${c}"><span>$${fmt(c)} COP</span><span class="pr">${COIN(16)} ${fmt(c * LC_POR_COP)}</span></button>`).join('')}` : '<div class="evempty">Elige quién eres para canjear 💗</div>'}`;
+  };
+  paint();
+  loadPerfiles().then(() => loadMonedas()).then(() => { if ($('cjb')) paint(); });
   $('cjb').onclick = async e => {
+    const c = e.target.closest('#jw button');
+    if (c) { store.set('qn_yo', c.dataset.id); paint(); return; }
     const b = e.target.closest('.cjopt'); if (!b || b.dataset.busy) return;
-    const t = b.dataset.t, cat = store.get('qn_cat', null), label = b.firstElementChild.textContent.trim();
-    const coste = t === 'cop' ? +b.dataset.m : (cat.costos[cat.lista.find(x => x[0] === b.dataset.d)[1]]);
+    const me = yo(), cop = +b.dataset.cop, coste = cop * LC_POR_COP;
     if (coste > miSaldo()) { alert('Aún no te alcanzan las LoveCoins 💗'); return; }
-    if (!confirm(`¿Canjear "${label}" por ${fmt(coste)} LoveCoins?`)) return;
+    if (!confirm(`¿Canjear $${fmt(cop)} COP por ${fmt(coste)} LoveCoins?`)) return;
     b.dataset.busy = 1; b.style.opacity = .5;
-    const r = await apiGet({ canjear: 1, clave: API_KEY, persona: me, tipo: t, ...(t === 'cop' ? { monedas: coste } : { detalle: b.dataset.d }) });
-    if (!r || !r.ok) { b.dataset.busy = ''; b.style.opacity = ''; alert(r && r.error === 'saldo' ? 'No te alcanzan las LoveCoins.' : 'No se pudo canjear. Revisa tu conexión e intenta de nuevo.'); return; }
-    const m = { ...saldos(), [me]: r.saldo }; store.set('qn_monedas', m); updLC();
-    const msg = `🎟️ Canje ${r.codigo}\n${nombreDe(me)} canjeó: ${r.detalle}${r.cop ? ' (dinero real)' : ''}\n−${fmt(r.coste)} LoveCoins · Saldo: ${fmt(r.saldo)}`;
+    const r = await apiGet({ canjear: 1, clave: API_KEY, persona: me, cop });
+    if (!r || !r.ok) { b.dataset.busy = ''; b.style.opacity = ''; alert(r && r.error === 'saldo' ? 'No te alcanzan las LoveCoins.' : r && r.error === 'persona' ? 'Ese perfil ya no existe.' : 'No se pudo canjear. Revisa tu conexión e intenta de nuevo.'); return; }
+    store.set('qn_monedas', { ...saldos(), [me]: r.saldo }); updLC();
+    const msg = `🎟️ Canje ${r.codigo}\n${nombreDe(me)} canjeó: ${r.detalle} (dinero real)\n−${fmt(r.coste)} LoveCoins · Saldo: ${fmt(r.saldo)}`;
     const link = waLink(msg);
     screen.innerHTML = `<div class="home">${dateTop()}<h2 class="big" style="margin-top:6px">¡Canje listo! 🎉</h2><div class="date">${escH(r.detalle)}</div><div class="code">${r.codigo}</div>
       <a class="btn wide" href="${link}" target="_blank" rel="noopener">Enviar a mi WhatsApp 💌</a>
@@ -2138,7 +2339,7 @@ const fixH = () => { document.documentElement.style.setProperty('--ah', window.i
 fixH(); ['resize', 'orientationchange', 'pageshow', 'load'].forEach(ev => window.addEventListener(ev, fixH));
 if (window.visualViewport) window.visualViewport.addEventListener('resize', fixH);
 renderHome();
-loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog();
+loadBuzon(); loadEventos(); loadPerfiles().then(() => { loadPerfil(); loadMonedas(); }); loadFotos(); loadCupones(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
 </script>
 </body>
