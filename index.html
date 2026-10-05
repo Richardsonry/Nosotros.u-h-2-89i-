@@ -21,7 +21,7 @@
     --glass: rgba(255,255,255,.42);
     --glass-strong: rgba(255,255,255,.62);
     --edge: rgba(255,255,255,.75);
-    --glass-shadow: 0 10px 30px rgba(150,60,90,.14), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(255,255,255,.35);
+    --glass-shadow: 0 10px 30px rgba(150,60,90,.14), inset 0 0 0 1px rgba(255,255,255,.95);
     --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
     --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
@@ -88,14 +88,14 @@
     display: inline-block; font: inherit; font-weight: 600; font-size: .95rem; letter-spacing: 0;
     background: rgba(25,18,22,.9); color: #fff; border: 1px solid rgba(255,255,255,.18);
     padding: 16px 30px; border-radius: 999px; cursor: pointer; text-decoration: none;
-    box-shadow: 0 8px 22px rgba(40,10,25,.28), inset 0 1px 0 rgba(255,255,255,.25);
+    box-shadow: 0 8px 22px rgba(40,10,25,.28), inset 0 0 0 1px rgba(255,255,255,.25);
     transition: transform .2s, filter .2s;
   }
   .btn:active { transform: scale(.97); }
   .btn.wide {
     display: block; width: 100%; font-size: 1rem; line-height: 1.35; border-radius: 22px; padding: 18px 20px;
     background: linear-gradient(180deg, rgba(214,84,110,.92), rgba(190,60,90,.92));
-    box-shadow: 0 10px 26px rgba(190,60,90,.35), inset 0 1.5px 0 rgba(255,255,255,.45);
+    box-shadow: 0 10px 26px rgba(190,60,90,.35), inset 0 0 0 1px rgba(255,255,255,.45);
   }
   .again { margin-top: 22px; font-size: .85rem; }
   .again a { color: var(--muted); }
@@ -110,7 +110,7 @@
     transition: transform .2s, background .25s;
   }
   .choice:active { transform: scale(.97); }
-  .choice.primary { background: rgba(25,18,22,.9); color: #fff; border-color: rgba(255,255,255,.18); box-shadow: 0 8px 22px rgba(40,10,25,.28), inset 0 1px 0 rgba(255,255,255,.25); }
+  .choice.primary { background: rgba(25,18,22,.9); color: #fff; border-color: rgba(255,255,255,.18); box-shadow: 0 8px 22px rgba(40,10,25,.28), inset 0 0 0 1px rgba(255,255,255,.25); }
   .bye { font-family: var(--serif); font-size: clamp(1.3rem, 5.6vw, 1.8rem); line-height: 1.45; margin-bottom: 18px; padding: 28px 22px; }
   .love { font-family: var(--serif); font-size: 1.6rem; color: var(--accent); margin-bottom: 26px; }
 
@@ -130,7 +130,7 @@
   }
   .opt:active:not(:disabled) { transform: scale(.98); }
   @media (hover: hover) { .opt:hover:not(:disabled) { background: var(--glass-strong); } }
-  .opt b { font-weight: 700; color: var(--accent); width: 30px; height: 30px; flex: none; display: grid; place-items: center; font-size: .85rem; border-radius: 50%; background: rgba(255,255,255,.7); box-shadow: inset 0 1px 0 #fff; }
+  .opt b { font-weight: 700; color: var(--accent); width: 30px; height: 30px; flex: none; display: grid; place-items: center; font-size: .85rem; border-radius: 50%; background: rgba(255,255,255,.7); box-shadow: inset 0 0 0 1px #fff; }
   .opt:disabled { cursor: default; }
   .opt.ok { background: rgba(120,220,160,.45); border-color: rgba(255,255,255,.9); }
   .opt.bad { background: rgba(255,120,130,.42); border-color: rgba(255,255,255,.9); }
@@ -233,25 +233,25 @@
   #dock::before { content: ""; position: absolute; left: -24px; right: -24px; bottom: calc(-14px - env(safe-area-inset-bottom)); height: 130px; z-index: -1; background: linear-gradient(transparent, var(--bg) 72%); pointer-events: none; }
   #dock.on { opacity: 1; transform: none; }
   #dock.on .btn { pointer-events: auto; }
-  #dock .btn { box-shadow: 0 10px 28px rgba(90,40,60,.2), inset 0 1.5px 0 #fff; background: rgba(255,255,255,.85); }
+  #dock .btn { box-shadow: 0 10px 28px rgba(90,40,60,.2), inset 0 0 0 1px #fff; background: rgba(255,255,255,.85); }
 
   /* ===== Sombras sin recortes ===== */
-  :root { --glass-shadow: 0 4px 14px rgba(150,60,90,.10), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(255,255,255,.35); }
+  :root { --glass-shadow: 0 4px 14px rgba(150,60,90,.10), inset 0 0 0 1px rgba(255,255,255,.95); }
   /* El contenedor con scroll recortaba las sombras en recto: se le da margen interior y se compensa por fuera */
   main { margin: -10px -20px calc(-18px - env(safe-area-inset-bottom)); padding: 10px 20px calc(30px + env(safe-area-inset-bottom)); }
   /* El degradado de abajo coincidía mal con el fondo: ahora el fondo es liso abajo */
   body { background: radial-gradient(80% 30% at 0% 0%, rgba(255,205,220,.45), transparent 70%), radial-gradient(60% 24% at 100% 0%, rgba(215,200,255,.35), transparent 70%), var(--bg); }
-  .btn { box-shadow: 0 4px 12px rgba(40,10,25,.22), inset 0 1px 0 rgba(255,255,255,.25); }
-  .btn.wide { box-shadow: 0 5px 14px rgba(190,60,90,.28), inset 0 1.5px 0 rgba(255,255,255,.45); }
+  .btn { box-shadow: 0 4px 12px rgba(40,10,25,.22), inset 0 0 0 1px rgba(255,255,255,.25); }
+  .btn.wide { box-shadow: 0 5px 14px rgba(190,60,90,.28), inset 0 0 0 1px rgba(255,255,255,.45); }
   .btn.glass { box-shadow: var(--glass-shadow); }
-  .choice.primary { box-shadow: 0 4px 12px rgba(40,10,25,.22), inset 0 1px 0 rgba(255,255,255,.25); }
+  .choice.primary { box-shadow: 0 4px 12px rgba(40,10,25,.22), inset 0 0 0 1px rgba(255,255,255,.25); }
   .entry, .cal { box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
   .home { padding-bottom: 84px; }
 
   /* Botón de abajo, más bajo */
   #dock { bottom: max(10px, calc(env(safe-area-inset-bottom) - 12px)); }
   #dock::before { bottom: -40px; height: 140px; }
-  #dock .btn { box-shadow: 0 4px 14px rgba(90,40,60,.16), inset 0 1.5px 0 #fff; }
+  #dock .btn { box-shadow: 0 4px 14px rgba(90,40,60,.16), inset 0 0 0 1px #fff; }
 
   /* ===== Calendario Universidad ===== */
   .cal { background: #fff; border-radius: 24px; padding: 14px 12px 12px; margin-bottom: 16px; }
@@ -277,7 +277,7 @@
   /* ===== Botón largo: Calendario Universidad ===== */
   .calbtn { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: #fff; border: 0; border-radius: 24px; padding: 12px 14px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); font: inherit; color: var(--ink); cursor: pointer; transition: transform .2s; }
   .calbtn:active { transform: scale(.98); }
-  .calbtn .ic { flex: none; width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; font-size: 1.45rem; background: linear-gradient(135deg, #ff8fab, #ffc66d 55%, #7ed9b0); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.6); }
+  .calbtn .ic { flex: none; width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; font-size: 1.45rem; background: linear-gradient(135deg, #ff8fab, #ffc66d 55%, #7ed9b0); box-shadow: inset 0 0 0 1px rgba(255,255,255,.6); }
   .calbtn .tx { flex: 1; min-width: 0; }
   .calbtn b { display: block; font-weight: 700; font-size: 1rem; }
   .calbtn small { display: block; color: var(--muted); font-size: .8rem; margin-top: 1px; }
@@ -306,7 +306,7 @@
   .screen.full { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; align-self: stretch; margin: 0; }
   .screen.full > .home { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: 84px; }
   main:has(.screen.full) { overflow-y: hidden; }
-  .pager { flex: 1 1 0; min-height: 150px; display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior: contain; margin: -2px -6px -6px; padding: 2px 6px 22px; scroll-padding: 0 6px; }
+  .pager { flex: 1 1 0; min-height: 150px; display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior: contain; margin: -14px -20px -12px; padding: 14px 20px 28px; scroll-padding: 0 20px; }
   .pager::-webkit-scrollbar { display: none; }
   .pager .entry { display: flex; flex-direction: column; flex: 0 0 100%; scroll-snap-align: center; margin-bottom: 0; }
   .pager .mosaic { flex: 1; min-height: 90px; height: auto; }
@@ -326,7 +326,7 @@
   .tile { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-height: 92px; text-align: left; border: 0; border-radius: 24px; padding: 14px; font: inherit; color: var(--ink); background: #fff; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); transition: transform .2s; }
   .tile:active { transform: scale(.97); }
   .tile .ti { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); }
-  .tile.main { color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: 0 5px 14px rgba(194,72,92,.3), inset 0 1.5px 0 rgba(255,255,255,.4); }
+  .tile.main { color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: 0 5px 14px rgba(194,72,92,.3), inset 0 0 0 1px rgba(255,255,255,.18); }
   .tile.main .ti { background: rgba(255,255,255,.25); }
   .tile b { font-weight: 700; font-size: .98rem; line-height: 1.15; }
   .tile small { color: var(--muted); font-size: .74rem; font-weight: 500; margin-top: -4px; }
@@ -353,7 +353,7 @@
   .evempty { text-align: center; color: var(--muted); font-size: .92rem; line-height: 1.6; padding: 36px 10px; }
   /* ===== Marco de fotos simétrico: ancho completo, alineado con los demás recuadros ===== */
   .pager .entry { flex: 0 0 100%; scroll-snap-align: start; }
-  .pager { scroll-padding: 0 6px; }
+  .pager { scroll-padding: 0 20px; }
 
   /* ===== Fila de abajo: Buzón + flecha a la página siguiente ===== */
   .tiles.nav { margin-top: 12px; }
@@ -405,7 +405,7 @@
   .evmsg { min-height: 0; font-size: .78rem; font-weight: 600; color: var(--muted); padding: 0 6px; }
   .evmsg:empty { display: none; }
   .evmsg.show { color: var(--accent); }
-  .screen.full .evlist { flex: 1 1 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; align-content: start; padding-bottom: 12px; }
+  .screen.full .evlist { flex: 1 1 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; align-content: start; padding: 4px 20px 16px; margin: -4px -20px 0; }
   /* ===== Fecha con selector nativo del teléfono ===== */
   .datef { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 0 14px 0 16px; border-radius: 999px; background: #f2edef; color: var(--ink); font-size: 16px; cursor: pointer; overflow: hidden; }
   .datef svg { flex: none; color: var(--accent); }
@@ -448,7 +448,7 @@
 
   /* ===== Perfil: tarjetas, barras de color, QR animado y ventana de edición ===== */
   .phead { flex: none; text-align: center; margin: 0 0 14px; }
-  .pavatar { width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 8px; display: grid; place-items: center; overflow: hidden; color: #fff; font-size: 2.3rem; font-weight: 800; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: 0 6px 18px rgba(194,72,92,.28), inset 0 1.5px 0 rgba(255,255,255,.4); }
+  .pavatar { width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 8px; display: grid; place-items: center; overflow: hidden; color: #fff; font-size: 2.3rem; font-weight: 800; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: 0 6px 18px rgba(194,72,92,.28), inset 0 0 0 1px rgba(255,255,255,.4); }
   .pavatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .pavatar.sm { width: 54px; height: 54px; margin: 0; flex: none; font-size: 1.3rem; box-shadow: none; }
   .pname2 { font-weight: 800; font-size: 1.3rem; letter-spacing: -.02em; }
@@ -513,12 +513,24 @@
   .tile.main small { color: rgba(255,255,255,.85); }
   .tiles .tile:not(.mini) { min-height: 98px; }
 
+
+  /* ===== Botón Raspa y Gana dorado con brillo ===== */
+  .pill.gold { color: #4a3a12; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none;
+    background:
+      linear-gradient(100deg, transparent 0, rgba(255,255,255,.8) 50%, transparent 100%) no-repeat -80px 0 / 46px 100%,
+      linear-gradient(120deg, #f7f3e6 0%, #e3e6ec 30%, #fff1b8 58%, #e9d17a 80%, #f3f5f8 100%);
+    box-shadow: 0 4px 12px rgba(160,120,20,.28), inset 0 0 0 1px rgba(255,255,255,.7);
+    animation: pshine 3.2s ease-in-out infinite; }
+  .pill.gold svg { color: #a8740a; }
+  @keyframes pshine { 0% { background-position: -80px 0, 0 0; } 55%, 100% { background-position: calc(100% + 80px) 0, 0 0; } }
+  @media (prefers-reduced-motion: reduce) { .pill.gold { animation: none; } }
+
   /* ===== Raspa y Gana ===== */
-  .raspa { position: relative; overflow: hidden; display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 12px; padding: 16px 18px; border: 0; border-radius: 26px; font: inherit; text-align: left; color: #4a3a12; cursor: pointer; background: linear-gradient(120deg, #f7f3e6 0%, #e3e6ec 30%, #fff1b8 58%, #e9d17a 80%, #f3f5f8 100%); box-shadow: 0 5px 16px rgba(160,120,20,.28), inset 0 1.5px 0 rgba(255,255,255,.9); transition: transform .2s; }
+  .raspa { position: relative; overflow: hidden; display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 12px; padding: 16px 18px; border: 0; border-radius: 26px; font: inherit; text-align: left; color: #4a3a12; cursor: pointer; background: linear-gradient(120deg, #f7f3e6 0%, #e3e6ec 30%, #fff1b8 58%, #e9d17a 80%, #f3f5f8 100%); box-shadow: 0 5px 16px rgba(160,120,20,.28), inset 0 0 0 1px rgba(255,255,255,.9); transition: transform .2s; }
   .raspa:active { transform: scale(.98); }
   .raspa::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent); transform: skewX(-18deg); animation: rsh 3.2s ease-in-out infinite; pointer-events: none; }
   @keyframes rsh { 0% { left: -60%; } 55%, 100% { left: 130%; } }
-  .raspa .ri { flex: none; width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.45); }
+  .raspa .ri { flex: none; width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: inset 0 0 0 1px rgba(255,255,255,.45); }
   .raspa .ri svg { width: 26px; height: 26px; }
   .raspa .rt { flex: 1; min-width: 0; }
   .raspa b { display: block; font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
@@ -583,30 +595,9 @@
 /* =====================================================================
    CONFIGURACIÓN
    ===================================================================== */
-// true  = primero salen las preguntas "¿Podemos arreglar las cosas?" y luego el test
-// false = va directo al test
-const INTRO_ENABLED = false;
-
-// true  = el botón "Pregunta del día" (arriba a la derecha del inicio) está activo
-// false = el botón sigue ahí, atenuado y sin función
-const DAILY_ENABLED = true;
-
 // 📒 REGISTRO (opcional): pega aquí el link de tu hoja de Google (Apps Script) o de Make para Notion.
-// Cada respuesta de "Pregunta del día" y cada resultado del test se enviará ahí. Vacío ("") = no se registra nada.
+// Cada resultado del test se enviará ahí. Vacío ("") = no se registra nada.
 const LOG_URL = "";
-
-// 🔗 PREGUNTA DEL DÍA DESDE GOOGLE SHEETS (gratis): pega aquí el link CSV de tu hoja publicada.
-// Así cambias la pregunta desde el celular sin tocar este archivo. Déjalo vacío ("") para usar solo DAILY_QUESTION.
-const DAILY_SHEET_URL = "";
-
-// ✏️ PREGUNTA DEL DÍA de respaldo (se usa si no hay hoja o no hay internet). Es independiente del banco de 100 preguntas.
-// answer: 0 = primera opción, 1 = segunda, 2 = tercera, 3 = cuarta.
-// Si cambias el texto de la pregunta, ella podrá responder la nueva aunque ya haya respondido la anterior.
-const DAILY_QUESTION = {
-  text: "¿Cuál es mi plan ideal para un domingo?",
-  options: ["Dormir todo el día", "Salir a caminar", "Ver series contigo", "Ir a comer algo rico"],
-  answer: 2,
-};
 
 // Fotos fijas para el inicio (opcional). Formato: { src: "data:image/jpeg;base64,...", caption: "Nuestro primer viaje" }
 // También se pueden añadir desde el teléfono con la tarjeta "Añadir fotos".
@@ -824,72 +815,6 @@ function go(renderFn, opts = {}) {
   }, 450);
 }
 
-/* ===================== Inicio (intro) ===================== */
-const INTRO = { center: true, hideTitle: true };
-const PLACES = [
-  { label: "Ven a mi casa", msg: "Quiero que vengas a mi casa 🏠" },
-  { label: "Voy a la tuya", msg: "Voy yo a tu casa 🏠" },
-];
-let choice = null;
-let waUrl = '';
-
-function introAsk() {
-  screen.innerHTML = `
-    <h2 class="intro-title">¿Podemos arreglar las cosas?</h2>
-    <div class="pair">
-      <button class="choice primary" id="yes">SÍ</button>
-      <button class="choice" id="no">NO</button>
-    </div>`;
-  $('yes').onclick = () => go(introPlace, INTRO);
-  $('no').onclick = () => go(introTest, INTRO);
-}
-
-function introPlace() {
-  screen.innerHTML = `
-    <h2 class="intro-title">¿Quieres que vaya a tu casa o vienes a la mía?</h2>
-    <div class="pair stack">
-      ${PLACES.map((p, i) => `<button class="choice" data-i="${i}">${p.label}</button>`).join('')}
-    </div>`;
-  screen.querySelectorAll('.choice').forEach(b => {
-    b.onclick = () => { choice = PLACES[b.dataset.i]; go(introSend, INTRO); };
-  });
-}
-
-function introSend() {
-  waUrl = waLink(`Sí, podemos arreglar las cosas 💕 ${choice.msg}`);
-  screen.innerHTML = `
-    <p class="sub">Elegiste:<br><em>${choice.label}</em> 💕</p>
-    <a class="btn wide" id="send" href="${waUrl}" target="_blank" rel="noopener">Envíame la respuesta y mira la sorpresa que viene</a>`;
-  $('send').addEventListener('click', () => setTimeout(() => go(introSent, INTRO), 700));
-}
-
-function introSent() {
-  screen.innerHTML = `
-    <p class="sub">Cuando hayas enviado el mensaje por WhatsApp,<br>vuelve aquí y toca el botón. ✨</p>
-    <button class="btn wide" id="ready">Ya lo envié, ¡quiero la sorpresa!</button>
-    <p class="again"><a href="${waUrl}" target="_blank" rel="noopener">¿No se abrió WhatsApp? Intentar de nuevo</a></p>`;
-  $('ready').onclick = entry;
-}
-
-function introTest() {
-  screen.innerHTML = `
-    <h2 class="intro-title">¿Quieres hacer un pequeño test sobre nosotros?</h2>
-    <div class="pair">
-      <button class="choice primary" id="yes">SÍ</button>
-      <button class="choice" id="no">NO</button>
-    </div>`;
-  $('yes').onclick = entry;
-  $('no').onclick = () => go(introBye, INTRO);
-}
-
-function introBye() {
-  screen.innerHTML = `
-    <p class="bye">De verdad quiero estar bien contigo.<br>Ojalá lo pienses mejor y arreglemos las cosas.</p>
-    <p class="love">Te amo mucho ♥</p>
-    <button class="btn" id="back">Pensarlo de nuevo</button>`;
-  $('back').onclick = () => go(introAsk, INTRO);
-}
-
 /* ===================== Test ===================== */
 let test = [], idx = 0, correct = 0, locked = false, answers = [];
 
@@ -981,8 +906,6 @@ const store = {
 };
 const dayKey = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
 const dayNum = () => { const d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); };
-const dailyQ = () => { const q = currentDaily; return q && q.text && q.options.filter(o => o.trim()).length >= 2 && (q.options[q.answer] || '').trim() ? q : null; };
-const dailyState = () => { const s = store.get('qn_daily', null), q = dailyQ(); return s && q && s.key === q.text ? s : null; };
 const goHome = () => go(renderHome, { hideTitle: true });
 const entry = goHome;
 
@@ -1003,8 +926,6 @@ function flushLog() {
 }
 
 /* ---- Pregunta del día desde Google Sheets (opcional) ---- */
-let currentDaily = hasSheet(DAILY_SHEET_URL) ? (store.get('qn_dq', null) || DAILY_QUESTION) : DAILY_QUESTION;
-
 function parseCSV(t) {
   const rows = []; let r = [], c = '', q = false;
   for (let i = 0; i < t.length; i++) {
@@ -1017,33 +938,6 @@ function parseCSV(t) {
   }
   if (c !== '' || r.length) { r.push(c); rows.push(r); }
   return rows;
-}
-
-// Columnas: A fecha (opcional, AAAA-MM-DD) · B pregunta · C-F opciones · G correcta (A-D o 1-4)
-function pickDaily(rows) {
-  const clean = v => String(v || '').replace(/[<>]/g, '').trim();
-  const p2 = n => String(n).padStart(2, '0');
-  const iso = v => {
-    v = clean(v);
-    let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-    if (m) return `${m[1]}-${p2(m[2])}-${p2(m[3])}`;
-    m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-    return m ? `${m[3]}-${p2(m[2])}-${p2(m[1])}` : '';
-  };
-  const list = rows
-    .map(r => ({ date: iso(r[0]), text: clean(r[1]), options: [2, 3, 4, 5].map(i => clean(r[i])), ans: clean(r[6]) }))
-    .filter(r => r.text && r.text.toLowerCase() !== 'pregunta' && r.options.filter(Boolean).length >= 2);
-  if (!list.length) return null;
-  const d = new Date(), today = `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
-  const dated = list.filter(r => r.date);
-  const row = dated.length
-    ? (dated.find(r => r.date === today) || dated.filter(r => r.date <= today).sort((a, b) => a.date < b.date ? -1 : 1).pop())
-    : list[list.length - 1];
-  if (!row) return null;
-  const a = row.ans.toUpperCase();
-  const idx = /^[A-D]$/.test(a) ? 'ABCD'.indexOf(a) : parseInt(a, 10) - 1;
-  if (!(idx >= 0 && idx < 4) || !row.options[idx]) return null;
-  return { text: row.text, options: row.options, answer: idx };
 }
 
 /* Lee una pestaña: primero por el Apps Script (SCRIPT_URL, al instante) y, si no, por el CSV publicado. Devuelve filas o null. */
@@ -1086,22 +980,7 @@ function postApi(body) {
   if (!API_URL) return;
   try { fetch(API_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ clave: API_KEY, ...body }) }).catch(() => {}); } catch (e) {}
 }
-async function loadDaily() {
-  if (!hasSheet(DAILY_SHEET_URL)) return;
-  try {
-    const rows = await fetchTab('pregunta', DAILY_SHEET_URL);
-    if (!rows) return;
-    const q = pickDaily(rows);
-    if (!q) return;
-    currentDaily = q; store.set('qn_dq', q);
-    const b = $('dq');
-    if (b && DAILY_ENABLED) {
-      const old = b.querySelector('.dot'); if (old) old.remove();
-      if (!dailyState()) b.insertAdjacentHTML('beforeend', '<i class="dot"></i>');
-    }
-  } catch (e) { /* sin internet: se queda con la última pregunta guardada */ }
-}
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog(); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog(); } });
 
 
 const readPhoto = (f, max = 640, q = .7) => new Promise(res => {
@@ -1125,15 +1004,14 @@ const readPhoto = (f, max = 640, q = .7) => new Promise(res => {
 const dateLabel = () => { const x = new Date().toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' }); return x[0].toUpperCase() + x.slice(1); };
 const dateTop = () => `<div class="tdate">${dateLabel()}</div>`;
 
-/* Cabecera del diario (fecha + título + Pregunta del día), igual en las dos páginas */
+/* Cabecera del diario (fecha + título + Raspa y Gana), igual en las dos páginas */
 function homeHead() {
   const spark = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
-  const done = dailyState();
   return `${dateTop()}
     <div class="jtop"><h2 class="big">Nuestro diario</h2>
-      <button class="pill${DAILY_ENABLED ? '' : ' off'}" id="dq"${DAILY_ENABLED ? '' : ' disabled'}>${spark}Pregunta del día${DAILY_ENABLED && !done ? '<i class="dot"></i>' : ''}</button></div>`;
+      <button class="pill gold" id="rsp">${spark}Raspa y Gana${cupToday() ? '' : '<i class="dot" id="rgb"></i>'}</button></div>`;
 }
-const bindDaily = () => { if (DAILY_ENABLED) $('dq').onclick = () => go(showDaily, { hideTitle: true }); };
+const bindRaspa = () => { $('rsp').onclick = () => go(showRaspa, { hideTitle: true }); };
 const escH = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\n/g, '<br>');
 
 const pageOf = p => Math.round(p.scrollLeft / (p.firstElementChild.offsetWidth + 12));
@@ -1187,7 +1065,7 @@ function renderHome(page = 0) {
   };
   $('rs').onclick = sendReq;
   $('rq').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); sendReq(); } };
-  bindDaily();
+  bindRaspa();
   $('mb').onclick = () => go(showMailbox, { hideTitle: true });
   $('nx').onclick = () => go(renderHome2, { hideTitle: true });
   screen.querySelectorAll('[data-add]').forEach(b => b.onclick = () => $('pf').click());
@@ -1213,16 +1091,14 @@ function renderHome2() {
       <button class="tile" id="pf"><span class="ti">${user}</span><b>Perfil</b><small>Nuestras redes</small></button>
       <button class="tile" id="pd"><span class="ti">${list}</span><b>Pendientes</b><small id="pdn">${todoLabel()}</small></button>
     </div>
-    <button class="raspa" id="rg"><span class="ri"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.3 6.3 2.2-6.3 2.2L12 19l-2.2-6.3-6.3-2.2 6.3-2.2z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></span><span class="rt"><b>Raspa y Gana</b><small>Un intento al día · ¡prueba tu suerte!</small></span>${cupToday() ? '' : '<i class="badge" id="rgb">¡Hoy!</i>'}</button>
     <div style="flex:1"></div>
     <div class="tiles nav"><button class="tile mini arrow" id="pv" aria-label="Página anterior">${left}</button><span></span></div>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
-  bindDaily();
+  bindRaspa();
   $('pv').onclick = () => go(renderHome, { hideTitle: true });
   $('pf').onclick = () => go(showPerfil, { hideTitle: true });
   $('pd').onclick = () => go(showTodos, { hideTitle: true });
-  $('rg').onclick = () => go(showRaspa, { hideTitle: true });
   loadCupones();
   loadTodos();
 }
@@ -1609,13 +1485,13 @@ function showRaspa() {
   screen.classList.remove('center'); screen.classList.add('full');
   if (!API_URL) {
     screen.innerHTML = `<div class="home" style="padding-bottom:20px">${base}<div class="evempty">Este juego necesita la hoja de Google (SCRIPT_URL) para guardar los intentos y los cupones.</div></div>`;
-    $('back').onclick = () => go(renderHome2, { hideTitle: true }); return;
+    $('back').onclick = goHome; return;
   }
   const played = cupToday();
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">${base}
     <div class="scwrap"><div class="scratch" id="sc"><div class="prize" id="pz"></div>${played ? '' : '<canvas id="cv"></canvas><div class="shine"></div>'}</div></div>
     <div class="scmsg" id="scm"></div><div id="scb"></div></div>`;
-  $('back').onclick = () => go(renderHome2, { hideTitle: true });
+  $('back').onclick = goHome;
   const finish = (r, ya) => {
     const win = r.n !== 'carton';
     $('scm').textContent = ya ? (win ? 'Hoy ya jugaste. Este es tu cupón 🎟️' : 'Hoy ya jugaste. ¡Vuelve mañana!') : (win ? '¡Ganaste! 🎉' : 'Esta vez no, ¡mañana otro intento!');
@@ -2031,42 +1907,6 @@ function showEvents() {
   loadEventos();
 }
 
-function showDaily() {
-  const q = dailyQ();
-  if (!q) {
-    screen.innerHTML = `<p class="sub">Todavía no hay pregunta del día.</p><button class="btn" id="hm">Volver</button>`;
-    $('hm').onclick = goHome; return;
-  }
-  const right = q.options[q.answer];
-  const opts = q.options.filter(o => o.trim());
-  screen.innerHTML = `
-    <div class="meta">Pregunta del día</div>
-    <div class="question">${q.text}</div>
-    <div class="options">
-      ${opts.map((o, i) => `<button class="opt" data-v="${o.replace(/"/g, '&quot;')}"><b>${letters[i]}</b><span>${o}</span></button>`).join('')}
-    </div>
-    <div id="after"></div>`;
-  const buttons = [...screen.querySelectorAll('.opt')];
-  const reveal = chosen => {
-    buttons.forEach(b => {
-      b.disabled = true;
-      if (b.dataset.v === right) b.classList.add('ok');
-      else if (b.dataset.v === chosen) b.classList.add('bad');
-      else b.classList.add('dim');
-    });
-    const ok = chosen === right;
-    $('after').innerHTML = `
-      <p class="detail" style="margin:16px 0 12px;text-align:center">${ok ? '¡Correcto! 💕' : 'Casi… la respuesta era ' + right}</p>
-      <a class="btn wide" href="${waLink(`Pregunta del día 💕\n${q.text}\n→ ${chosen} ${ok ? '✅' : `❌ (era: ${right})`}`)}" target="_blank" rel="noopener">Enviar mi respuesta 💌</a>
-      <button class="btn glass full" id="hm" style="margin-top:10px">Volver al inicio</button>`;
-    $('hm').onclick = goHome;
-  };
-  const st = dailyState();
-  if (st) reveal(st.chosen);
-  else buttons.forEach(b => b.onclick = () => { store.set('qn_daily', { key: q.text, chosen: b.dataset.v }); reveal(b.dataset.v);
-    logEvent({ tipo: 'Pregunta del día', pregunta: q.text, respuesta: b.dataset.v, acierto: b.dataset.v === right ? 'Sí' : 'No', respuesta_correcta: right }); });
-}
-
 /* Bloquea el movimiento vertical de la página (solo se mueve el carrusel, o el contenido si no cabe) */
 document.addEventListener('touchmove', e => {
   if (e.target.closest('.pager')) return;
@@ -2077,12 +1917,8 @@ document.addEventListener('touchmove', e => {
 }, { passive: false });
 
 /* ===================== Arranque ===================== */
-if (INTRO_ENABLED) {
-  introAsk();
-} else {
-  renderHome();
-}
-loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog();
+renderHome();
+loadBuzon(); loadEventos(); loadPerfil(); loadFotos(); loadCupones(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
 </script>
 </body>
