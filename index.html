@@ -445,6 +445,47 @@
   .qrimg svg { display: block; width: 100%; height: auto; border-radius: 12px; }
   .qrl { color: var(--muted); font-size: .76rem; margin: 10px 0 14px; overflow-wrap: anywhere; }
   .qrno { color: var(--muted); font-size: .9rem; line-height: 1.4; margin: 6px 0 4px; }
+
+  /* ===== Perfil: tarjetas, barras de color, QR animado y ventana de edición ===== */
+  .phead { flex: none; text-align: center; margin: 0 0 14px; }
+  .pavatar { width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 8px; display: grid; place-items: center; overflow: hidden; color: #fff; font-size: 2.3rem; font-weight: 800; background: linear-gradient(135deg, #e9677f, #c2485c); box-shadow: 0 6px 18px rgba(194,72,92,.28), inset 0 1.5px 0 rgba(255,255,255,.4); }
+  .pavatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pavatar.sm { width: 54px; height: 54px; margin: 0; flex: none; font-size: 1.3rem; box-shadow: none; }
+  .pname2 { font-weight: 800; font-size: 1.3rem; letter-spacing: -.02em; }
+  .ppick { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; border: 0; background: #fff; border-radius: 24px; padding: 14px; font: inherit; color: var(--ink); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); transition: transform .2s; }
+  .ppick:active { transform: scale(.98); }
+  .ppick .pt { flex: 1; min-width: 0; }
+  .ppick b { display: block; font-size: 1.1rem; font-weight: 800; }
+  .ppick small { color: var(--muted); font-size: .8rem; }
+  .nbar { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 0 16px; border: 0; border-radius: 18px; font: inherit; font-weight: 700; font-size: 1rem; text-align: left; color: var(--ni, #fff); background: var(--nc); cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.14); transition: transform .15s; }
+  .nbar:active { transform: scale(.98); }
+  .nbar.empty { opacity: .5; }
+  .nbar small { margin-left: auto; font-weight: 600; font-size: .74rem; opacity: .9; }
+  .nbar .nl, .srow .nl { flex: none; width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-weight: 800; font-size: .76rem; background: rgba(255,255,255,.24); }
+  .nbar .nl { color: inherit; }
+  .qrov { opacity: 0; transition: opacity .3s ease; }
+  .qrov.in { opacity: 1; }
+  .qrbox { padding: 0; overflow: hidden; transform: translateY(26px) scale(.86); opacity: 0; transition: transform .5s cubic-bezier(.2,.9,.3,1), opacity .35s ease; }
+  .qrov.in .qrbox { transform: none; opacity: 1; }
+  .qrbar { position: relative; padding: 18px 54px 18px 20px; font-weight: 800; font-size: 1.15rem; text-align: left; letter-spacing: -.01em; }
+  .qrbar .qrx { top: 50%; right: 12px; transform: translateY(-50%); background: rgba(255,255,255,.28); color: inherit; }
+  .qrbody { padding: 16px 20px 20px; }
+  .qrbody .qrt { margin: 0 0 12px; }
+  .qrimg { opacity: 0; transform: scale(.9); transition: opacity .5s ease .18s, transform .6s cubic-bezier(.2,.9,.3,1) .18s; }
+  .qrov.in .qrimg { opacity: 1; transform: none; }
+  .sheetov { place-items: end center; padding: 0; }
+  .sheet { width: 100%; max-width: 460px; max-height: 88%; overflow-y: auto; overscroll-behavior: contain; background: #fff; border-radius: 28px 28px 0 0; padding: 18px 16px calc(22px + env(safe-area-inset-bottom)); text-align: left; transform: translateY(100%); transition: transform .5s cubic-bezier(.2,.9,.3,1); box-shadow: 0 -10px 40px rgba(40,20,30,.25); }
+  .sheetov.in .sheet { transform: none; }
+  .shh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .shh b { font-size: 1.15rem; font-weight: 800; }
+  .slab { font-size: .78rem; font-weight: 700; color: var(--muted); margin: 14px 4px 6px; }
+  .sinp { width: 100%; min-width: 0; font: inherit; font-size: 16px; color: var(--ink); background: #f2edef; border: 1px solid transparent; border-radius: 14px; padding: 11px 14px; outline: none; }
+  .sinp:focus { background: #fff; border-color: rgba(194,72,92,.4); }
+  .rrow .sinp { flex: 1; }
+  .srow { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .srow .nl { color: #fff; }
+  .srow .sc { flex: 1; min-width: 0; }
+  .srow .sc b { display: block; font-size: .8rem; margin: 0 2px 3px; }
 </style>
 </head>
 <body>
@@ -527,7 +568,7 @@ const EVENTS_KEY = "";
 const API_URL = SCRIPT_URL || EVENTS_POST_URL, API_KEY = SCRIPT_KEY || EVENTS_KEY;
 const hasSheet = csv => !!(API_URL || csv);
 
-// 👤 PERFIL: redes sociales de cada uno (pantalla "Perfil", segunda página del diario).
+// 👤 (Ya no se usa: ahora las redes se editan desde la tuerca de cada tarjeta en Perfil.)
 // "enlace" puede ser solo el usuario (sin @) o el link completo. Redes con usuario: Instagram, TikTok, Snapchat,
 // Facebook, X, WhatsApp (número con código de país), YouTube, Telegram. Para otras (Spotify…) pega el link completo.
 // Si usas Google Sheets, esto se lee de la pestaña "perfil" (columnas: persona, red, enlace) y esto queda de respaldo.
@@ -547,7 +588,7 @@ const SCHEDULE = [
 
 // Tu número de WhatsApp con código de país, sin "+" ni espacios (Colombia = 57).
 // Ejemplo: "573001234567"
-const WHATSAPP_NUMBER = "57XXXXXXXXXX";
+const WHATSAPP_NUMBER = "573104182428";
 
 // Preguntas por test
 const PER_TEST = 10;
@@ -1180,20 +1221,20 @@ function qrSvg(text) {
 }
 
 
-/* ===================== Perfil: redes sociales con QR ===================== */
+/* ===================== Perfil: tarjetas con redes y QR ===================== */
 const NETS = {
-  instagram: { c: '#e1306c', l: 'IG', u: v => 'https://instagram.com/' + v },
-  tiktok:    { c: '#111111', l: 'TT', u: v => 'https://www.tiktok.com/@' + v },
-  snapchat:  { c: '#fffc00', ink: '#111', l: 'SC', u: v => 'https://www.snapchat.com/add/' + v },
-  facebook:  { c: '#1877f2', l: 'f', u: v => 'https://www.facebook.com/' + v },
-  x:         { c: '#111111', l: 'X', u: v => 'https://x.com/' + v },
-  whatsapp:  { c: '#25d366', l: 'WA', u: v => 'https://wa.me/' + v.replace(/\D/g, '') },
-  youtube:   { c: '#ff0033', l: 'YT', u: v => 'https://youtube.com/@' + v },
-  telegram:  { c: '#229ed9', l: 'TG', u: v => 'https://t.me/' + v },
-  spotify:   { c: '#1db954', l: '♪' },
+  instagram: { c: 'linear-gradient(135deg,#833ab4,#e1306c 55%,#fcb045)', n: 'Instagram', l: 'IG', u: v => 'https://instagram.com/' + v },
+  facebook:  { c: '#1877f2', n: 'Facebook', l: 'f', u: v => 'https://www.facebook.com/' + v },
+  tiktok:    { c: '#111111', n: 'TikTok', l: 'TT', u: v => 'https://www.tiktok.com/@' + v },
+  snapchat:  { c: '#fffc00', ink: '#111', n: 'Snapchat', l: 'SC', u: v => 'https://www.snapchat.com/add/' + v },
+  x:         { c: '#111111', n: 'X', l: 'X', u: v => 'https://x.com/' + v },
+  whatsapp:  { c: '#25d366', n: 'WhatsApp', l: 'WA', u: v => 'https://wa.me/' + v.replace(/\D/g, '') },
+  youtube:   { c: '#ff0033', n: 'YouTube', l: 'YT', u: v => 'https://youtube.com/@' + v },
+  telegram:  { c: '#229ed9', n: 'Telegram', l: 'TG', u: v => 'https://t.me/' + v },
+  spotify:   { c: '#1db954', n: 'Spotify', l: '♪' },
 };
 const netKey = r => { const k = String(r || '').toLowerCase().replace(/[^a-z]/g, ''); return k === 'twitter' ? 'x' : k; };
-const netInfo = r => NETS[netKey(r)] || { c: '#c2485c', l: (String(r || '?')[0] || '?').toUpperCase() };
+const netInfo = r => NETS[netKey(r)] || { c: '#c2485c', n: String(r || ''), l: (String(r || '?')[0] || '?').toUpperCase() };
 function netUrl(red, v) {
   v = String(v || '').trim(); if (!v) return '';
   if (/^https?:\/\//i.test(v)) return v;
@@ -1201,58 +1242,113 @@ function netUrl(red, v) {
   if (n && n.u) return n.u(netKey(red) === 'whatsapp' ? u : encodeURIComponent(u));
   return /\./.test(v) && !/\s/.test(v) ? 'https://' + v : '';
 }
-const perfiles = () => (hasSheet(PERFIL_SHEET_URL) && store.get('qn_perfil', null)) || PERFILES;
-async function loadPerfil() {
-  if (!hasSheet(PERFIL_SHEET_URL)) return;
-  try {
-    const rows = await fetchTab('perfil', PERFIL_SHEET_URL);
-    if (!rows) return;
-    const map = new Map();
-    rows.forEach(r => {
-      const p = String(r[0] || '').trim(), red = String(r[1] || '').trim(), en = String(r[2] || '').trim();
-      if (!p || !red || !en || p.toLowerCase() === 'persona') return;
-      if (!map.has(p)) map.set(p, []);
-      map.get(p).push({ red, enlace: en });
-    });
-    const list = [...map].map(([nombre, redes]) => ({ nombre, redes }));
-    if (!list.length) return;
-    store.set('qn_perfil', list);
-    if ($('prf')) renderPerfil();
-  } catch (e) { /* sin internet: se queda con lo último guardado */ }
+const escA = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const GEAR = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.7 7.7 0 000-3l2-1.5-2-3.4-2.3.9a7.5 7.5 0 00-2.6-1.5L14 2.5h-4l-.5 2.5a7.5 7.5 0 00-2.6 1.5l-2.3-.9-2 3.4 2 1.5a7.7 7.7 0 000 3l-2 1.5 2 3.4 2.3-.9a7.5 7.5 0 002.6 1.5l.5 2.5h4l.5-2.5a7.5 7.5 0 002.6-1.5l2.3.9 2-3.4z"/></svg>';
+const BACK = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+
+/* Las dos personas y sus redes por defecto (todas las redes, con el enlace vacío para llenarlo desde la tuerca) */
+const PERSONAS = [{ id: 'ella', nombre: 'Ella' }, { id: 'el', nombre: 'Él' }];
+const defRedes = id => Object.keys(NETS).map(k => ({ red: NETS[k].n, enlace: id === 'el' && k === 'whatsapp' ? String(WHATSAPP_NUMBER).replace(/\D/g, '') : '' }));
+function getPerfil(id) {
+  const s = store.get('qn_perfil2', {})[id] || {}, base = PERSONAS.find(p => p.id === id);
+  return { id, nombre: s.nombre || base.nombre, foto: s.foto || '', redes: Array.isArray(s.redes) ? s.redes : defRedes(id) };
 }
-function renderPerfil() {
-  const P = perfiles();
-  $('prf').innerHTML = P.map((p, pi) => `<div class="pcard"><div class="pname">${escH(p.nombre)}</div>${p.redes.length
-    ? `<div class="pnets">${p.redes.map((r, ri) => { const n = netInfo(r.red); return `<button class="net" data-p="${pi}" data-r="${ri}" style="--nc:${n.c};--ni:${n.ink || '#fff'}"><span class="nl">${escH(n.l)}</span><b>${escH(r.red)}</b></button>`; }).join('')}</div>`
-    : '<div class="pnone">Aquí irán sus redes ♥</div>'}</div>`).join('');
+function setPerfil(p) {
+  const d = store.get('qn_perfil2', {}); d[p.id] = { nombre: p.nombre, foto: p.foto, redes: p.redes };
+  if (!store.set('qn_perfil2', d)) alert('No hay espacio para guardar la foto en este teléfono.');
 }
+async function loadPerfil() { /* el perfil se guarda en este dispositivo */ }
+const avatarInner = p => p.foto ? `<img src="${p.foto}" alt="">` : escH((p.nombre[0] || '?').toUpperCase());
+
 function showQR(persona, red, enlace) {
-  const url = netUrl(red, enlace), svg = url ? qrSvg(url) : '';
+  const url = netUrl(red, enlace), svg = url ? qrSvg(url) : '', n = netInfo(red);
   const ov = document.createElement('div'); ov.className = 'qrov';
-  ov.innerHTML = `<div class="qrbox"><button class="qrx" aria-label="Cerrar">✕</button>
-    <div class="qrt">${escH(red)} · ${escH(persona)}</div>
+  ov.innerHTML = `<div class="qrbox"><div class="qrbar" style="background:${n.c};color:${n.ink || '#fff'}">${escH(n.n || red)}<button class="qrx" aria-label="Cerrar">✕</button></div>
+    <div class="qrbody"><div class="qrt">${escH(persona)}</div>
     ${svg ? `<div class="qrimg">${svg}</div>` : '<p class="qrno">No pude armar el QR con ese enlace. Revisa que esté bien escrito.</p>'}
-    ${url ? `<div class="qrl">${escH(url.replace(/^https?:\/\//, ''))}</div><a class="btn wide" href="${url.replace(/"/g, '%22')}" target="_blank" rel="noopener">Abrir perfil</a>` : ''}</div>`;
-  const close = () => ov.remove();
+    ${url ? `<div class="qrl">${escH(url.replace(/^https?:\/\//, ''))}</div><a class="btn wide" href="${url.replace(/"/g, '%22')}" target="_blank" rel="noopener">Abrir perfil</a>` : ''}</div></div>`;
+  const close = () => { ov.classList.remove('in'); setTimeout(() => ov.remove(), 320); };
   ov.onclick = e => { if (e.target === ov || e.target.closest('.qrx')) close(); };
   document.body.appendChild(ov);
+  requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('in')));
 }
-function showPerfil() {
-  const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+
+/* Ventana inferior para editar nombre, foto, enlaces y añadir o quitar redes */
+function openSheet(id, onClose) {
+  const ov = document.createElement('div'); ov.className = 'qrov sheetov';
+  const box = document.createElement('div'); box.className = 'sheet'; ov.appendChild(box);
+  const file = document.createElement('input'); file.type = 'file'; file.accept = 'image/*'; file.style.display = 'none'; ov.appendChild(file);
+  const close = () => { ov.classList.remove('in'); setTimeout(() => { ov.remove(); onClose && onClose(); }, 320); };
+  const render = () => {
+    const p = getPerfil(id), have = new Set(p.redes.map(r => netKey(r.red))), avail = Object.keys(NETS).filter(k => !have.has(k));
+    box.innerHTML = `<div class="shh"><b>Editar tarjeta</b><button class="btn" id="sx" style="padding:10px 20px">Listo</button></div>
+      <div class="slab">Nombre</div><input class="sinp" id="snm" maxlength="24" value="${escA(p.nombre)}" autocomplete="off">
+      <div class="slab">Foto de perfil</div>
+      <div class="rrow"><span class="pavatar sm">${avatarInner(p)}</span><button class="btn glass" id="sph" style="flex:1;padding:12px 16px">${p.foto ? 'Cambiar foto' : 'Elegir foto'}</button>${p.foto ? '<button class="btn glass" id="spx" style="padding:12px 16px">Quitar</button>' : ''}</div>
+      <div class="slab">Redes (usuario sin @ o el enlace completo)</div>
+      ${p.redes.map((r, i) => { const n = netInfo(r.red); return `<div class="srow"><span class="nl" style="background:${n.c};color:${n.ink || '#fff'}">${escH(n.l)}</span><div class="sc"><b>${escH(r.red)}</b><input class="sinp" data-i="${i}" value="${escA(r.enlace)}" placeholder="${netKey(r.red) === 'whatsapp' ? 'Número con código de país' : 'Usuario o enlace'}" autocomplete="off" autocapitalize="off"></div><button class="xbtn" data-del="${i}" aria-label="Quitar red">${TRASH}</button></div>`; }).join('')}
+      <div class="slab">Añadir red</div>
+      <div class="rrow"><select class="sinp" id="sadd">${avail.map(k => `<option value="${k}">${NETS[k].n}</option>`).join('')}<option value="_otra">Otra red…</option></select><button class="send" id="sa" aria-label="Añadir red"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <input class="sinp" id="soth" placeholder="Nombre de la red (ej. Pinterest)" maxlength="20" style="display:${avail.length ? 'none' : 'block'};margin-top:8px">`;
+    $s('sx').onclick = close;
+    $s('snm').oninput = e => { const q = getPerfil(id); q.nombre = e.target.value.trim().replace(/[<>]/g, '') || PERSONAS.find(x => x.id === id).nombre; setPerfil(q); };
+    $s('sph').onclick = () => file.click();
+    if ($s('spx')) $s('spx').onclick = () => { const q = getPerfil(id); q.foto = ''; setPerfil(q); render(); };
+    box.querySelectorAll('input[data-i]').forEach(inp => inp.oninput = () => { const q = getPerfil(id); q.redes[+inp.dataset.i].enlace = inp.value.trim(); setPerfil(q); });
+    box.querySelectorAll('[data-del]').forEach(b => b.onclick = () => armDelete(b, () => { const q = getPerfil(id); q.redes.splice(+b.dataset.del, 1); setPerfil(q); render(); }));
+    const sel = $s('sadd'), oth = $s('soth');
+    sel.onchange = () => { oth.style.display = sel.value === '_otra' ? 'block' : 'none'; };
+    $s('sa').onclick = () => {
+      const q = getPerfil(id); let red = sel.value;
+      if (red === '_otra') { red = oth.value.trim().replace(/[<>]/g, ''); if (!red) { oth.focus(); return; } } else red = NETS[red].n;
+      q.redes.push({ red, enlace: '' }); setPerfil(q); render();
+    };
+  };
+  const $s = k => box.querySelector('#' + k);
+  file.onchange = async () => { const f = file.files[0]; if (!f) return; const src = await readPhoto(f); if (src) { const q = getPerfil(id); q.foto = src; setPerfil(q); render(); } file.value = ''; };
+  ov.onclick = e => { if (e.target === ov) close(); };
+  render();
+  document.body.appendChild(ov);
+  requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('in')));
+}
+
+/* Tarjeta de presentación: foto arriba al centro y las redes en filas debajo */
+function showCard(id) {
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><div><h2 class="big">Perfil</h2><div class="date">Toca una red para ver su QR</div></div></div>
-    <div class="evlist" id="prf"></div>
+    <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><h2 class="big" style="flex:1">Perfil</h2><button class="rbtn" id="gear" aria-label="Editar redes">${GEAR}</button></div>
+    <div class="phead"><div class="pavatar" id="pav"></div><div class="pname2" id="pnm"></div></div>
+    <div class="evlist" id="bars"></div>
+  </div>`;
+  screen.classList.remove('center'); screen.classList.add('full');
+  const paint = () => {
+    const p = getPerfil(id);
+    $('pav').innerHTML = avatarInner(p); $('pnm').textContent = p.nombre;
+    $('bars').innerHTML = p.redes.length ? p.redes.map((r, i) => { const n = netInfo(r.red), has = !!netUrl(r.red, r.enlace);
+      return `<button class="nbar${has ? '' : ' empty'}" data-i="${i}" style="--nc:${n.c};--ni:${n.ink || '#fff'}"><span class="nl">${escH(n.l)}</span><span>${escH(r.red)}</span><small>${has ? 'Ver QR' : 'Añadir enlace'}</small></button>`; }).join('')
+      : '<div class="evempty">No hay redes. Toca la tuerca para añadir.</div>';
+  };
+  paint();
+  $('back').onclick = () => go(showPerfil, { hideTitle: true });
+  $('gear').onclick = () => openSheet(id, paint);
+  $('bars').onclick = e => {
+    const b = e.target.closest('.nbar'); if (!b) return;
+    const p = getPerfil(id), r = p.redes[+b.dataset.i];
+    if (!r) return;
+    if (netUrl(r.red, r.enlace)) showQR(p.nombre, r.red, r.enlace); else openSheet(id, paint);
+  };
+}
+
+function showPerfil() {
+  const chev = '<svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color:#c9bcc1"><path d="M9 5l7 7-7 7"/></svg>';
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">
+    ${dateTop()}
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Perfil</h2><div class="date">Elige una tarjeta</div></div></div>
+    <div class="evlist">${PERSONAS.map(x => { const p = getPerfil(x.id); return `<button class="ppick" data-id="${x.id}"><span class="pavatar sm">${avatarInner(p)}</span><span class="pt"><b>${escH(p.nombre)}</b><small>Ver tarjeta de presentación</small></span>${chev}</button>`; }).join('')}</div>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
-  renderPerfil();
-  $('prf').onclick = e => {
-    const b = e.target.closest('.net'); if (!b) return;
-    const pr = perfiles()[+b.dataset.p], r = pr && pr.redes[+b.dataset.r];
-    if (r) showQR(pr.nombre, r.red, r.enlace);
-  };
-  loadPerfil();
+  screen.querySelectorAll('.ppick').forEach(b => b.onclick = () => go(() => showCard(b.dataset.id), { hideTitle: true }));
 }
 
 /* ===================== Pendientes ===================== */
@@ -1502,15 +1598,15 @@ async function loadEventos() {
     store.set('qn_ev_del', dels);
     // añadidos locales: se quitan cuando ya llegaron a la hoja (o al día); si no, se reenvían
     const loc = store.get('qn_ev_local', []).filter(e => !keys.has(evKey(e)) && now - (e.ts || 0) < 864e5);
-    loc.forEach(e => { if (now - e.ts > 20000) postApi({ tipo: 'evento', fecha: e.date, hora: '', titulo: e.title, nota: '' }); });
+    loc.forEach(e => { if (now - e.ts > 20000) postApi({ tipo: 'evento', fecha: e.date, hora: e.time || '', titulo: e.title, nota: '' }); });
     store.set('qn_ev_local', loc);
     if ($('evl')) renderEvList();
   } catch (e) { /* sin internet: se queda con lo último guardado */ }
 }
 
-function addEvent(title, date) {
-  store.set('qn_ev_local', [...store.get('qn_ev_local', []), { date, time: '', title, note: '', ts: Date.now() }]);
-  postApi({ tipo: 'evento', fecha: date, hora: '', titulo: title, nota: '' });
+function addEvent(title, date, time) {
+  store.set('qn_ev_local', [...store.get('qn_ev_local', []), { date, time: time || '', title, note: '', ts: Date.now() }]);
+  postApi({ tipo: 'evento', fecha: date, hora: time || '', titulo: title, nota: '' });
 }
 function deleteEvent(e) {
   const k = evKey(e);
@@ -1551,12 +1647,14 @@ function renderEvList() {
 function showEvents() {
   const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
   const cal = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+  const clock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
     <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><h2 class="big" style="flex:1">Eventos</h2></div>
     <div class="evadd">
       <input id="evt" type="text" maxlength="60" placeholder="Título del evento" enterkeyhint="done" autocomplete="off">
-      <div class="rrow"><label class="datef"><span id="evdl">${dateLabel2(todayISO())}</span>${cal}<input id="evdt" type="date" value="${todayISO()}" aria-label="Fecha del evento"></label><button class="send" id="evgo" aria-label="Añadir evento"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <div class="rrow"><label class="datef"><span id="evdl">${dateLabel2(todayISO())}</span>${cal}<input id="evdt" type="date" value="${todayISO()}" aria-label="Fecha del evento"></label></div>
+      <div class="rrow"><label class="datef"><span id="evtl">Hora (opcional)</span>${clock}<input id="evtm" type="time" value="" aria-label="Hora del evento"></label><button class="send" id="evgo" aria-label="Añadir evento"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
       <div class="evmsg" id="evmsg">${API_URL ? '' : 'Por ahora se guarda solo en este dispositivo.'}</div>
     </div>
     <div class="evlist" id="evl"></div>
@@ -1568,14 +1666,18 @@ function showEvents() {
   const syncLabel = () => { $('evdl').textContent = dateLabel2(dt.value); };
   dt.addEventListener('input', syncLabel); dt.addEventListener('change', syncLabel);
   dt.addEventListener('click', () => { try { if (dt.showPicker) dt.showPicker(); } catch (e) {} });
+  const tm = $('evtm');
+  const syncTime = () => { $('evtl').textContent = tm.value ? fmtTime(tm.value) : 'Hora (opcional)'; };
+  tm.addEventListener('input', syncTime); tm.addEventListener('change', syncTime);
+  tm.addEventListener('click', () => { try { if (tm.showPicker) tm.showPicker(); } catch (e) {} });
   const idle = () => (API_URL ? '' : 'Por ahora se guarda solo en este dispositivo.');
   const msg = t => { const m = $('evmsg'); if (!m) return; m.textContent = t; m.classList.add('show'); clearTimeout(msg.to); msg.to = setTimeout(() => { m.classList.remove('show'); m.textContent = idle(); }, 2600); };
   const add = () => {
     const ti = $('evt'), title = ti.value.trim().replace(/[<>]/g, ''), date = isoOf(dt.value);
     if (!title) { ti.focus(); return msg('Escribe el título del evento'); }
     if (!date) return msg('Elige la fecha');
-    addEvent(title, date);
-    ti.value = ''; ti.blur();
+    addEvent(title, date, tm.value);
+    ti.value = ''; ti.blur(); tm.value = ''; syncTime();
     renderEvList(); $('evl').scrollTop = 0;
     msg('Evento añadido ♥');
   };
