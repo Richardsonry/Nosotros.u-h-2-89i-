@@ -1670,8 +1670,8 @@ function showCard(id) {
   };
 }
 
-/* ===================== Perfil: un solo perfil, con inicio de sesión ===================== */
-let perfilesCargados = false, loginPaint = null, yaHay = false, perfilCambio = 0;
+/* ===================== Perfil: un perfil por dispositivo (se crea o se inicia sesión) ===================== */
+let perfilesCargados = false, loginPaint = null, elegido = '', perfilCambio = 0;
 function showPerfil() {
   if (yo()) { showCard(yo()); return; }
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
@@ -1700,14 +1700,16 @@ function showPerfil() {
     }
     const crear = m === 'crear';
     $('pdt').textContent = crear ? 'Crea tu perfil' : 'Iniciar sesión';
-    el.innerHTML = `<div class="needlog" style="padding-bottom:14px"><div class="nli">${LOCKI}</div><b>${crear ? 'Crea tu perfil' : 'Iniciar sesión'}</b>${crear ? 'Solo puede haber un perfil. Tu nombre y tu contraseña se guardan en Google.' : 'Escribe tu nombre y tu contraseña.'}</div>
+    el.innerHTML = `<div class="needlog" style="padding-bottom:14px"><div class="nli">${LOCKI}</div><b>${crear ? 'Crea tu perfil' : 'Iniciar sesión'}</b>${crear ? 'Será el perfil de este dispositivo. Tu nombre y tu contraseña se guardan en Google.' : 'Escribe tu nombre y tu contraseña.'}</div>
       <div class="pform">
         <input class="sinp" id="lnm" maxlength="24" placeholder="Nombre" autocomplete="username" autocapitalize="words">
         <input class="sinp" id="lpw" type="password" maxlength="40" placeholder="Contraseña" autocomplete="${crear ? 'new-password' : 'current-password'}">
         ${crear ? '<input class="sinp" id="lpw2" type="password" maxlength="40" placeholder="Repite la contraseña" autocomplete="new-password">' : ''}
         <div class="evmsg show" id="lerr"></div>
         <button class="btn wide" id="lgo">${crear ? 'Crear perfil' : 'Iniciar sesión'}</button>
+        <button class="btn glass" id="ltg" style="width:100%">${crear ? 'Ya tengo perfil · Iniciar sesión' : 'No tengo perfil · Crear uno'}</button>
       </div>`;
+    $('ltg').onclick = () => { elegido = crear ? 'login' : 'crear'; modo = ''; loginPaint(); };
     const err = t => { if ($('lerr')) $('lerr').textContent = t; };
     const go1 = async () => {
       const nombre = cleanName($('lnm').value), pw = $('lpw').value;
@@ -1722,7 +1724,7 @@ function showPerfil() {
       btn.disabled = false; btn.style.opacity = '';
       if (r && r.ok && r.token) { entrar(r.id, r.nombre || nombre, r.token, crear); return; }
       if (!r) err('Sin conexión. Intenta de nuevo.');
-      else if (r.error === 'yahay') { yaHay = true; modo = ''; loginPaint(); }
+      else if (r.error === 'repetido') err('Ya existe un perfil con ese nombre. Elige otro o inicia sesión si es tuyo.');
       else if (r.error === 'pw') err(`Nombre o contraseña incorrectos.${r.quedan > 0 ? ` Te quedan ${r.quedan} intentos.` : ''}`);
       else if (r.error === 'bloqueado') err('Demasiados intentos. Espera 5 minutos y vuelve a probar.');
       else if (r.error === 'pw_corta') err('La contraseña debe tener al menos 4 caracteres.');
@@ -1733,7 +1735,7 @@ function showPerfil() {
     el.querySelectorAll('input').forEach(i => i.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); go1(); } });
   };
   loginPaint = () => {
-    const m = !API_URL ? 'nube' : !perfilesCargados ? 'carga' : (perfiles().length || yaHay) ? 'login' : 'crear';
+    const m = !API_URL ? 'nube' : !perfilesCargados ? 'carga' : elegido || (perfiles().length ? 'login' : 'crear');
     if (m === modo || !$('plg')) return;
     modo = m; draw(m);
   };
