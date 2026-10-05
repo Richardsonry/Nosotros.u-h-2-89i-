@@ -397,6 +397,54 @@
   .pbody .psal { font-weight: 700; font-size: 1.02rem; }
   .pbody .pfirm { text-align: right; margin: 0; }
   .pclose { position: absolute; top: 8px; right: 8px; z-index: 2; width: 30px; height: 30px; border: 0; border-radius: 50%; background: rgba(194,72,92,.12); color: var(--accent); font-size: 14px; cursor: pointer; }
+  /* ===== Añadir evento ===== */
+  .evadd { flex: none; background: #fff; border-radius: 24px; padding: 12px; margin-bottom: 12px; display: grid; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .evadd > input, .evadd .rrow input { font: inherit; font-size: 16px; color: var(--ink); background: #f2edef; border: 1px solid transparent; border-radius: 999px; padding: 11px 16px; outline: none; min-width: 0; transition: background .2s, border-color .2s; }
+  .evadd > input:focus, .evadd .rrow input:focus { background: #fff; border-color: rgba(194,72,92,.4); }
+  .evadd .rrow input[type=date] { flex: 1; text-align: left; -webkit-appearance: none; appearance: none; min-height: 44px; }
+  .evmsg { min-height: 0; font-size: .78rem; font-weight: 600; color: var(--muted); padding: 0 6px; }
+  .evmsg:empty { display: none; }
+  .evmsg.show { color: var(--accent); }
+  .screen.full .evlist { flex: 1 1 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; align-content: start; padding-bottom: 12px; }
+  /* ===== Fecha con selector nativo del teléfono ===== */
+  .datef { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 0 14px 0 16px; border-radius: 999px; background: #f2edef; color: var(--ink); font-size: 16px; cursor: pointer; overflow: hidden; }
+  .datef svg { flex: none; color: var(--accent); }
+  .datef input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; font-size: 16px; cursor: pointer; display: block; }
+  .evadd .rrow .datef { padding: 0 14px 0 16px; }
+
+  /* ===== Botón eliminar ===== */
+  .xbtn { flex: none; display: grid; place-items: center; min-width: 34px; height: 34px; padding: 0; border: 0; border-radius: 999px; background: rgba(255,255,255,.65); color: var(--c, var(--muted)); font: inherit; font-size: .74rem; font-weight: 700; cursor: pointer; }
+  .xbtn.arm { padding: 0 12px; background: #d6334f; color: #fff; }
+
+  /* ===== Pendientes ===== */
+  .td { display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 18px; padding: 10px 12px; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 12px rgba(90,40,60,.06); }
+  .td .tt { flex: 1; min-width: 0; font-weight: 600; font-size: .96rem; line-height: 1.25; overflow-wrap: anywhere; }
+  .td .xbtn { background: #f2edef; color: var(--muted); }
+  .td.done .xbtn { background: #f2edef; }
+  .td.done .tt { text-decoration: line-through; color: var(--muted); font-weight: 500; }
+  .chk { flex: none; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; border: 2px solid #d9c8ce; background: #fff; color: transparent; padding: 0; cursor: pointer; transition: background .2s, border-color .2s; }
+  .td.done .chk { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* ===== Página 2 ===== */
+  .tiles.p2 { margin-top: 4px; }
+  .tiles.p2 .tile { min-height: 104px; }
+
+  /* ===== Perfil ===== */
+  .pcard { background: #fff; border-radius: 24px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .pname { font-weight: 800; font-size: 1.05rem; margin: 0 2px 10px; }
+  .pnets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .net { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 8px 10px; border: 0; border-radius: 16px; background: #f6f1f3; font: inherit; color: var(--ink); text-align: left; cursor: pointer; transition: transform .15s; }
+  .net:active { transform: scale(.97); }
+  .net .nl { flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: var(--nc); color: var(--ni); font-weight: 800; font-size: .78rem; }
+  .net b { font-size: .88rem; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pnone { color: var(--muted); font-size: .88rem; padding: 6px 2px 8px; }
+  .qrov { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 24px; background: rgba(40,20,30,.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .qrbox { position: relative; width: min(320px, 100%); background: #fff; border-radius: 28px; padding: 22px 20px 20px; text-align: center; box-shadow: 0 20px 50px rgba(40,20,30,.35); }
+  .qrx { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border: 0; border-radius: 50%; background: rgba(194,72,92,.12); color: var(--accent); font-size: 14px; cursor: pointer; }
+  .qrt { font-weight: 800; font-size: 1rem; margin: 0 28px 12px; }
+  .qrimg svg { display: block; width: 100%; height: auto; border-radius: 12px; }
+  .qrl { color: var(--muted); font-size: .76rem; margin: 10px 0 14px; overflow-wrap: anywhere; }
+  .qrno { color: var(--muted); font-size: .9rem; line-height: 1.4; margin: 6px 0 4px; }
 </style>
 </head>
 <body>
@@ -431,7 +479,7 @@
    ===================================================================== */
 // true  = primero salen las preguntas "¿Podemos arreglar las cosas?" y luego el test
 // false = va directo al test
-const INTRO_ENABLED = false;
+const INTRO_ENABLED = true;
 
 // true  = el botón "Pregunta del día" (arriba a la derecha del inicio) está activo
 // false = el botón sigue ahí, atenuado y sin función
@@ -443,7 +491,7 @@ const LOG_URL = "";
 
 // 🔗 PREGUNTA DEL DÍA DESDE GOOGLE SHEETS (gratis): pega aquí el link CSV de tu hoja publicada.
 // Así cambias la pregunta desde el celular sin tocar este archivo. Déjalo vacío ("") para usar solo DAILY_QUESTION.
-const DAILY_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpO3bVnKL-2JAUBhOHIlbCZCHywgbberD5NdtRZGMbh8GQ3W6aK6xAf1ESRHRtzXxI1h18516_toWp/pub?gid=309363537&single=true&output=csv";
+const DAILY_SHEET_URL = "";
 
 // ✏️ PREGUNTA DEL DÍA de respaldo (se usa si no hay hoja o no hay internet). Es independiente del banco de 100 preguntas.
 // answer: 0 = primera opción, 1 = segunda, 2 = tercera, 3 = cuarta.
@@ -464,6 +512,30 @@ const EVENTS = [
   // { date: "2026-10-10", time: "7:00 PM", title: "Cena en nuestro sitio favorito", note: "" },
 ];
 
+// 🔗 TODO CON GOOGLE SHEETS EN UN SOLO ENLACE (recomendado). Con esto la carta, la pregunta del día, los eventos,
+// los pendientes y las redes se leen y se guardan en las pestañas de tu hoja, y los dos ven lo mismo.
+// SCRIPT_URL = link /exec de tu Apps Script · SCRIPT_KEY = la misma clave que CLAVE_PAGINA del script.
+// Vacíos ("") = eventos y pendientes se guardan solo en este dispositivo.
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxI7OK3YSRuOdw4zYu4lWfUO0m_s3NMYa4ERyuASeLQcXwHXay7TxXO1VRHZXMsPT0h/exec";
+const SCRIPT_KEY = "shb7uC7yBZDIC3y9";
+// (Opcional, alternativa sin Apps Script para leer) links CSV publicados de cada pestaña:
+const EVENTS_SHEET_URL = "";
+const PERFIL_SHEET_URL = "";
+// (Compatibilidad con la versión anterior) si ya los llenaste, siguen funcionando:
+const EVENTS_POST_URL = "";
+const EVENTS_KEY = "";
+const API_URL = SCRIPT_URL || EVENTS_POST_URL, API_KEY = SCRIPT_KEY || EVENTS_KEY;
+const hasSheet = csv => !!(API_URL || csv);
+
+// 👤 PERFIL: redes sociales de cada uno (pantalla "Perfil", segunda página del diario).
+// "enlace" puede ser solo el usuario (sin @) o el link completo. Redes con usuario: Instagram, TikTok, Snapchat,
+// Facebook, X, WhatsApp (número con código de país), YouTube, Telegram. Para otras (Spotify…) pega el link completo.
+// Si usas Google Sheets, esto se lee de la pestaña "perfil" (columnas: persona, red, enlace) y esto queda de respaldo.
+const PERFILES = [
+  { nombre: "Ella", redes: [ /* { red: "Instagram", enlace: "usuario" }, { red: "TikTok", enlace: "usuario" } */ ] },
+  { nombre: "Él",   redes: [ /* { red: "Instagram", enlace: "usuario" } */ ] },
+];
+
 // Calendario de la universidad (aparece debajo de las fotos). dow: 1 = lunes … 5 = viernes.
 // color = color fuerte del texto, bg = color suave del recuadro.
 const SCHEDULE = [
@@ -475,7 +547,7 @@ const SCHEDULE = [
 
 // Tu número de WhatsApp con código de país, sin "+" ni espacios (Colombia = 57).
 // Ejemplo: "573001234567"
-const WHATSAPP_NUMBER = "573104182428";
+const WHATSAPP_NUMBER = "57XXXXXXXXXX";
 
 // Preguntas por test
 const PER_TEST = 10;
@@ -825,7 +897,7 @@ function flushLog() {
 }
 
 /* ---- Pregunta del día desde Google Sheets (opcional) ---- */
-let currentDaily = DAILY_SHEET_URL ? (store.get('qn_dq', null) || DAILY_QUESTION) : DAILY_QUESTION;
+let currentDaily = hasSheet(DAILY_SHEET_URL) ? (store.get('qn_dq', null) || DAILY_QUESTION) : DAILY_QUESTION;
 
 function parseCSV(t) {
   const rows = []; let r = [], c = '', q = false;
@@ -868,14 +940,36 @@ function pickDaily(rows) {
   return { text: row.text, options: row.options, answer: idx };
 }
 
+/* Lee una pestaña: primero por el Apps Script (SCRIPT_URL, al instante) y, si no, por el CSV publicado. Devuelve filas o null. */
+async function fetchTab(tab, csvUrl) {
+  const get = async url => {
+    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 8000);
+    try { return await fetch(url + (url.includes('?') ? '&' : '?') + '_=' + Date.now(), { signal: ctl.signal, cache: 'no-store' }); }
+    finally { clearTimeout(to); }
+  };
+  if (API_URL) {
+    try {
+      const res = await get(API_URL + (API_URL.includes('?') ? '&' : '?') + 'hoja=' + tab);
+      const j = await res.json();
+      if (j && j.ok && Array.isArray(j.rows)) return j.rows;
+    } catch (e) { /* se intenta con el CSV */ }
+  }
+  if (csvUrl) {
+    try { const res = await get(csvUrl); if (res.ok) return parseCSV(await res.text()); } catch (e) {}
+  }
+  return null;
+}
+/* Envía un cambio al Apps Script (no espera respuesta). */
+function postApi(body) {
+  if (!API_URL) return;
+  try { fetch(API_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ clave: API_KEY, ...body }) }).catch(() => {}); } catch (e) {}
+}
 async function loadDaily() {
-  if (!DAILY_SHEET_URL) return;
+  if (!hasSheet(DAILY_SHEET_URL)) return;
   try {
-    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 7000);
-    const res = await fetch(DAILY_SHEET_URL + (DAILY_SHEET_URL.includes('?') ? '&' : '?') + '_=' + Date.now(), { signal: ctl.signal, cache: 'no-store' });
-    clearTimeout(to);
-    if (!res.ok) return;
-    const q = pickDaily(parseCSV(await res.text()));
+    const rows = await fetchTab('pregunta', DAILY_SHEET_URL);
+    if (!rows) return;
+    const q = pickDaily(rows);
     if (!q) return;
     currentDaily = q; store.set('qn_dq', q);
     const b = $('dq');
@@ -885,7 +979,7 @@ async function loadDaily() {
     }
   } catch (e) { /* sin internet: se queda con la última pregunta guardada */ }
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); loadBuzon(); flushLog(); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadTodos(); flushLog(); } });
 
 
 const readPhoto = f => new Promise(res => {
@@ -990,14 +1084,259 @@ function renderHome(page = 0) {
 /* ===================== Página 2 del diario ===================== */
 function renderHome2() {
   const left = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
+  const user = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.9-3.6 3.8-5.4 7.2-5.4s6.3 1.8 7.2 5.4"/></svg>';
+  const list = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6.5h10M9.5 12h10M9.5 17.5h10M3.8 6.6l1.3 1.3 2.2-2.4M3.8 12.1l1.3 1.3 2.2-2.4M3.8 17.6l1.3 1.3 2.2-2.4"/></svg>';
   screen.innerHTML = `<div class="home">
     ${homeHead()}
-    <div class="pg2"><div><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><p>Próximamente ♥</p></div></div>
+    <div class="tiles p2">
+      <button class="tile" id="pf"><span class="ti">${user}</span><b>Perfil</b><small>Nuestras redes</small></button>
+      <button class="tile" id="pd"><span class="ti">${list}</span><b>Pendientes</b><small id="pdn">${todoLabel()}</small></button>
+    </div>
+    <div style="flex:1"></div>
     <div class="tiles nav"><button class="tile mini arrow" id="pv" aria-label="Página anterior">${left}</button><span></span></div>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
   bindDaily();
   $('pv').onclick = () => go(renderHome, { hideTitle: true });
+  $('pf').onclick = () => go(showPerfil, { hideTitle: true });
+  $('pd').onclick = () => go(showTodos, { hideTitle: true });
+  loadTodos();
+}
+
+/* ===================== Códigos QR (sin librerías externas) ===================== */
+/* ===== Generador de códigos QR (sin librerías externas) · nivel M, versiones 1-10, modo bytes (UTF-8) ===== */
+function qrMatrix(text) {
+  const ECC = [0, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26], BLK = [0, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5];
+  const raw = v => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if (v >= 7) r -= 36; } return r; };
+  const bytes = Array.from(new TextEncoder().encode(String(text)));
+  let ver = 0;
+  for (let v = 1; v <= 10; v++) { const cap = Math.floor(raw(v) / 8) - ECC[v] * BLK[v]; if (4 + (v < 10 ? 8 : 16) + bytes.length * 8 <= cap * 8) { ver = v; break; } }
+  if (!ver) return null;
+  const size = ver * 4 + 17, nRaw = Math.floor(raw(ver) / 8), nData = nRaw - ECC[ver] * BLK[ver];
+  // --- datos
+  const bits = []; const put = (val, n) => { for (let i = n - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+  put(4, 4); put(bytes.length, ver < 10 ? 8 : 16); bytes.forEach(b => put(b, 8));
+  put(0, Math.min(4, nData * 8 - bits.length)); while (bits.length % 8) bits.push(0);
+  const data = []; for (let i = 0; i < bits.length; i += 8) data.push(parseInt(bits.slice(i, i + 8).join(''), 2));
+  for (let pad = 0xEC; data.length < nData; pad ^= 0xEC ^ 0x11) data.push(pad);
+  // --- Reed-Solomon
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z; };
+  const div = n => { const r = new Array(n).fill(0); r[n - 1] = 1; let root = 1; for (let i = 0; i < n; i++) { for (let j = 0; j < n; j++) { r[j] = mul(r[j], root); if (j + 1 < n) r[j] ^= r[j + 1]; } root = mul(root, 2); } return r; };
+  const rem = (d, dv) => { const r = dv.map(() => 0); d.forEach(b => { const f = b ^ r.shift(); r.push(0); dv.forEach((c, i) => { r[i] ^= mul(c, f); }); }); return r; };
+  const nb = BLK[ver], ne = ECC[ver], nShort = nb - (nRaw % nb), shortLen = Math.floor(nRaw / nb), dv = div(ne), blocks = [];
+  for (let i = 0, k = 0; i < nb; i++) { const len = shortLen - ne + (i < nShort ? 0 : 1), d = data.slice(k, k + len); k += len; const e = rem(d, dv); if (i < nShort) d.push(0); blocks.push(d.concat(e)); }
+  const all = [];
+  for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== shortLen - ne || j >= nShort) all.push(b[i]); });
+  // --- matriz
+  const M = Array.from({ length: size }, () => new Array(size).fill(false)), F = Array.from({ length: size }, () => new Array(size).fill(false));
+  const setF = (x, y, v) => { M[y][x] = v; F[y][x] = true; };
+  for (let i = 0; i < size; i++) { setF(6, i, i % 2 === 0); setF(i, 6, i % 2 === 0); }
+  const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const x = cx + dx, y = cy + dy; if (x >= 0 && x < size && y >= 0 && y < size) setF(x, y, Math.max(Math.abs(dx), Math.abs(dy)) !== 2 && Math.max(Math.abs(dx), Math.abs(dy)) !== 4); } };
+  finder(3, 3); finder(size - 4, 3); finder(3, size - 4);
+  if (ver > 1) {
+    const na = Math.floor(ver / 7) + 2, step = Math.ceil((ver * 4 + 4) / (na * 2 - 2)) * 2, pos = [6];
+    for (let p = size - 7; pos.length < na; p -= step) pos.splice(1, 0, p);
+    pos.forEach((px, i) => pos.forEach((py, j) => { if ((i === 0 && j === 0) || (i === 0 && j === na - 1) || (i === na - 1 && j === 0)) return; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) setF(px + dx, py + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }));
+  }
+  const fmt = mask => {
+    const d = mask; let r = d; for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+    const b = ((d << 10) | r) ^ 0x5412, g = i => ((b >>> i) & 1) !== 0;
+    for (let i = 0; i <= 5; i++) setF(8, i, g(i)); setF(8, 7, g(6)); setF(8, 8, g(7)); setF(7, 8, g(8));
+    for (let i = 9; i < 15; i++) setF(14 - i, 8, g(i));
+    for (let i = 0; i < 8; i++) setF(size - 1 - i, 8, g(i));
+    for (let i = 8; i < 15; i++) setF(8, size - 15 + i, g(i));
+    setF(8, size - 8, true);
+  };
+  fmt(0);
+  if (ver >= 7) { let r = ver; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25); const b = (ver << 12) | r; for (let i = 0; i < 18; i++) { const c = ((b >>> i) & 1) !== 0, a = size - 11 + (i % 3), q = Math.floor(i / 3); setF(a, q, c); setF(q, a, c); } }
+  for (let i = 0, right = size - 1; right >= 1; right -= 2) {
+    if (right === 6) right = 5;
+    for (let v = 0; v < size; v++) for (let j = 0; j < 2; j++) { const x = right - j, y = ((right + 1) & 2) === 0 ? size - 1 - v : v; if (!F[y][x] && i < all.length * 8) { M[y][x] = ((all[i >>> 3] >>> (7 - (i & 7))) & 1) !== 0; i++; } }
+  }
+  const inv = (m, x, y) => [(x + y) % 2 === 0, y % 2 === 0, x % 3 === 0, (x + y) % 3 === 0, (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x * y) % 2 + (x * y) % 3 === 0, ((x * y) % 2 + (x * y) % 3) % 2 === 0, ((x + y) % 2 + (x * y) % 3) % 2 === 0][m];
+  const mask = m => { for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!F[y][x] && inv(m, x, y)) M[y][x] = !M[y][x]; };
+  const penalty = () => {
+    let p = 0, dark = 0;
+    const line = get => { let run = 1; for (let i = 1; i < size; i++) { if (get(i) === get(i - 1)) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } };
+    const pat = [true, false, true, true, true, false, true, false, false, false, false], pat2 = pat.slice().reverse();
+    const finders = get => { for (let i = 0; i + 11 <= size; i++) { let a = true, b = true; for (let k = 0; k < 11; k++) { if (get(i + k) !== pat[k]) a = false; if (get(i + k) !== pat2[k]) b = false; } if (a) p += 40; if (b) p += 40; } };
+    for (let y = 0; y < size; y++) { line(i => M[y][i]); finders(i => M[y][i]); }
+    for (let x = 0; x < size; x++) { line(i => M[i][x]); finders(i => M[i][x]); }
+    for (let y = 0; y < size - 1; y++) for (let x = 0; x < size - 1; x++) { const c = M[y][x]; if (c === M[y][x + 1] && c === M[y + 1][x] && c === M[y + 1][x + 1]) p += 3; }
+    M.forEach(r => r.forEach(c => { if (c) dark++; }));
+    p += (Math.ceil(Math.abs(dark * 20 - size * size * 10) / (size * size)) - 1) * 10;
+    return p;
+  };
+  let best = 0, bp = Infinity;
+  for (let m = 0; m < 8; m++) { mask(m); fmt(m); const p = penalty(); if (p < bp) { bp = p; best = m; } mask(m); }
+  mask(best); fmt(best);
+  return { size, M };
+}
+function qrSvg(text) {
+  const q = qrMatrix(text); if (!q) return '';
+  const b = 4, n = q.size + b * 2; let d = '';
+  q.M.forEach((r, y) => r.forEach((c, x) => { if (c) d += `M${x + b} ${y + b}h1v1h-1z`; }));
+  return `<svg viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg"><rect width="${n}" height="${n}" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+}
+
+
+/* ===================== Perfil: redes sociales con QR ===================== */
+const NETS = {
+  instagram: { c: '#e1306c', l: 'IG', u: v => 'https://instagram.com/' + v },
+  tiktok:    { c: '#111111', l: 'TT', u: v => 'https://www.tiktok.com/@' + v },
+  snapchat:  { c: '#fffc00', ink: '#111', l: 'SC', u: v => 'https://www.snapchat.com/add/' + v },
+  facebook:  { c: '#1877f2', l: 'f', u: v => 'https://www.facebook.com/' + v },
+  x:         { c: '#111111', l: 'X', u: v => 'https://x.com/' + v },
+  whatsapp:  { c: '#25d366', l: 'WA', u: v => 'https://wa.me/' + v.replace(/\D/g, '') },
+  youtube:   { c: '#ff0033', l: 'YT', u: v => 'https://youtube.com/@' + v },
+  telegram:  { c: '#229ed9', l: 'TG', u: v => 'https://t.me/' + v },
+  spotify:   { c: '#1db954', l: '♪' },
+};
+const netKey = r => { const k = String(r || '').toLowerCase().replace(/[^a-z]/g, ''); return k === 'twitter' ? 'x' : k; };
+const netInfo = r => NETS[netKey(r)] || { c: '#c2485c', l: (String(r || '?')[0] || '?').toUpperCase() };
+function netUrl(red, v) {
+  v = String(v || '').trim(); if (!v) return '';
+  if (/^https?:\/\//i.test(v)) return v;
+  const n = NETS[netKey(red)], u = v.replace(/^@/, '');
+  if (n && n.u) return n.u(netKey(red) === 'whatsapp' ? u : encodeURIComponent(u));
+  return /\./.test(v) && !/\s/.test(v) ? 'https://' + v : '';
+}
+const perfiles = () => (hasSheet(PERFIL_SHEET_URL) && store.get('qn_perfil', null)) || PERFILES;
+async function loadPerfil() {
+  if (!hasSheet(PERFIL_SHEET_URL)) return;
+  try {
+    const rows = await fetchTab('perfil', PERFIL_SHEET_URL);
+    if (!rows) return;
+    const map = new Map();
+    rows.forEach(r => {
+      const p = String(r[0] || '').trim(), red = String(r[1] || '').trim(), en = String(r[2] || '').trim();
+      if (!p || !red || !en || p.toLowerCase() === 'persona') return;
+      if (!map.has(p)) map.set(p, []);
+      map.get(p).push({ red, enlace: en });
+    });
+    const list = [...map].map(([nombre, redes]) => ({ nombre, redes }));
+    if (!list.length) return;
+    store.set('qn_perfil', list);
+    if ($('prf')) renderPerfil();
+  } catch (e) { /* sin internet: se queda con lo último guardado */ }
+}
+function renderPerfil() {
+  const P = perfiles();
+  $('prf').innerHTML = P.map((p, pi) => `<div class="pcard"><div class="pname">${escH(p.nombre)}</div>${p.redes.length
+    ? `<div class="pnets">${p.redes.map((r, ri) => { const n = netInfo(r.red); return `<button class="net" data-p="${pi}" data-r="${ri}" style="--nc:${n.c};--ni:${n.ink || '#fff'}"><span class="nl">${escH(n.l)}</span><b>${escH(r.red)}</b></button>`; }).join('')}</div>`
+    : '<div class="pnone">Aquí irán sus redes ♥</div>'}</div>`).join('');
+}
+function showQR(persona, red, enlace) {
+  const url = netUrl(red, enlace), svg = url ? qrSvg(url) : '';
+  const ov = document.createElement('div'); ov.className = 'qrov';
+  ov.innerHTML = `<div class="qrbox"><button class="qrx" aria-label="Cerrar">✕</button>
+    <div class="qrt">${escH(red)} · ${escH(persona)}</div>
+    ${svg ? `<div class="qrimg">${svg}</div>` : '<p class="qrno">No pude armar el QR con ese enlace. Revisa que esté bien escrito.</p>'}
+    ${url ? `<div class="qrl">${escH(url.replace(/^https?:\/\//, ''))}</div><a class="btn wide" href="${url.replace(/"/g, '%22')}" target="_blank" rel="noopener">Abrir perfil</a>` : ''}</div>`;
+  const close = () => ov.remove();
+  ov.onclick = e => { if (e.target === ov || e.target.closest('.qrx')) close(); };
+  document.body.appendChild(ov);
+}
+function showPerfil() {
+  const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">
+    ${dateTop()}
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><div><h2 class="big">Perfil</h2><div class="date">Toca una red para ver su QR</div></div></div>
+    <div class="evlist" id="prf"></div>
+  </div>`;
+  screen.classList.remove('center'); screen.classList.add('full');
+  $('back').onclick = () => go(renderHome2, { hideTitle: true });
+  renderPerfil();
+  $('prf').onclick = e => {
+    const b = e.target.closest('.net'); if (!b) return;
+    const pr = perfiles()[+b.dataset.p], r = pr && pr.redes[+b.dataset.r];
+    if (r) showQR(pr.nombre, r.red, r.enlace);
+  };
+  loadPerfil();
+}
+
+/* ===================== Pendientes ===================== */
+const todoOps = () => store.get('qn_todo_ops', []);
+function todos() {
+  const m = new Map();
+  store.get('qn_todo_srv', []).forEach(x => m.set(x.id, { ...x }));
+  todoOps().forEach(o => {
+    if (o.k === 'add') { if (!m.has(o.id)) m.set(o.id, { id: o.id, t: o.t, d: 0 }); }
+    else if (o.k === 'done') { const x = m.get(o.id); if (x) x.d = o.d; }
+    else if (o.k === 'del') m.delete(o.id);
+  });
+  return [...m.values()];
+}
+const todoLabel = () => { const l = todos(), n = l.filter(x => !x.d).length; return !l.length ? 'Sin tareas' : n ? `${n} por hacer` : 'Todo al día ✓'; };
+const todoPost = o => o.k === 'add' ? { tipo: 'pendiente', id: o.id, texto: o.t } : o.k === 'done' ? { tipo: 'pendiente_hecho', id: o.id, hecho: !!o.d } : { tipo: 'pendiente_borrar', id: o.id };
+function todoOp(o) {
+  if (!API_URL) { // sin hoja: la lista guardada en este dispositivo es la lista
+    let l = store.get('qn_todo_srv', []);
+    if (o.k === 'add') l.push({ id: o.id, t: o.t, d: 0 });
+    else if (o.k === 'done') l.forEach(x => { if (x.id === o.id) x.d = o.d; });
+    else l = l.filter(x => x.id !== o.id);
+    store.set('qn_todo_srv', l); return;
+  }
+  o.ts = Date.now();
+  let ops = todoOps();
+  if (o.k === 'done') ops = ops.filter(x => !(x.k === 'done' && x.id === o.id));
+  if (o.k === 'del') ops = ops.filter(x => !(x.id === o.id && x.k === 'done'));
+  store.set('qn_todo_ops', [...ops, o]);
+  postApi(todoPost(o));
+}
+async function loadTodos() {
+  if (!API_URL) return;
+  try {
+    const rows = await fetchTab('pendientes', '');
+    if (!rows) return;
+    const srv = rows.map(r => ({ id: String(r[0] || '').trim(), t: String(r[1] || '').trim(), d: /^(1|true|si|sí|x|✓|hecho)$/i.test(String(r[2] || '').trim()) ? 1 : 0 }))
+      .filter(x => x.id && x.t && x.id.toLowerCase() !== 'id');
+    store.set('qn_todo_srv', srv);
+    const by = new Map(srv.map(x => [x.id, x])), now = Date.now();
+    // los cambios que la hoja ya refleja (o tienen más de 30 min) se descartan; los demás se reenvían
+    const ops = todoOps().filter(o => {
+      if (now - o.ts > 30 * 60000) return false;
+      if (o.k === 'add') return !by.has(o.id);
+      if (o.k === 'done') { const x = by.get(o.id); return !!x && x.d !== o.d; }
+      return by.has(o.id);
+    });
+    ops.forEach(o => { if (now - o.ts > 20000) postApi(todoPost(o)); });
+    store.set('qn_todo_ops', ops);
+    if ($('tdl')) renderTodoList();
+    const n = $('pdn'); if (n) n.textContent = todoLabel();
+  } catch (e) { /* sin internet: se queda con lo último guardado */ }
+}
+function renderTodoList() {
+  const l = todos(), pend = l.filter(x => !x.d), done = l.filter(x => x.d);
+  const row = x => `<div class="td${x.d ? ' done' : ''}"><button class="chk" data-id="${escH(x.id)}" aria-label="${x.d ? 'Marcar como pendiente' : 'Marcar como hecha'}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><span class="tt">${escH(x.t)}</span><button class="xbtn" data-id="${escH(x.id)}" aria-label="Eliminar tarea">${TRASH}</button></div>`;
+  $('tdl').innerHTML = `${pend.length ? pend.map(row).join('') : `<div class="evempty">${l.length ? '¡Todo al día! ♥' : 'No hay tareas pendientes.'}</div>`}
+    ${done.length ? '<div class="evh">Hechas</div>' + done.map(row).join('') : ''}`;
+}
+function showTodos() {
+  const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+  screen.innerHTML = `<div class="home" style="padding-bottom:20px">
+    ${dateTop()}
+    <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><h2 class="big" style="flex:1">Pendientes</h2></div>
+    <div class="evadd"><div class="rrow"><input id="tdt" type="text" maxlength="100" placeholder="Nueva tarea…" enterkeyhint="done" autocomplete="off"><button class="send" id="tdgo" aria-label="Añadir tarea"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+    <div class="evlist" id="tdl"></div>
+  </div>`;
+  screen.classList.remove('center'); screen.classList.add('full');
+  renderTodoList();
+  $('back').onclick = () => go(renderHome2, { hideTitle: true });
+  const add = () => {
+    const ti = $('tdt'), t = ti.value.trim().replace(/[<>]/g, '');
+    if (!t) { ti.focus(); return; }
+    todoOp({ k: 'add', id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), t });
+    ti.value = ''; renderTodoList(); $('tdl').scrollTop = 0;
+  };
+  $('tdgo').onclick = add;
+  $('tdt').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); add(); } };
+  $('tdl').onclick = e => {
+    const c = e.target.closest('.chk'), x = e.target.closest('.xbtn');
+    if (c) { const it = todos().find(y => y.id === c.dataset.id); if (it) { todoOp({ k: 'done', id: it.id, d: it.d ? 0 : 1 }); renderTodoList(); } }
+    else if (x) armDelete(x, () => { todoOp({ k: 'del', id: x.dataset.id }); renderTodoList(); });
+  };
+  loadTodos();
 }
 
 /* ===================== Buzón ===================== */
@@ -1027,7 +1366,7 @@ const NOTITAS = [
 // notitas desde el celular (con un atajo o la app de Sheets) sin tocar este archivo. Vacío ("") = se usan CARTA y NOTITAS de arriba.
 // La hoja tiene dos columnas: A = campo, B = valor. Campos: sobre, saludo, carta, firma, nota1 … nota6.
 // En "carta" cada salto de línea dentro de la celda es un párrafo nuevo.
-const BUZON_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpO3bVnKL-2JAUBhOHIlbCZCHywgbberD5NdtRZGMbh8GQ3W6aK6xAf1ESRHRtzXxI1h18516_toWp/pub?gid=1400420465&single=true&output=csv";
+const BUZON_SHEET_URL = "";
 
 function buzonFromRows(rows) {
   const out = {}, nn = {};
@@ -1043,7 +1382,7 @@ function buzonFromRows(rows) {
   return out;
 }
 function getBuzon() {
-  const b = (BUZON_SHEET_URL && store.get('qn_buzon', null)) || {};
+  const b = (hasSheet(BUZON_SHEET_URL) && store.get('qn_buzon', null)) || {};
   return {
     sobre: b.sobre || CARTA.sobre, saludo: b.saludo || CARTA.saludo, firma: b.firma || CARTA.firma,
     texto: b.texto && b.texto.length ? b.texto : CARTA.texto,
@@ -1051,13 +1390,11 @@ function getBuzon() {
   };
 }
 async function loadBuzon() {
-  if (!BUZON_SHEET_URL) return;
+  if (!hasSheet(BUZON_SHEET_URL)) return;
   try {
-    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 7000);
-    const res = await fetch(BUZON_SHEET_URL + (BUZON_SHEET_URL.includes('?') ? '&' : '?') + '_=' + Date.now(), { signal: ctl.signal, cache: 'no-store' });
-    clearTimeout(to);
-    if (!res.ok) return;
-    const b = buzonFromRows(parseCSV(await res.text()));
+    const rows = await fetchTab('buzon', BUZON_SHEET_URL);
+    if (!rows) return;
+    const b = buzonFromRows(rows);
     if (!b.sobre && !b.saludo && !b.firma && !b.texto && !b.notas.length) return; // la hoja no es válida: se queda con lo guardado
     if (JSON.stringify(store.get('qn_buzon', null)) === JSON.stringify(b)) return;
     store.set('qn_buzon', b);
@@ -1124,34 +1461,131 @@ function showCalendar() {
 const pad2 = n => String(n).padStart(2, '0');
 const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; };
 const fmtTime = t => { const m = /^(\d{1,2}):(\d{2})$/.exec(t || ''); if (!m) return t || ''; const h = +m[1]; return `${h % 12 || 12}:${m[2]} ${h < 12 ? 'AM' : 'PM'}`; };
-const allEvents = () => EVENTS.map(e => ({ ...e }))
-  .filter(e => e.date && e.title)
-  .sort((a, b) => (a.date + (a.time || '')) < (b.date + (b.time || '')) ? -1 : 1);
+const evKey = e => e.date + '|' + String(e.title).trim().toLowerCase();
+const isoOf = v => {
+  v = String(v || '').trim();
+  let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m) return `${m[1]}-${pad2(m[2])}-${pad2(m[3])}`;
+  m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  return m ? `${m[3]}-${pad2(m[2])}-${pad2(m[1])}` : '';
+};
+const dateLabel2 = iso => {
+  const [y, m, d] = String(iso).split('-').map(Number); if (!y) return 'Elegir fecha';
+  const x = new Date(y, m - 1, d).toLocaleDateString('es-CO', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(/\./g, '');
+  return x[0].toUpperCase() + x.slice(1);
+};
+const allEvents = () => {
+  const seen = new Set(), out = [], del = new Set(store.get('qn_ev_del', []).map(x => x.k));
+  const add = (list, src) => list.forEach(e => {
+    if (!e || !e.date || !e.title) return;
+    const k = evKey(e); if (seen.has(k) || del.has(k)) return;
+    seen.add(k); out.push({ ...e, src });
+  });
+  add(EVENTS, 'code');
+  if (hasSheet(EVENTS_SHEET_URL)) add(store.get('qn_ev_sheet', []), 'sheet');
+  add(store.get('qn_ev_local', []), 'local');
+  return out.sort((a, b) => (a.date + (a.time || '')) < (b.date + (b.time || '')) ? -1 : 1);
+};
+
+async function loadEventos() {
+  if (!hasSheet(EVENTS_SHEET_URL)) return;
+  try {
+    const rows = await fetchTab('eventos', EVENTS_SHEET_URL);
+    if (!rows) return;
+    const evs = rows.map(r => ({ date: isoOf(r[0]), time: String(r[1] || '').trim(), title: String(r[2] || '').trim(), note: String(r[3] || '').trim() }))
+      .filter(e => e.date && e.title);
+    store.set('qn_ev_sheet', evs);
+    const keys = new Set(evs.map(evKey)), now = Date.now();
+    // borrados pendientes: se quitan cuando ya no están en la hoja (o a los 30 min); si siguen, se reenvían
+    const dels = store.get('qn_ev_del', []).filter(x => keys.has(x.k) && now - x.ts < 30 * 60000);
+    dels.forEach(x => { if (now - x.ts > 20000) postApi({ tipo: 'evento_borrar', fecha: x.d, titulo: x.t }); });
+    store.set('qn_ev_del', dels);
+    // añadidos locales: se quitan cuando ya llegaron a la hoja (o al día); si no, se reenvían
+    const loc = store.get('qn_ev_local', []).filter(e => !keys.has(evKey(e)) && now - (e.ts || 0) < 864e5);
+    loc.forEach(e => { if (now - e.ts > 20000) postApi({ tipo: 'evento', fecha: e.date, hora: '', titulo: e.title, nota: '' }); });
+    store.set('qn_ev_local', loc);
+    if ($('evl')) renderEvList();
+  } catch (e) { /* sin internet: se queda con lo último guardado */ }
+}
+
+function addEvent(title, date) {
+  store.set('qn_ev_local', [...store.get('qn_ev_local', []), { date, time: '', title, note: '', ts: Date.now() }]);
+  postApi({ tipo: 'evento', fecha: date, hora: '', titulo: title, nota: '' });
+}
+function deleteEvent(e) {
+  const k = evKey(e);
+  store.set('qn_ev_local', store.get('qn_ev_local', []).filter(x => evKey(x) !== k));
+  store.set('qn_ev_del', [...store.get('qn_ev_del', []).filter(x => x.k !== k), { k, d: e.date, t: e.title, ts: Date.now() }]);
+  postApi({ tipo: 'evento_borrar', fecha: e.date, titulo: e.title });
+}
+/* Botón de borrar en dos pasos: el primer toque pide confirmar ("¿Borrar?"), el segundo borra. */
+function armDelete(btn, fn) {
+  if (btn.classList.contains('arm')) { fn(); return; }
+  btn.classList.add('arm'); btn.dataset.h = btn.innerHTML; btn.textContent = '¿Borrar?';
+  setTimeout(() => { if (btn.isConnected && btn.classList.contains('arm')) { btn.classList.remove('arm'); btn.innerHTML = btn.dataset.h; } }, 3000);
+}
+const TRASH = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M9 7V4h6v3"/></svg>';
+
 const EV_PAL = [
   { c: "#c2275a", bg: "#ffe3ec" }, { c: "#1f6fd1", bg: "#e0eeff" }, { c: "#14825a", bg: "#dcf6ea" },
   { c: "#b36b00", bg: "#fff0d2" }, { c: "#7b3fc4", bg: "#efe6fb" },
 ];
 
-function showEvents() {
+let evShown = [];
+function renderEvList() {
   const t = todayISO(), evs = allEvents();
   const up = evs.filter(e => e.date >= t), past = evs.filter(e => e.date < t).reverse();
-  const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+  evShown = [...up, ...past]; evShown.forEach((e, i) => { e._i = i; });
   const card = (e, i, old) => {
     const [y, m, d] = e.date.split('-').map(Number), dt = new Date(y, m - 1, d), col = EV_PAL[i % EV_PAL.length];
     const wd = dt.toLocaleDateString('es-CO', { weekday: 'long' });
     return `<div class="ev${e.date === t ? ' today' : ''}${old ? ' old' : ''}" style="--c:${col.c};background:${col.bg}">
       <div class="evd"><b>${d}</b><span>${dt.toLocaleDateString('es-CO', { month: 'short' }).replace('.', '')}</span></div>
-      <div class="evt"><div class="evn">${e.title}</div><div class="evs">${e.date === t ? '<em>Hoy</em> · ' : ''}${wd[0].toUpperCase() + wd.slice(1)}${e.time ? ' · ' + fmtTime(e.time) : ''}${e.note ? ' · ' + e.note : ''}</div></div></div>`;
+      <div class="evt"><div class="evn">${escH(e.title)}</div><div class="evs">${e.date === t ? '<em>Hoy</em> · ' : ''}${wd[0].toUpperCase() + wd.slice(1)}${e.time ? ' · ' + escH(fmtTime(e.time)) : ''}${e.note ? ' · ' + escH(e.note) : ''}</div></div>
+      ${e.src === 'code' ? '' : `<button class="xbtn" data-i="${e._i}" aria-label="Eliminar evento">${TRASH}</button>`}</div>`;
   };
+  $('evl').innerHTML = `${up.length ? up.map((e, i) => card(e, i, false)).join('') : '<div class="evempty">Aún no hay eventos programados.</div>'}
+      ${past.length ? '<div class="evh">Anteriores</div>' + past.map((e, i) => card(e, i, true)).join('') : ''}`;
+}
+
+function showEvents() {
+  const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+  const cal = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">
     ${dateTop()}
     <div class="jtop" style="gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><h2 class="big" style="flex:1">Eventos</h2></div>
-    <div class="evlist">
-      ${up.length ? up.map((e, i) => card(e, i, false)).join('') : '<div class="evempty">Aún no hay eventos programados.</div>'}
-      ${past.length ? '<div class="evh">Anteriores</div>' + past.map((e, i) => card(e, i, true)).join('') : ''}
+    <div class="evadd">
+      <input id="evt" type="text" maxlength="60" placeholder="Título del evento" enterkeyhint="done" autocomplete="off">
+      <div class="rrow"><label class="datef"><span id="evdl">${dateLabel2(todayISO())}</span>${cal}<input id="evdt" type="date" value="${todayISO()}" aria-label="Fecha del evento"></label><button class="send" id="evgo" aria-label="Añadir evento"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <div class="evmsg" id="evmsg">${API_URL ? '' : 'Por ahora se guarda solo en este dispositivo.'}</div>
     </div>
+    <div class="evlist" id="evl"></div>
   </div>`;
+  screen.classList.remove('center'); screen.classList.add('full');
+  renderEvList();
   $('back').onclick = goHome;
+  const dt = $('evdt');
+  const syncLabel = () => { $('evdl').textContent = dateLabel2(dt.value); };
+  dt.addEventListener('input', syncLabel); dt.addEventListener('change', syncLabel);
+  dt.addEventListener('click', () => { try { if (dt.showPicker) dt.showPicker(); } catch (e) {} });
+  const idle = () => (API_URL ? '' : 'Por ahora se guarda solo en este dispositivo.');
+  const msg = t => { const m = $('evmsg'); if (!m) return; m.textContent = t; m.classList.add('show'); clearTimeout(msg.to); msg.to = setTimeout(() => { m.classList.remove('show'); m.textContent = idle(); }, 2600); };
+  const add = () => {
+    const ti = $('evt'), title = ti.value.trim().replace(/[<>]/g, ''), date = isoOf(dt.value);
+    if (!title) { ti.focus(); return msg('Escribe el título del evento'); }
+    if (!date) return msg('Elige la fecha');
+    addEvent(title, date);
+    ti.value = ''; ti.blur();
+    renderEvList(); $('evl').scrollTop = 0;
+    msg('Evento añadido ♥');
+  };
+  $('evgo').onclick = add;
+  $('evt').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); add(); } };
+  $('evl').onclick = e => {
+    const b = e.target.closest('.xbtn'); if (!b) return;
+    armDelete(b, () => { const ev = evShown[+b.dataset.i]; if (ev) { deleteEvent(ev); renderEvList(); msg('Evento eliminado'); } });
+  };
+  loadEventos();
 }
 
 function showDaily() {
@@ -1204,7 +1638,7 @@ if (INTRO_ENABLED) {
 } else {
   renderHome();
 }
-loadDaily(); loadBuzon(); flushLog();
+loadDaily(); loadBuzon(); loadEventos(); loadPerfil(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
 </script>
 </body>
