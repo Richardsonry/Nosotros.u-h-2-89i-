@@ -687,16 +687,17 @@
   .mbal .mv { display: flex; align-items: center; gap: 7px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
   .mbal .ms { text-align: right; font-size: .74rem; font-weight: 700; opacity: .92; line-height: 1.35; }
   /* presentador */
-  .mhost { display: flex; align-items: flex-end; gap: 6px; margin: 4px 0 2px; }
+  .mhost { position: relative; z-index: 0; display: flex; align-items: flex-end; gap: 6px; margin: 4px 0 0; }
   .mhost .mface { flex: none; width: 96px; height: 112px; position: relative; }
   .mhost .mface img { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom; pointer-events: none; -webkit-user-drag: none; }
   .mhost .mface img.pop { animation: mfpop .38s cubic-bezier(.3,1.6,.5,1); }
   @keyframes mfpop { 0% { transform: scale(.88) translateY(6px); } 100% { transform: none; } }
   .mhost .mmsg { position: relative; flex: 1; min-width: 0; align-self: center; margin: 0 0 10px; padding: 10px 12px; border-radius: 18px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 16px rgba(90,40,60,.1); text-align: left; font-size: .9rem; }
   .mhost .mmsg::before { content: ""; position: absolute; left: -7px; top: 50%; margin-top: -7px; width: 14px; height: 14px; background: inherit; border-radius: 3px; transform: rotate(45deg); box-shadow: -2px 2px 3px rgba(90,40,60,.05); }
-  .mstage { position: relative; height: 170px; margin: 6px 0 0; user-select: none; -webkit-user-select: none; container-type: inline-size; }
+  /* pared detrás de las tapitas: sube hasta la base del personaje, que queda asomado por detrás */
+  .mstage { position: relative; z-index: 1; height: 170px; margin: -10px 0 0; user-select: none; -webkit-user-select: none; container-type: inline-size; border-radius: 22px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 11px, rgba(255,255,255,0) 11px 22px), linear-gradient(180deg, #fbdde5 0%, #f4c4d1 100%); box-shadow: inset 0 3px 0 rgba(255,255,255,.95), inset 0 8px 10px -6px rgba(150,40,80,.22), 0 6px 16px rgba(90,40,60,.12); }
   /* mesa donde descansan las tapitas */
-  .mstage::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: calc(20px + 17cqw); border-radius: 22px; z-index: 0; pointer-events: none; background: linear-gradient(180deg, rgba(255,226,233,.85) 0%, rgba(240,170,190,.6) 100%); box-shadow: inset 0 2px 0 rgba(255,255,255,.85), inset 0 -10px 18px rgba(150,40,80,.14); }
+  .mstage::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: calc(20px + 17cqw); border-radius: 0 0 22px 22px; z-index: 0; pointer-events: none; background: linear-gradient(180deg, #efb3c3 0%, #de93a9 100%); box-shadow: inset 0 2px 0 rgba(255,255,255,.7), 0 -3px 6px rgba(150,40,80,.14), inset 0 -10px 18px rgba(150,40,80,.14); }
   /* sombra: núcleo de contacto bajo la base + sombra suave caída hacia la derecha-abajo (luz desde arriba a la izquierda) */
   .mshd { position: absolute; left: calc(var(--x) + .5%); bottom: calc(20px + 2.8cqw); width: 29%; height: 11.9cqw; z-index: 1; pointer-events: none; border-radius: 50%; background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(55,8,28,.72) 0%, rgba(55,8,28,.6) 70%, rgba(55,8,28,0) 100%); filter: blur(1px); transition: left .32s ease, transform .45s cubic-bezier(.3,.8,.3,1), opacity .45s ease; }
   .mshd::before { content: ""; position: absolute; left: -6%; top: 8%; width: 138%; height: 118%; border-radius: 50%; z-index: -1; background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(90,12,40,.34) 0%, rgba(90,12,40,.18) 60%, rgba(90,12,40,0) 100%); filter: blur(4px); }
