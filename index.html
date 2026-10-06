@@ -685,15 +685,15 @@
   .mbal .ml { font-size: .74rem; font-weight: 700; opacity: .7; }
   .mbal .mv { display: flex; align-items: center; gap: 7px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
   .mbal .ms { text-align: right; font-size: .74rem; font-weight: 700; opacity: .75; line-height: 1.35; }
-  .mstage { position: relative; height: 200px; margin: 6px 0 0; user-select: none; -webkit-user-select: none; }
+  .mstage { position: relative; height: 170px; margin: 6px 0 0; user-select: none; -webkit-user-select: none; }
   .mstage .mfloor { position: absolute; left: 2%; right: 2%; bottom: 14px; height: 18px; border-radius: 50%; background: radial-gradient(closest-side, rgba(40,70,120,.22), transparent); }
   .mcup { position: absolute; bottom: 20px; width: 30%; padding: 0; border: 0; background: none; cursor: default; left: var(--x); transition: left .32s ease, transform .45s cubic-bezier(.3,.8,.3,1); z-index: 2; touch-action: manipulation; }
   .mcup svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 8px rgba(40,70,120,.28)); }
   .mcup.pick { cursor: pointer; animation: mbob 1.1s ease-in-out infinite; }
   .mcup.pick:active { transform: scale(.96); }
-  .mcup.up { transform: translateY(-64px); animation: none; }
+  .mcup.up { transform: translateY(-56px); animation: none; }
   .mcup.hop { transform: translateY(-16px); z-index: 3; }
-  .mcup.chosen svg { filter: drop-shadow(0 0 10px rgba(79,126,200,.8)); }
+  .mcup.chosen svg { filter: drop-shadow(0 0 10px rgba(60,110,255,.85)); }
   @keyframes mbob { 50% { transform: translateY(-5px); } }
   .mstone { position: absolute; bottom: 24px; width: 22px; height: 16px; margin-left: -11px; border-radius: 50% 50% 46% 46%; background: radial-gradient(circle at 35% 30%, #d9dde3, #7b8493 70%); box-shadow: 0 3px 5px rgba(40,50,70,.4); opacity: 0; transform: scale(.4); transition: opacity .25s ease, transform .3s ease; z-index: 1; }
   .mstone.show { opacity: 1; transform: none; }
@@ -720,6 +720,20 @@
   .tiles.p2 ~ .req { margin-top: 12px; }
   .screen.full > .home.subp.calfix { overflow-y: hidden; }
   @media (max-height: 700px) { .home.calfix .cgrid.one { gap: 6px; } .home.calfix .cgrid.one .day { padding: 9px 14px; } .home.calfix .cgrid.one .dn { margin-bottom: 4px; } }
+
+  /* ===== Cupones con QR (se canjean una sola vez) ===== */
+  .cupx:disabled { opacity: 1; cursor: default; background: rgba(255,255,255,.35); }
+  .qov { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(30,12,22,.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .qbox { width: min(100%, 360px); max-height: 100%; overflow-y: auto; background: #fff; color: var(--ink); border-radius: 26px; padding: 22px 20px 18px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,.35); }
+  .qbox h3 { margin: 4px 0 10px; font-size: 1.1rem; line-height: 1.25; }
+  .qbox small { display: block; color: var(--muted); font-weight: 700; font-size: .78rem; line-height: 1.4; }
+  .qic { font-size: 2.6rem; line-height: 1; }
+  .qwarn { margin: 12px 0 14px; padding: 11px 13px; border-radius: 14px; background: #fff4d6; color: #7a5200; font-size: .84rem; font-weight: 700; line-height: 1.4; text-align: left; }
+  .qsvg { width: min(66vw, 250px); margin: 6px auto 0; border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px rgba(0,0,0,.1); }
+  .qsvg svg { display: block; width: 100%; height: auto; }
+  .qres.ok h3 { color: #14825a; } .qres.ya h3 { color: #c2414e; } .qres h3 { font-size: 1.35rem; }
+  .qres .qp { font-weight: 800; margin: 8px 0 4px; font-size: 1.02rem; }
+  .qres.ya .qp { text-decoration: line-through; opacity: .6; }
 </style>
 
 </head>
@@ -1863,10 +1877,130 @@ function showRaspa() {
   cv.onpointerup = cv.onpointercancel = () => { down = false; check(true); };
 }
 
+/* ---------- Generador de QR (sin internet): modo bytes, corrección M, versiones 1–10 ---------- */
+function qrSvg(text) {
+  const bytes = Array.from(new TextEncoder().encode(text));
+  const ECC = [0, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26], BLK = [0, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5];
+  const rawMods = v => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const a = Math.floor(v / 7) + 2; r -= (25 * a - 10) * a - 55; if (v >= 7) r -= 36; } return r; };
+  const dataCw = v => Math.floor(rawMods(v) / 8) - ECC[v] * BLK[v];
+  let ver = 1;
+  while (ver <= 10 && 4 + (ver < 10 ? 8 : 16) + 8 * bytes.length > dataCw(ver) * 8) ver++;
+  if (ver > 10) return '';
+  const size = ver * 4 + 17;
+  // 1) bits de datos
+  const bits = []; const put = (val, n) => { for (let i = n - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+  put(4, 4); put(bytes.length, ver < 10 ? 8 : 16); bytes.forEach(b => put(b, 8));
+  const cap = dataCw(ver) * 8;
+  put(0, Math.min(4, cap - bits.length)); while (bits.length % 8) bits.push(0);
+  const data = []; for (let i = 0; i < bits.length; i += 8) data.push(parseInt(bits.slice(i, i + 8).join(''), 2));
+  for (let p = 0xEC; data.length < dataCw(ver); p ^= 0xEC ^ 0x11) data.push(p);
+  // 2) Reed-Solomon
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z; };
+  const divisor = n => { const r = new Array(n).fill(0); r[n - 1] = 1; let root = 1; for (let i = 0; i < n; i++) { for (let j = 0; j < n; j++) { r[j] = mul(r[j], root); if (j + 1 < n) r[j] ^= r[j + 1]; } root = mul(root, 2); } return r; };
+  const remainder = (d, dv) => { const r = new Array(dv.length).fill(0); d.forEach(b => { const f = b ^ r.shift(); r.push(0); dv.forEach((c, i) => { r[i] ^= mul(c, f); }); }); return r; };
+  const nb = BLK[ver], el = ECC[ver], raw = Math.floor(rawMods(ver) / 8), nShort = nb - raw % nb, shortLen = Math.floor(raw / nb), dv = divisor(el), blocks = [];
+  for (let i = 0, k = 0; i < nb; i++) {
+    const dat = data.slice(k, k + shortLen - el + (i < nShort ? 0 : 1)); k += dat.length;
+    const ecc = remainder(dat, dv); if (i < nShort) dat.push(0); blocks.push(dat.concat(ecc));
+  }
+  const all = []; for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== shortLen - el || j >= nShort) all.push(b[i]); });
+  // 3) matriz
+  const M = Array.from({ length: size }, () => new Array(size).fill(false)), F = Array.from({ length: size }, () => new Array(size).fill(false));
+  const setF = (x, y, d) => { if (x >= 0 && x < size && y >= 0 && y < size) { M[y][x] = d; F[y][x] = true; } };
+  for (let i = 0; i < size; i++) { setF(6, i, i % 2 === 0); setF(i, 6, i % 2 === 0); }
+  [[3, 3], [size - 4, 3], [3, size - 4]].forEach(([x, y]) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const d = Math.max(Math.abs(dx), Math.abs(dy)); setF(x + dx, y + dy, d !== 2 && d !== 4); } });
+  if (ver > 1) {
+    const na = Math.floor(ver / 7) + 2, step = Math.ceil((ver * 4 + 4) / (na * 2 - 2)) * 2, pos = [6];
+    for (let p = size - 7; pos.length < na; p -= step) pos.splice(1, 0, p);
+    pos.forEach((ax, i) => pos.forEach((ay, j) => { if ((i === 0 && j === 0) || (i === 0 && j === na - 1) || (i === na - 1 && j === 0)) return; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) setF(ax + dx, ay + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }));
+  }
+  const fmt = mask => {
+    let rem = mask; for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+    const b = ((mask << 10) | rem) ^ 0x5412, bit = i => ((b >>> i) & 1) !== 0;
+    for (let i = 0; i <= 5; i++) setF(8, i, bit(i)); setF(8, 7, bit(6)); setF(8, 8, bit(7)); setF(7, 8, bit(8)); for (let i = 9; i < 15; i++) setF(14 - i, 8, bit(i));
+    for (let i = 0; i < 8; i++) setF(size - 1 - i, 8, bit(i)); for (let i = 8; i < 15; i++) setF(8, size - 15 + i, bit(i)); setF(8, size - 8, true);
+  };
+  fmt(0);
+  if (ver >= 7) { let rem = ver; for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25); const b = (ver << 12) | rem; for (let i = 0; i < 18; i++) { const c = ((b >>> i) & 1) !== 0, a = size - 11 + i % 3, d = Math.floor(i / 3); setF(a, d, c); setF(d, a, c); } }
+  let k = 0;
+  for (let right = size - 1; right >= 1; right -= 2) {
+    if (right === 6) right = 5;
+    for (let vert = 0; vert < size; vert++) for (let j = 0; j < 2; j++) {
+      const x = right - j, y = ((right + 1) & 2) === 0 ? size - 1 - vert : vert;
+      if (!F[y][x] && k < all.length * 8) { M[y][x] = ((all[k >>> 3] >>> (7 - (k & 7))) & 1) !== 0; k++; }
+    }
+  }
+  const maskFn = [(x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, (x, y) => x % 3 === 0, (x, y) => (x + y) % 3 === 0, (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x, y) => x * y % 2 + x * y % 3 === 0, (x, y) => (x * y % 2 + x * y % 3) % 2 === 0, (x, y) => ((x + y) % 2 + x * y % 3) % 2 === 0];
+  const applyMask = m => { for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!F[y][x] && maskFn[m](x, y)) M[y][x] = !M[y][x]; };
+  const penalty = () => {
+    let p = 0;
+    for (let a = 0; a < size; a++) for (const row of [true, false]) {
+      let run = 1;
+      for (let b = 1; b < size; b++) { const c = row ? M[a][b] === M[a][b - 1] : M[b][a] === M[b - 1][a]; if (c) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; }
+    }
+    for (let y = 0; y < size - 1; y++) for (let x = 0; x < size - 1; x++) if (M[y][x] === M[y][x + 1] && M[y][x] === M[y + 1][x] && M[y][x] === M[y + 1][x + 1]) p += 3;
+    let dark = 0; M.forEach(r => r.forEach(c => { if (c) dark++; }));
+    return p + Math.floor(Math.abs(dark * 20 - size * size * 10) / (size * size)) * 10;
+  };
+  let best = 0, bestP = Infinity;
+  for (let m = 0; m < 8; m++) { applyMask(m); fmt(m); const p = penalty(); if (p < bestP) { bestP = p; best = m; } applyMask(m); }
+  applyMask(best); fmt(best);
+  let d = ''; for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (M[y][x]) d += `M${x + 4} ${y + 4}h1v1h-1z`;
+  return `<svg viewBox="0 0 ${size + 8} ${size + 8}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img" aria-label="Código QR"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#111"/></svg>`;
+}
+
+
+/* Pantalla del dueño: advertencia → QR. Al escanearlo, el cupón queda canjeado (una sola vez). */
+function cupQR(x) {
+  const t = TIERS[x.n] || TIERS.bronce, ov = document.createElement('div'); ov.className = 'qov'; document.body.appendChild(ov);
+  let timer = 0, alive = true;
+  const close = () => { alive = false; clearInterval(timer); ov.remove(); loadCupones(); };
+  const box = html => { ov.innerHTML = `<div class="qbox">${html}</div>`; };
+  const cerrar = '<button class="btn glass" id="qcl" style="width:100%;margin-top:10px">Cerrar</button>';
+  const hecho = () => { clearInterval(timer); box(`<div class="qres ya"><div class="qic">⛔</div><h3>Canjeado</h3><div class="qp">${escH(x.c)}</div><small>Este cupón ya se canjeó y no se puede usar otra vez.</small></div>${cerrar}`); $('qcl').onclick = close; };
+  ov.onclick = e => { if (e.target === ov) close(); };
+  box(`<div class="qic">${t.ico}</div><h3>${escH(x.c)}</h3><div class="qwarn">⚠️ Al escanear el QR, el cupón se dará por <b>canjeado</b>. Solo funciona <b>una vez</b>: si lo escanean de nuevo saldrá «Canjeado».</div><button class="btn wide" id="qgo">Mostrar QR</button><button class="btn glass" id="qno" style="width:100%;margin-top:8px">Cancelar</button>`);
+  $('qno').onclick = close;
+  $('qgo').onclick = async () => {
+    box('<div class="qic">⏳</div><h3>Generando QR…</h3>');
+    const r = await apiGet({ cupon_qr: 1, clave: API_KEY, ...authQ(), fecha: x.f });
+    if (!alive) return;
+    if (!r || !r.ok) {
+      const m = !r ? 'Sin conexión. Inténtalo de nuevo.' : tokenMalo(r) ? 'Tu sesión venció. Vuelve a entrar desde Perfil.' : 'No se pudo generar el QR. Revisa que el script de Google esté actualizado.';
+      box(`<div class="qic">😕</div><h3>${m}</h3>${cerrar}`); $('qcl').onclick = close; return;
+    }
+    if (r.canjeado) { hecho(); return; }
+    const url = location.href.split(/[?#]/)[0] + '?cup=' + encodeURIComponent(r.codigo);
+    box(`<h3>${escH(x.c)}</h3><div class="qsvg">${qrSvg(url)}</div><div class="qwarn">⚠️ Cuando escaneen este QR, el cupón se dará por canjeado y no se podrá usar de nuevo.</div>${cerrar}`);
+    $('qcl').onclick = close;
+    timer = setInterval(async () => { const s = await apiGet({ cupon_estado: 1, clave: API_KEY, codigo: r.codigo }); if (alive && s && s.ok && s.canjeado) hecho(); }, 3000);
+  };
+}
+
+/* Pantalla de quien escanea (abre la página con ?cup=CÓDIGO): canjea y avisa; si ya estaba canjeado, dice «Canjeado». */
+async function showCupScan(codigo) {
+  const ov = document.createElement('div'); ov.className = 'qov'; document.body.appendChild(ov);
+  const box = html => { ov.innerHTML = `<div class="qbox">${html}</div>`; };
+  const fin = '<button class="btn glass" id="qfin" style="width:100%;margin-top:14px">Ir al diario</button>';
+  const salir = () => { ov.remove(); try { history.replaceState(null, '', location.href.split(/[?#]/)[0]); } catch (e) {} };
+  const cuando = s => { const m = String(s || '').match(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}:\d{2})$/); return m ? `${+m[1]}/${+m[2]}/${m[3]} a las ${m[4]}` : ''; };
+  const run = async () => {
+    box('<div class="qic">⏳</div><h3>Revisando cupón…</h3>');
+    const r = await apiGet({ cupon_escanear: 1, clave: API_KEY, codigo });
+    const t = r && r.ok ? (TIERS[r.nivel] || TIERS.bronce) : null;
+    if (!r) { box('<div class="qic">📡</div><h3>Sin conexión</h3><small>No se pudo revisar el cupón. Todavía no se canjeó: vuelve a intentarlo.</small><button class="btn wide" id="qre" style="margin-top:14px">Reintentar</button>'); $('qre').onclick = run; return; }
+    if (!r.ok) { box(`<div class="qic">❓</div><h3>QR no válido</h3><small>No encontré este cupón.</small>${fin}`); }
+    else if (r.estado === 'ya') { box(`<div class="qres ya"><div class="qic">⛔</div><h3>Canjeado</h3><div class="qp">${escH(r.cupon)}</div><small>Este cupón ya se canjeó${r.cuando ? ' el ' + cuando(r.cuando) : ''}.<br>No se puede usar otra vez.</small></div>${fin}`); }
+    else { box(`<div class="qres ok"><div class="qic">${t.ico}</div><h3>¡Cupón canjeado! ✅</h3><div class="qp">${escH(r.cupon)}</div><small>${r.nombre ? 'Ganado por ' + escH(r.nombre) + '<br>' : ''}Canjeado ${cuando(r.cuando) ? 'el ' + cuando(r.cuando) : 'ahora'}.<br>Si lo escanean de nuevo saldrá «Canjeado».</small></div>${fin}`); confetti(30); }
+    const f = $('qfin'); if (f) f.onclick = salir;
+  };
+  run();
+}
+
 function renderCupList() {
   const l = cupList().filter(x => x.c).sort((a, b) => a.f < b.f ? 1 : -1), all = cupList().length;
   const row = x => { const t = TIERS[x.n] || TIERS.bronce, [y, m, d] = x.f.split('-').map(Number);
-    return `<div class="cup${x.x ? ' used' : ''}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="cupi">${t.ico}</div><div class="cupt"><small>${t.name} · ${d}/${m}/${y}</small><b>${escH(x.c)}</b></div><button class="cupx" data-k="${cupKey(x)}">${x.x ? 'Canjeado ✓' : 'Canjear'}</button></div>`; };
+    return `<div class="cup${x.x ? ' used' : ''}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="cupi">${t.ico}</div><div class="cupt"><small>${t.name} · ${d}/${m}/${y}</small><b>${escH(x.c)}</b></div><button class="cupx" data-k="${cupKey(x)}"${x.x ? ' disabled' : ''}>${x.x ? 'Canjeado ✓' : 'Canjear'}</button></div>`; };
   $('cpl').innerHTML = `<div class="evh">${all} ${all === 1 ? 'intento' : 'intentos'} · ${l.length} ${l.length === 1 ? 'cupón ganado' : 'cupones ganados'}</div>` + (l.length ? l.map(row).join('') : '<div class="evempty">Aún no hay cupones. ¡Sigue intentando! ♥</div>');
 }
 function showCupones() {
@@ -1877,10 +2011,10 @@ function showCupones() {
   renderCupList();
   $('back').onclick = () => go(showRaspa, { hideTitle: true });
   $('cpl').onclick = e => {
-    const b = e.target.closest('.cupx'); if (!b) return;
-    const x = cupList().find(y => cupKey(y) === b.dataset.k); if (!x) return;
-    const v = x.x ? 0 : 1, o = store.get('qn_cup_ovr', {}); o[cupKey(x)] = { v, ts: Date.now() }; store.set('qn_cup_ovr', o);
-    postApi({ tipo: 'cupon_canjear', fecha: x.f, persona: x.p || '', canjeado: v }); renderCupList();
+    const b = e.target.closest('.cupx'); if (!b || b.disabled) return;
+    const x = cupList().find(y => cupKey(y) === b.dataset.k); if (!x || x.x) return;
+    if (!API_URL || !yo() || x.p !== yo()) { alert(yo() ? 'Este cupón no es de tu perfil.' : 'Inicia sesión en Perfil para canjear tus cupones.'); return; }
+    cupQR(x);
   };
   loadCupones();
 }
@@ -2452,10 +2586,14 @@ function showMillonario() {
   const back = () => go(renderHome2, { hideTitle: true });
   if (!API_URL) { screen.innerHTML = `<div class="home">${head}<div class="evempty">Este juego necesita la hoja de Google conectada.</div></div>`; $('back').onclick = back; return; }
   if (!yo()) { screen.innerHTML = `<div class="home">${head}${needLogin('Para apostar tus LoveCoins entra a tu perfil con su contraseña.')}</div>`; $('back').onclick = back; bindNeedLogin(); return; }
-  const X = [3, 35, 67], cupSvg = '<svg viewBox="0 0 100 120"><path d="M22 108 L33 26 Q50 8 67 26 L78 108 Z" fill="url(#mcg)"/><path d="M38 32 Q45 70 41 100" stroke="rgba(255,255,255,.75)" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="12" y="102" width="76" height="13" rx="6.5" fill="#bccde8"/><rect x="12" y="102" width="76" height="4" rx="2" fill="rgba(255,255,255,.6)"/></svg>';
+  const X = [3, 35, 67], cupSvg = (() => {                               // tapita de botella: baja, con el borde estriado y el centro hundido
+    const rx = 44, ry = 18, cx = 50, ty = 24, by = 46; let rid = '';
+    for (let x = 10; x <= 90; x += 3.3) { const s = Math.sqrt(1 - ((x - cx) / rx) ** 2); rid += `<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${(ty + ry * s + 1).toFixed(1)}" y2="${(by + ry * s - 1).toFixed(1)}"/>`; }
+    return `<svg viewBox="0 0 100 68"><path d="M6 24V46A44 18 0 0 0 94 46V24Z" fill="url(#mcs)"/><g stroke="rgba(8,24,110,.4)" stroke-width="1.1">${rid}</g><path d="M6 46A44 18 0 0 0 94 46" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.4"/><ellipse cx="50" cy="24" rx="44" ry="18" fill="url(#mct)"/><ellipse cx="50" cy="24" rx="37" ry="14.5" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.22)" stroke-width="1.6"/><ellipse cx="37" cy="17" rx="14" ry="3.4" fill="rgba(255,255,255,.3)" transform="rotate(-8 37 17)"/><circle cx="50" cy="23" r="1.3" fill="rgba(255,255,255,.7)"/></svg>`;
+  })();
   screen.innerHTML = `<div class="home">${head}
     <div class="mbal"><div><div class="ml">Tus LoveCoins</div><div class="mv">${COIN(24)}<span class="lcv">${fmt(miSaldo())}</span></div></div><div class="ms">${escH(nombreDe(yo()))}<br><span id="mst2">Sin apuestas aún</span></div></div>
-    <div class="mstage" id="mst"><svg width="0" height="0" style="position:absolute"><defs><linearGradient id="mcg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eef3fc"/><stop offset=".42" stop-color="#9db9e4"/><stop offset="1" stop-color="#4f78b8"/></linearGradient></defs></svg><div class="mfloor"></div>
+    <div class="mstage" id="mst"><svg width="0" height="0" style="position:absolute"><defs><linearGradient id="mcs" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b3fae"/><stop offset=".35" stop-color="#3a69e6"/><stop offset=".7" stop-color="#2450c8"/><stop offset="1" stop-color="#142f86"/></linearGradient><linearGradient id="mct" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6f99ff"/><stop offset=".55" stop-color="#2e5bdc"/><stop offset="1" stop-color="#1d3fb0"/></linearGradient></defs></svg><div class="mfloor"></div>
       <div class="mstone" id="mstone"></div>
       ${[0, 1, 2].map(i => `<button class="mcup" data-c="${i}" style="--x:${X[i]}%" aria-label="Tapita ${i + 1}">${cupSvg}</button>`).join('')}</div>
     <div class="mmsg" id="mmsg">Elige cuánto apostar y toca «Apostar»</div>
@@ -2596,6 +2734,7 @@ if (!store.get('qn_reset_perfiles1', false)) {
   store.set('qn_reset_perfiles1', true);
 }
 renderHome();
+{ const cc = new URLSearchParams(location.search).get('cup'); if (cc) showCupScan(cc); }
 loadBuzon(); loadEventos(); loadPerfiles().then(() => { loadPerfil(); loadMonedas(); }); loadFotos(); loadCupones(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
 </script>
