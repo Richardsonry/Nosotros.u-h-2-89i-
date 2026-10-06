@@ -550,6 +550,10 @@
 
   .rcol { position: relative; flex: none; }
   .lc { position: absolute; right: 4px; bottom: calc(100% + 3px); display: flex; align-items: center; gap: 4px; font-weight: 800; font-size: .86rem; color: #a8740a; white-space: nowrap; }
+  /* números de LoveCoins: dorado brillante */
+  .lcv, .wal b, .st i, .cjopt .pr, .gnum, .coins, .lc { background: linear-gradient(180deg, #fff3a6 0%, #ffd21f 42%, #f2a200 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; filter: drop-shadow(0 1px 0 rgba(125,75,0,.5)); }
+  .mbal .lcv { filter: drop-shadow(0 1px 1px rgba(110,20,45,.75)); }
+  html[data-theme=dark] .lcv, html[data-theme=dark] .wal b, html[data-theme=dark] .st i, html[data-theme=dark] .cjopt .pr, html[data-theme=dark] .gnum, html[data-theme=dark] .coins, html[data-theme=dark] .lc { filter: drop-shadow(0 0 5px rgba(255,196,40,.5)); }
   .coin { filter: drop-shadow(0 0 3px rgba(255,201,40,.7)) drop-shadow(0 1px 1px rgba(150,95,0,.5)); }
   .coin .cgl { animation: coinsh 3.2s ease-in-out infinite; }
   @keyframes coinsh { 0%, 55% { transform: translateX(0); } 100% { transform: translateX(42px); } }
@@ -702,7 +706,7 @@
   @media (max-height: 740px) { .tiles.p2 .tile.mill { min-height: 76px; } }
 
   /* ===== Juego: ¿Quieres ser millonario? ===== */
-  @media (max-height: 760px) { .mbal { padding: 8px 14px !important; } .mbal .mv { font-size: 1.25rem !important; } .mhost .mface { width: 76px; height: 88px; } .mstage { height: 146px !important; } .mbet { padding: 9px !important; } .mchips { margin-top: 6px !important; } .mchips button { padding: 7px 4px !important; } .btn.mgo { margin-top: 8px !important; } .mhost .mmsg { font-size: .82rem; padding: 8px 10px; } }
+  @media (max-height: 760px) { .mbal { padding: 8px 14px !important; } .mbal .mv { font-size: 1.25rem !important; } .mhost .mface { width: 76px; height: 88px; } .mstage { height: 146px !important; } .mbet { padding: 9px !important; } .mchips { margin-top: 6px !important; } .mchips button { padding: 7px 4px !important; } .btn.mgo { margin-top: 8px !important; } .mhost .mmsg { font-size: .82rem; padding: 8px 10px; min-height: calc(4 * 1.35em + 16px); } }
   .mbal { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 4px 0 6px; padding: 12px 16px; border-radius: 20px; color: #fff; background: linear-gradient(120deg, #ff9db3 0%, #f27d95 45%, #c2485c 100%); box-shadow: 0 6px 16px rgba(194,72,92,.38), inset 0 1.5px 0 rgba(255,255,255,.6); }
   .mbal .ml { font-size: .74rem; font-weight: 700; opacity: .9; }
   .mbal .mv { display: flex; align-items: center; gap: 7px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
@@ -713,7 +717,7 @@
   .mhost .mface img { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom; pointer-events: none; -webkit-user-drag: none; }
   .mhost .mface img.pop { animation: mfpop .38s cubic-bezier(.3,1.6,.5,1); }
   @keyframes mfpop { 0% { transform: scale(.88) translateY(6px); } 100% { transform: none; } }
-  .mhost .mmsg { position: relative; flex: 1; min-width: 0; align-self: center; margin: 0 0 10px; padding: 10px 12px; border-radius: 18px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 16px rgba(90,40,60,.1); text-align: left; font-size: .9rem; }
+  .mhost .mmsg { position: relative; flex: 1; min-width: 0; align-self: center; margin: 0 0 8px; padding: 10px 12px; min-height: calc(4 * 1.35em + 20px); display: flex; align-items: center; border-radius: 18px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 16px rgba(90,40,60,.1); text-align: left; font-size: .9rem; }
   .mhost .mmsg::before { content: ""; position: absolute; left: -7px; top: 50%; margin-top: -7px; width: 14px; height: 14px; background: inherit; border-radius: 3px; transform: rotate(45deg); box-shadow: -2px 2px 3px rgba(90,40,60,.05); }
   /* pared detrás de las tapitas: sube hasta la base del personaje, que queda asomado por detrás */
   .mstage { position: relative; z-index: 1; height: 156px; margin: -10px 0 0; user-select: none; -webkit-user-select: none; container-type: inline-size; border-radius: 22px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 11px, rgba(255,255,255,0) 11px 22px), linear-gradient(180deg, #fbdde5 0%, #f4c4d1 100%); box-shadow: inset 0 3px 0 rgba(255,255,255,.95), inset 0 8px 10px -6px rgba(150,40,80,.22), 0 6px 16px rgba(90,40,60,.12); }
@@ -2694,7 +2698,7 @@ function paintJuegos() {
   }).join('');
   el.innerHTML = `${me ? '' : needLogin('Para jugar y sumar puntos entra a tu perfil con su contraseña.')}
     <div class="wal" id="jwal">${ps.map(p => `<div>${escH(p.nombre)}<b>${COIN(16)} ${fmt(m[p.id])}${w[p.id] ? ` · 🏆 ${w[p.id]}` : ''}</b></div>`).join('')}</div>
-    <div class="jrule">Al terminar el día, quien tenga el <b>mejor puntaje</b> de cada juego gana ${COIN(14)} <b>${fmt(premio)}</b>. Juegan cuando quieran, sin esperarse. Cuenta tu mejor intento (${intentosMax()} por juego al día) y tienen que haber jugado al menos 2 perfiles.</div>
+    <div class="jrule">Al terminar el día, quien tenga el <b>mejor puntaje</b> de cada juego gana ${COIN(14)} <b class="gnum">${fmt(premio)}</b>. Juegan cuando quieran, sin esperarse. Cuenta tu mejor intento (${intentosMax()} por juego al día) y tienen que haber jugado al menos 2 perfiles.</div>
     ${ayer}${cards}`;
   bindNeedLogin();
 }
@@ -2812,7 +2816,7 @@ const RICH_DICE = {
   script: ['Algo falló por detrás del escenario 🎭 Revisa que el script de Google esté actualizado.'],
   quiebra: ['¡Te quedaste sin LoveCoins! Ve a Juegos, gana algunas y regresa, que aquí te espero 💗', 'Billetera vacía, corazón lleno 💗 Gana monedas en Juegos y vuelve.']
 };
-const MILL_INTRO = 'Apuesta, sigue la piedrita y adivina su tapita: ¡si aciertas te doy el doble, si no, la pierdes! 🪨';
+const MILL_INTRO = 'Adivina dónde quedó la piedrita: ¡si aciertas, te doy el doble! 🪨';
 const richDi = k => { const a = RICH_DICE[k]; return a[Math.floor(Math.random() * a.length)]; };
 const richGana = (pago, apuesta) => { const a = [`¡ACERTASTE! 🎉 Eres un genio... o muy suertudo. Te llevas ${fmt(pago)} LoveCoins (apostaste ${fmt(apuesta)}).`, `¡Boom! 💥 La piedrita estaba ahí. Te entrego ${fmt(pago)} LoveCoins y mi admiración (apostaste ${fmt(apuesta)}).`, `¡No lo puedo creer! 🤩 ${fmt(pago)} LoveCoins para ti. Yo ya no tengo tapitas con las que engañarte (apostaste ${fmt(apuesta)}).`]; return a[Math.floor(Math.random() * a.length)]; };
 const richPierde = apuesta => { const a = [`Nooo, estaba en otra tapita 😭 Se fueron ${fmt(apuesta)} LoveCoins. ¡La próxima es tuya!`, `Ouch... esa piedrita se escondió muy bien 🪨 Perdiste ${fmt(apuesta)} LoveCoins. Yo también sufro, créeme.`, `Casi, casi... bueno, no tanto 😅 Adiós a ${fmt(apuesta)} LoveCoins. ¡Revancha!`, `La piedrita se rio de ti 🤭 Perdiste ${fmt(apuesta)} LoveCoins. Pero hey, ¡la suerte da vueltas!`]; return a[Math.floor(Math.random() * a.length)]; };
