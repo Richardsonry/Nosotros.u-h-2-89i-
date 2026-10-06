@@ -857,6 +857,27 @@ html[data-theme=dark] #tabbar.press .tb-lens-in{background:linear-gradient(180de
   .app{height:100vh!important;height:100lvh!important}
 }
 #tabbar{bottom:calc(env(safe-area-inset-bottom)*.3 + 6px)}
+
+/* ===== Sin franja blanca abajo (navegador y acceso directo del teléfono) ===== */
+@media (max-width:599px){
+  html,body{position:fixed;top:0;right:0;bottom:0;left:0;width:100%;height:auto!important;min-height:0!important;margin:0;overflow:hidden}
+  .app{position:absolute!important;top:0;right:0;bottom:0;left:0;width:100%;height:auto!important;min-height:0!important}
+}
+
+/* ===== ¿Quieres ser millonario?: texto dorado ===== */
+.tiles.p2 .tile.mill{color:#f4c542;background:linear-gradient(120deg,#13264b 0%,#1f3f7a 55%,#0e1d3d 100%);box-shadow:0 5px 16px rgba(20,40,90,.45),inset 0 0 0 1px rgba(244,197,66,.38)}
+.tiles.p2 .tile.mill b{background:linear-gradient(180deg,#fff3b0 0%,#f4c542 48%,#b8860b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35))}
+.tiles.p2 .tile.mill small{color:#e9c15a}
+.tiles.p2 .tile.mill .mi{color:#f4c542;background:linear-gradient(135deg,#2a4f94,#142b57)}
+.tiles.p2 .tile.mill .mc2{color:rgba(244,197,66,.8)}
+
+/* ===== Canje del mes con QR ===== */
+.cjmes{padding:18px 16px;border-radius:24px;background:linear-gradient(120deg,#f7f3e6,#fff1b8 55%,#e9d17a);box-shadow:0 5px 16px rgba(160,120,20,.28);color:#5b4208;text-align:center}
+.cjmes .t{font-size:.78rem;font-weight:800;opacity:.75;text-transform:uppercase;letter-spacing:.04em}
+.cjmes .m{font-size:1.7rem;font-weight:800;margin:4px 0 2px;color:#a8740a}
+.cjmes .c{font-weight:800;letter-spacing:.08em;margin-bottom:12px}
+.cjmes .ok{font-weight:800;color:#14825a}
+.cjnote{margin:12px 4px 0;text-align:center;color:var(--muted);font-size:.84rem;font-weight:600;line-height:1.4}
 </style>
 
 </head>
@@ -1325,7 +1346,7 @@ function renderHome(page = 0) {
   <!--S1--><div class="tiles p2">
     <button class="tile" id="mb"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.8 7.2l8.2 6 8.2-6"/></svg></span><b>Buzón</b><small>Una carta para ti</small></button>
     <button class="tile" id="pd"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6.5h10M9.5 12h10M9.5 17.5h10M3.8 6.6l1.3 1.3 2.2-2.4M3.8 12.1l1.3 1.3 2.2-2.4M3.8 17.6l1.3 1.3 2.2-2.4"/></svg></span><b>Pendientes</b><small id="pdn">${todoLabel()}</small></button>
-    <button class="tile mill" id="mil"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h11l4 5.5L12 20.5 2.5 9.5z"/><path d="M2.5 9.5h19M9 4l-2 5.5 5 11 5-11L15 4"/></svg></span><span class="mt"><b>¿Quieres ser millonario?</b><small>Apuesta infinita · 3 tapitas, 1 piedrita</small></span><svg class="mc2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button class="tile mill" id="mil"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h11l4 5.5L12 20.5 2.5 9.5z"/><path d="M2.5 9.5h19M9 4l-2 5.5 5 11 5-11L15 4"/></svg></span><span class="mt"><b>¿Quieres ser millonario?</b><small>Apuesta infinita</small></span><svg class="mc2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
     <button class="tile mini wide" id="jg"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4M16 11h.01M18.5 14h.01"/></svg></span><b>Juegos</b><small style="margin:0">Gana LoveCoins</small></button>
   </div>
   <div class="req"><h4>Petición</h4><p>Si necesitas algún ajuste o añadir algo, puedes pedirlo acá.</p><div class="rrow"><input id="rq" type="text" placeholder="Escribe tu petición…" enterkeyhint="send" autocomplete="off"><button class="send" id="rs" aria-label="Enviar petición"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div>`;
@@ -2778,37 +2799,111 @@ function showMillonario() {
   loadMonedas().then(() => { if (!$('mamt')) return; if (state === 'idle') { if (bet() > miSaldo() || !bet()) setBet(Math.min(100, miSaldo())); } });
 }
 
-/* ---------- Canjear: LoveCoins por dinero real (de $1.000 a $100.000 COP) ---------- */
+/* ---------- Canjear: LoveCoins por dinero real (de $1.000 a $100.000 COP) · UNO por mes, con QR ---------- */
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const fechaLarga = iso => { const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? `${+m[3]} de ${MESES[+m[2] - 1]}` : 'el próximo mes'; };
+
+/* Pantalla del dueño: advertencia → QR. Al escanearlo, el canje queda entregado (una sola vez). */
+function canjeQR(c) {
+  const ov = document.createElement('div'); ov.className = 'qov'; document.body.appendChild(ov);
+  let timer = 0, alive = true;
+  const close = () => { alive = false; clearInterval(timer); ov.remove(); if ($('cjb') && typeof cjRefresh === 'function') cjRefresh(); };
+  const box = html => { ov.innerHTML = `<div class="qbox">${html}</div>`; };
+  const cerrar = '<button class="btn glass" id="qcl" style="width:100%;margin-top:10px">Cerrar</button>';
+  const hecho = () => { clearInterval(timer); box(`<div class="qres ok"><div class="qic">✅</div><h3>Canje entregado</h3><div class="qp">${escH(c.detalle)}</div><small>Este canje ya se entregó y no se puede usar otra vez.</small></div>${cerrar}`); $('qcl').onclick = close; };
+  ov.onclick = e => { if (e.target === ov) close(); };
+  box(`<div class="qic">💵</div><h3>${escH(c.detalle)}</h3><div class="qwarn">⚠️ Al escanear el QR, el canje se dará por <b>entregado</b>. Solo funciona <b>una vez</b>: si lo escanean de nuevo saldrá «Ya entregado».</div><button class="btn wide" id="qgo">Mostrar QR</button><button class="btn glass" id="qno" style="width:100%;margin-top:8px">Cancelar</button>`);
+  $('qno').onclick = close;
+  $('qgo').onclick = async () => {
+    box('<div class="qic">⏳</div><h3>Generando QR…</h3>');
+    const r = await apiGet({ canje_mio: 1, clave: API_KEY, ...authQ() });
+    if (!alive) return;
+    if (!r || !r.ok) {
+      const m = !r ? 'Sin conexión. Inténtalo de nuevo.' : tokenMalo(r) ? 'Tu sesión venció. Vuelve a entrar desde Perfil.' : 'No se pudo generar el QR. Revisa que el script de Google esté actualizado.';
+      box(`<div class="qic">😕</div><h3>${m}</h3>${cerrar}`); $('qcl').onclick = close; return;
+    }
+    if (!r.hay) { box(`<div class="qic">😕</div><h3>No encontré tu canje de este mes.</h3>${cerrar}`); $('qcl').onclick = close; return; }
+    if (r.entregado) { hecho(); return; }
+    const url = location.href.split(/[?#]/)[0] + '?canje=' + encodeURIComponent(r.secreto);
+    box(`<h3>${escH(r.detalle)}</h3><small style="margin-bottom:6px">Código ${escH(r.codigo)}</small><div class="qsvg">${qrSvg(url)}</div><div class="qwarn">⚠️ Cuando escaneen este QR, el canje se dará por entregado y no se podrá usar de nuevo.</div>${cerrar}`);
+    $('qcl').onclick = close;
+    timer = setInterval(async () => { const q = await apiGet({ canje_estado: 1, clave: API_KEY, codigo: r.secreto }); if (alive && q && q.ok && q.entregado) hecho(); }, 3000);
+  };
+}
+
+/* Pantalla de quien escanea (abre la página con ?canje=CÓDIGO): marca entregado; si ya estaba, dice «Ya entregado». */
+async function showCanjeScan(codigo) {
+  const ov = document.createElement('div'); ov.className = 'qov'; document.body.appendChild(ov);
+  const box = html => { ov.innerHTML = `<div class="qbox">${html}</div>`; };
+  const fin = '<button class="btn glass" id="qfin" style="width:100%;margin-top:14px">Ir al diario</button>';
+  const salir = () => { ov.remove(); try { history.replaceState(null, '', location.href.split(/[?#]/)[0]); } catch (e) {} };
+  const cuando = s => { const m = String(s || '').match(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}:\d{2})$/); return m ? `${+m[1]}/${+m[2]}/${m[3]} a las ${m[4]}` : ''; };
+  const run = async () => {
+    box('<div class="qic">⏳</div><h3>Revisando canje…</h3>');
+    const r = await apiGet({ canje_escanear: 1, clave: API_KEY, codigo });
+    if (!r) { box('<div class="qic">📡</div><h3>Sin conexión</h3><small>No se pudo revisar el canje. Todavía no se entregó: vuelve a intentarlo.</small><button class="btn wide" id="qre" style="margin-top:14px">Reintentar</button>'); $('qre').onclick = run; return; }
+    if (!r.ok) box(`<div class="qic">❓</div><h3>QR no válido</h3><small>No encontré este canje.</small>${fin}`);
+    else if (r.estado === 'ya') box(`<div class="qres ya"><div class="qic">⛔</div><h3>Ya entregado</h3><div class="qp">${escH(r.detalle)}</div><small>Este canje ya se entregó${r.cuando ? ' el ' + cuando(r.cuando) : ''}.<br>No se puede usar otra vez.</small></div>${fin}`);
+    else { box(`<div class="qres ok"><div class="qic">💵</div><h3>¡Canje entregado! ✅</h3><div class="qp">${escH(r.detalle)}</div><small>${r.nombre ? 'Canjeado por ' + escH(r.nombre) + '<br>' : ''}Entregado ${cuando(r.cuando) ? 'el ' + cuando(r.cuando) : 'ahora'}.<br>Si lo escanean de nuevo saldrá «Ya entregado».</small></div>${fin}`); confetti(30); }
+    const f = $('qfin'); if (f) f.onclick = salir;
+  };
+  run();
+}
+
+let cjRefresh = null;
 function showCanje() {
   const back = () => go(renderHome2, { hideTitle: true });
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Canjear</h2><div class="date" id="cjd"></div></div>${yo() ? `<div class="lcchip">${COIN(16)}<span class="lcv">${fmtC(miSaldo())}</span></div>` : ''}</div><div id="cjb"></div></div>`;
   $('back').onclick = back;
+  let mio = null;   // canje de este mes: null = revisando · {hay:false} · {hay:true,...} · {error:true}
+  const opciones = sal => `<div class="cjh">Dinero real<small>1.000 LoveCoins = $100 COP</small></div>${CANJES_COP.map(c => `<button class="cjopt${c * LC_POR_COP > sal ? ' dis' : ''}" data-cop="${c}"><span>$${fmt(c)} COP</span><span class="pr">${COIN(16)} ${fmt(c * LC_POR_COP)}</span></button>`).join('')}<div class="cjnote">Solo puedes hacer 1 canje por mes.</div>`;
   const paint = () => {
     const me = yo(), sal = miSaldo();
+    if (!$('cjb')) return;
     $('cjd').textContent = me ? nombreDe(me) : 'LoveCoins';
     if (!perfiles().length) { $('cjb').innerHTML = '<div class="evempty">Aún no hay perfiles. Crea uno en Perfil 💗</div>'; return; }
-    $('cjb').innerHTML = `${me ? `<div class="cjh">Dinero real<small>1.000 LoveCoins = $100 COP</small></div>${CANJES_COP.map(c => `<button class="cjopt${c * LC_POR_COP > sal ? ' dis' : ''}" data-cop="${c}"><span>$${fmt(c)} COP</span><span class="pr">${COIN(16)} ${fmt(c * LC_POR_COP)}</span></button>`).join('')}` : needLogin('Para canjear tus LoveCoins entra a tu perfil con su contraseña.')}`;
-    bindNeedLogin();
+    if (!me) { $('cjb').innerHTML = needLogin('Para canjear tus LoveCoins entra a tu perfil con su contraseña.'); bindNeedLogin(); return; }
+    if (mio === null) { $('cjb').innerHTML = '<div class="evempty">Revisando tu canje del mes…</div>'; return; }
+    if (mio.hay) {
+      $('cjb').innerHTML = `<div class="cjmes"><div class="t">Tu canje de este mes</div><div class="m">${escH(mio.detalle)}</div><div class="c">${escH(mio.codigo)}</div>${mio.entregado ? '<div class="ok">✅ Entregado</div>' : '<button class="btn wide" id="cjqr">Mostrar QR</button>'}</div>
+        <div class="cjnote">Ya hiciste tu canje de este mes. Podrás hacer otro desde el ${fechaLarga(mio.proximo)}.</div>`;
+      const q = $('cjqr'); if (q) q.onclick = () => canjeQR({ detalle: mio.detalle });
+      return;
+    }
+    $('cjb').innerHTML = opciones(sal);
+  };
+  cjRefresh = async () => {
+    if (!yo()) { paint(); return; }
+    const r = await apiGet({ canje_mio: 1, clave: API_KEY, ...authQ() });
+    if (r && r.ok) mio = r; else { if (tokenMalo(r)) { paint(); return; } mio = { hay: false }; }   // si falla la consulta, el servidor igual impide un segundo canje
+    paint();
   };
   paint();
+  cjRefresh();
   loadPerfiles().then(() => loadMonedas()).then(() => { if ($('cjb')) paint(); });
   $('cjb').onclick = async e => {
     const b = e.target.closest('.cjopt'); if (!b || b.dataset.busy) return;
     const me = yo(), cop = +b.dataset.cop, coste = cop * LC_POR_COP;
     if (coste > miSaldo()) { alert('Aún no te alcanzan las LoveCoins 💗'); return; }
-    if (!confirm(`¿Canjear $${fmt(cop)} COP por ${fmt(coste)} LoveCoins?`)) return;
+    if (!confirm(`¿Canjear $${fmt(cop)} COP por ${fmt(coste)} LoveCoins?\n\nSolo se puede hacer 1 canje por mes.`)) return;
     b.dataset.busy = 1; b.style.opacity = .5;
     const r = await apiGet({ canjear: 1, clave: API_KEY, ...authQ(), cop });
-    if (!r || !r.ok) { b.dataset.busy = ''; b.style.opacity = ''; if (tokenMalo(r)) { alert('Tu sesión venció. Vuelve a entrar desde Perfil.'); paint(); return; } alert(r && r.error === 'saldo' ? 'No te alcanzan las LoveCoins.' : r && r.error === 'persona' ? 'Ese perfil ya no existe.' : 'No se pudo canjear. Revisa tu conexión e intenta de nuevo.'); return; }
+    if (!r || !r.ok) {
+      b.dataset.busy = ''; b.style.opacity = '';
+      if (tokenMalo(r)) { alert('Tu sesión venció. Vuelve a entrar desde Perfil.'); paint(); return; }
+      if (r && r.error === 'mes') { alert(`Ya hiciste tu canje de este mes. Podrás hacer otro desde el ${fechaLarga(r.proximo)}.`); cjRefresh(); return; }
+      alert(r && r.error === 'saldo' ? 'No te alcanzan las LoveCoins.' : r && r.error === 'persona' ? 'Ese perfil ya no existe.' : 'No se pudo canjear. Revisa tu conexión e intenta de nuevo.'); return;
+    }
     store.set('qn_monedas', { ...saldos(), [me]: r.saldo }); updLC();
     const msg = `🎟️ Canje ${r.codigo}\n${nombreDe(me)} canjeó: ${r.detalle} (dinero real)\n−${fmt(r.coste)} LoveCoins · Saldo: ${fmt(r.saldo)}`;
     const link = waLink(msg);
     screen.innerHTML = `<div class="home">${dateTop()}<h2 class="big" style="margin-top:6px">¡Canje listo! 🎉</h2><div class="date">${escH(r.detalle)}</div><div class="code">${r.codigo}</div>
-      <a class="btn wide" href="${link}" target="_blank" rel="noopener">Enviar a mi WhatsApp 💌</a>
-      <p class="evempty" style="padding:14px 6px">Este código es tu comprobante. Se descontaron ${fmt(r.coste)} LoveCoins y te quedan ${fmt(r.saldo)}.</p><button class="btn glass full" id="ok">Listo</button></div>`;
+      <button class="btn wide" id="cjqr2">Mostrar QR</button>
+      <a class="btn glass full" style="margin-top:8px" href="${link}" target="_blank" rel="noopener">Enviar a mi WhatsApp 💌</a>
+      <p class="evempty" style="padding:14px 6px">Muestra el QR para recibir tu dinero. Se descontaron ${fmt(r.coste)} LoveCoins y te quedan ${fmt(r.saldo)}.</p><button class="btn glass full" id="ok">Listo</button></div>`;
     $('ok').onclick = back;
-    try { window.open(link, '_blank'); } catch (x) {}
+    $('cjqr2').onclick = () => canjeQR({ detalle: r.detalle });
   };
 }
 
@@ -2915,7 +3010,7 @@ if (!store.get('qn_reset_perfiles1', false)) {
   store.set('qn_reset_perfiles1', true);
 }
 renderHome();
-{ const cc = new URLSearchParams(location.search).get('cup'); if (cc) showCupScan(cc); }
+{ const q = new URLSearchParams(location.search), cc = q.get('cup'), cj = q.get('canje'); if (cc) showCupScan(cc); else if (cj) showCanjeScan(cj); }
 loadBuzon(); loadEventos(); loadPerfiles().then(() => { loadPerfil(); loadMonedas(); }); loadFotos(); loadCupones(); loadTodos(); flushLog();
 $('fallback').style.display = 'none';
 </script>
