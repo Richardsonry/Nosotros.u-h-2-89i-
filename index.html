@@ -686,9 +686,11 @@
   .mbal .mv { display: flex; align-items: center; gap: 7px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
   .mbal .ms { text-align: right; font-size: .74rem; font-weight: 700; opacity: .75; line-height: 1.35; }
   .mstage { position: relative; height: 170px; margin: 6px 0 0; user-select: none; -webkit-user-select: none; }
-  .mstage .mfloor { position: absolute; left: 2%; right: 2%; bottom: 14px; height: 18px; border-radius: 50%; background: radial-gradient(closest-side, rgba(40,70,120,.22), transparent); }
+  .mshd { position: absolute; bottom: 14px; left: var(--x); width: 30%; aspect-ratio: 100 / 68; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 50% 27% at 50% 84%, rgba(10,24,86,.55) 0%, rgba(10,24,86,.42) 60%, rgba(10,24,86,0) 100%); filter: blur(2px); transition: left .32s ease, transform .45s cubic-bezier(.3,.8,.3,1), opacity .45s ease; }
+  .mcup.up + .mshd { transform: scale(.8); opacity: .55; }
+  .mcup.hop + .mshd { transform: scale(.9); opacity: .8; }
   .mcup { position: absolute; bottom: 20px; width: 30%; padding: 0; border: 0; background: none; cursor: default; left: var(--x); transition: left .32s ease, transform .45s cubic-bezier(.3,.8,.3,1); z-index: 2; touch-action: manipulation; }
-  .mcup svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 8px rgba(40,70,120,.28)); }
+  .mcup svg { display: block; width: 100%; height: auto; }
   .mcup.pick { cursor: pointer; animation: mbob 1.1s ease-in-out infinite; }
   .mcup.pick:active { transform: scale(.96); }
   .mcup.up { transform: translateY(-56px); animation: none; }
@@ -2593,9 +2595,8 @@ function showMillonario() {
   })();
   screen.innerHTML = `<div class="home">${head}
     <div class="mbal"><div><div class="ml">Tus LoveCoins</div><div class="mv">${COIN(24)}<span class="lcv">${fmt(miSaldo())}</span></div></div><div class="ms">${escH(nombreDe(yo()))}<br><span id="mst2">Sin apuestas aún</span></div></div>
-    <div class="mstage" id="mst"><svg width="0" height="0" style="position:absolute"><defs><linearGradient id="mcs" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b3fae"/><stop offset=".35" stop-color="#3a69e6"/><stop offset=".7" stop-color="#2450c8"/><stop offset="1" stop-color="#142f86"/></linearGradient><linearGradient id="mct" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6f99ff"/><stop offset=".55" stop-color="#2e5bdc"/><stop offset="1" stop-color="#1d3fb0"/></linearGradient></defs></svg><div class="mfloor"></div>
-      <div class="mstone" id="mstone"></div>
-      ${[0, 1, 2].map(i => `<button class="mcup" data-c="${i}" style="--x:${X[i]}%" aria-label="Tapita ${i + 1}">${cupSvg}</button>`).join('')}</div>
+    <div class="mstage" id="mst"><svg width="0" height="0" style="position:absolute"><defs><linearGradient id="mcs" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1b3fae"/><stop offset=".35" stop-color="#3a69e6"/><stop offset=".7" stop-color="#2450c8"/><stop offset="1" stop-color="#142f86"/></linearGradient><linearGradient id="mct" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6f99ff"/><stop offset=".55" stop-color="#2e5bdc"/><stop offset="1" stop-color="#1d3fb0"/></linearGradient></defs></svg>      <div class="mstone" id="mstone"></div>
+      ${[0, 1, 2].map(i => `<button class="mcup" data-c="${i}" style="--x:${X[i]}%" aria-label="Tapita ${i + 1}">${cupSvg}</button><div class="mshd" style="--x:${X[i]}%"></div>`).join('')}</div>
     <div class="mmsg" id="mmsg">Elige cuánto apostar y toca «Apostar»</div>
     <div class="mbet" id="mbet"><div class="ml">Cantidad a apostar</div><input id="mamt" type="text" inputmode="numeric" autocomplete="off" placeholder="0">
       <div class="mchips"><button data-a="half">½</button><button data-a="dbl">×2</button><button data-a="100">+100</button><button data-a="1000">+1.000</button><button data-a="all">Todo</button></div></div>
@@ -2610,7 +2611,7 @@ function showMillonario() {
   const bet = () => Math.floor(Number(String(amt.value).replace(/\D/g, ''))) || 0;
   const setBet = n => { amt.value = n > 0 ? fmt(Math.min(n, miSaldo())) : ''; };
   const lock = on => { $('mbet').classList.toggle('off', on); go2.disabled = on; };
-  const place = () => cups.forEach((c, i) => c.style.setProperty('--x', X[slot[i]] + '%'));
+  const place = () => cups.forEach((c, i) => { c.style.setProperty('--x', X[slot[i]] + '%'); c.nextElementSibling.style.setProperty('--x', X[slot[i]] + '%'); });
   const stats = () => { $('mst2').textContent = won + lost ? `${won} ganada${won === 1 ? '' : 's'} · ${lost} perdida${lost === 1 ? '' : 's'}` : 'Sin apuestas aún'; };
   const reset = () => { cups.forEach(c => c.classList.remove('up', 'pick', 'chosen', 'hop')); stone.classList.remove('show'); };
   setBet(Math.min(100, miSaldo()));
