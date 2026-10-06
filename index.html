@@ -844,6 +844,8 @@ html[data-theme=dark] #tabbar.press .tb-lens-in{background:linear-gradient(180de
 .bcol{display:grid;grid-template-rows:1fr 1fr;gap:12px;min-width:0}
 .bcol .tile{min-height:0!important;height:100%}
 .nadd h4{margin-bottom:8px}.send svg{width:20px;height:20px}
+.shead,.shead.stuck{background:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important}
+.shead::after{display:none!important}
 </style>
 
 </head>
@@ -1755,7 +1757,13 @@ function showCard(id) {
     <button class="btn glass" id="lout" style="width:100%;margin-top:18px;color:#d6334f">Cerrar sesión</button>
   </div>`;
   screen.classList.remove('center'); screen.classList.add('full');
-  const paint = () => { lens.style.transform = `translate3d(${x}px,0,0)`; bar.style.setProperty('--mx', (x + iw / 2) + 'px'); const c = x + iw / 2, n = idxAt(c); btns.forEach((b, k) => { const t = Math.max(0, 1 - Math.abs(c - (xOf(k) + iw / 2)) / iw); b.style.transform = `scale(${1 + t * (.1 + .2 * ps)})`; b.classList.toggle('on', k === n); }); };
+  const paint = () => {
+    const p = getPerfil(id);
+    $('pav').innerHTML = avatarInner(p); $('pnm').textContent = p.nombre; $('pst').innerHTML = statsHTML(id);
+    $('bars').innerHTML = p.redes.length ? p.redes.map((r, i) => { const st = netStyle(r), has = !!netUrl(r.red, r.enlace);
+      return `<button class="nbar${has ? '' : ' empty'}" data-i="${i}" style="--nc:${st.c};--ni:${st.ink}"><span class="nn">${escH(r.red)}</span><small>${has ? 'Ver QR' : 'Añadir enlace'}</small></button>`; }).join('')
+      : '<div class="evempty">No hay redes. Toca la tuerca para añadir.</div>';
+  };
   paint(); cardPaint = paint;
   $('back').onclick = () => go(renderHome2, { hideTitle: true });
   $('lout').onclick = () => { perfilCambio = Date.now(); cerrarSesion(); go(showPerfil, { hideTitle: true }); };
@@ -2833,7 +2841,7 @@ new MutationObserver(() => {
   let W = 0, iw = 0, pad = 6, cur = 0, x = 0, tx = 0, ps = 0, press = false, moved = false, sx = 0, raf = 0;
   const xOf = i => pad + i * iw, idxAt = px => Math.max(0, Math.min(4, Math.floor((px - pad) / iw)));
   const measure = () => { W = bar.clientWidth; iw = (W - pad * 2) / 5; lens.style.width = iw + 'px'; x = tx = xOf(cur); paint(); };
-  const paint = () => { lens.style.transform = `translate3d(${x}px,0,0)`; hot.style.transform = `translate3d(${-x}px,0,0)`; bar.style.setProperty('--mx', (x + iw / 2) + 'px'); };
+  const paint = () => { lens.style.transform = `translate3d(${x}px,0,0)`; bar.style.setProperty('--mx', (x + iw / 2) + 'px'); const c = x + iw / 2, n = idxAt(c); btns.forEach((b, k) => { const t = Math.max(0, 1 - Math.abs(c - (xOf(k) + iw / 2)) / iw); b.style.transform = `scale(${1 + t * (.1 + .2 * ps)})`; b.classList.toggle('on', k === n); }); };
   const loop = () => { x += (tx - x) * .26; ps += ((press ? 1 : 0) - ps) * .24; if (Math.abs(tx - x) < .3 && Math.abs((press ? 1 : 0) - ps) < .01) { x = tx; ps = press ? 1 : 0; raf = 0; } else raf = requestAnimationFrame(loop); paint(); };
   const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
   const setCur = i => { cur = i; if (!press) { tx = xOf(i); kick(); } };
