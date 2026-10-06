@@ -851,6 +851,12 @@ html[data-theme=dark] #tabbar.press .tb-lens-in{background:linear-gradient(180de
 .rcol .lcchip{margin-left:0}
 .hrow .pbox{height:auto!important;min-height:0}
 @media (max-width:599px){.app{height:100%!important}}
+/* Acceso directo (pantalla completa): usa el alto real del teléfono y evita la franja de abajo */
+@media (display-mode: standalone) and (max-width:599px){
+  html,body{height:100vh!important;height:100lvh!important;min-height:100vh}
+  .app{height:100vh!important;height:100lvh!important}
+}
+#tabbar{bottom:calc(env(safe-area-inset-bottom)*.3 + 6px)}
 </style>
 
 </head>
