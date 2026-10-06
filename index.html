@@ -846,6 +846,11 @@ html[data-theme=dark] #tabbar.press .tb-lens-in{background:linear-gradient(180de
 .nadd h4{margin-bottom:8px}.send svg{width:20px;height:20px}
 .shead,.shead.stuck{background:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important}
 .shead::after{display:none!important}
+.shead .tdate,.shead .big,.shead .date{opacity:var(--fo,1)}
+.lcchip{margin-left:auto;white-space:nowrap;flex:none}
+.rcol .lcchip{margin-left:0}
+.hrow .pbox{height:auto!important;min-height:0}
+@media (max-width:599px){.app{height:100%!important}}
 </style>
 
 </head>
@@ -1294,7 +1299,7 @@ const dateTop = () => `<div class="tdate">${dateLabel()}</div>`;
 function homeHead() {
   return `${dateTop()}
     <div class="jtop"><h2 class="big">Nuestro diario</h2>
-      <div class="rcol">${yo() ? `<div class="lcchip">${COIN(16)}<span class="lcv">${fmt(miSaldo())}</span></div>` : ''}<button class="rbtn" id="cfg" aria-label="Configuración">${GEAR}</button></div></div>`;
+      <div class="rcol">${yo() ? `<div class="lcchip">${COIN(16)}<span class="lcv">${fmtC(miSaldo())}</span></div>` : ''}<button class="rbtn" id="cfg" aria-label="Configuración">${GEAR}</button></div></div>`;
 }
 const bindRaspa = () => { $('cfg').onclick = () => openCfg(); };
 const escH = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\n/g, '<br>');
@@ -2529,7 +2534,8 @@ const saldos = () => store.get('qn_monedas', {});
 const wins = () => store.get('qn_wins', {});
 const miSaldo = () => yo() ? (saldos()[yo()] || 0) : 0;
 const statsHTML = id => `<span class="st" style="display:flex;gap:12px;justify-content:inherit"><i>${COIN(15)} ${fmt(saldos()[id])}</i><i>🏆 ${wins()[id] || 0}</i></span>`;
-const updLC = () => document.querySelectorAll('.lcv').forEach(e => { e.textContent = fmt(miSaldo()); });
+const fmtC = n => { n = Number(n || 0); const f = v => (Math.round(v * 10) / 10).toLocaleString('es-CO'); return n >= 1e6 ? f(n / 1e6) + ' M' : n >= 1e4 ? f(n / 1e3) + ' K' : fmt(n); };
+const updLC = () => document.querySelectorAll('.lcv').forEach(e => { e.textContent = e.closest('.lcchip') ? fmtC(miSaldo()) : fmt(miSaldo()); });
 async function loadMonedas(rows) {
   if (!rows) { const r = await apiGet({ hoja: 'monedas' }); rows = r && r.ok ? r.rows : null; }
   if (!rows) return;
@@ -2770,11 +2776,11 @@ function showMillonario() {
 function showCanje() {
   const back = () => go(renderHome2, { hideTitle: true });
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Canjear</h2><div class="date" id="cjd"></div></div></div><div id="cjb"></div></div>`;
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">Canjear</h2><div class="date" id="cjd"></div></div>${yo() ? `<div class="lcchip">${COIN(16)}<span class="lcv">${fmtC(miSaldo())}</span></div>` : ''}</div><div id="cjb"></div></div>`;
   $('back').onclick = back;
   const paint = () => {
     const me = yo(), sal = miSaldo();
-    $('cjd').innerHTML = me ? `${escH(nombreDe(me))} · ${COIN(14)} <span class="lcv">${fmt(sal)}</span>` : 'LoveCoins';
+    $('cjd').textContent = me ? nombreDe(me) : 'LoveCoins';
     if (!perfiles().length) { $('cjb').innerHTML = '<div class="evempty">Aún no hay perfiles. Crea uno en Perfil 💗</div>'; return; }
     $('cjb').innerHTML = `${me ? `<div class="cjh">Dinero real<small>1.000 LoveCoins = $100 COP</small></div>${CANJES_COP.map(c => `<button class="cjopt${c * LC_POR_COP > sal ? ' dis' : ''}" data-cop="${c}"><span>$${fmt(c)} COP</span><span class="pr">${COIN(16)} ${fmt(c * LC_POR_COP)}</span></button>`).join('')}` : needLogin('Para canjear tus LoveCoins entra a tu perfil con su contraseña.')}`;
     bindNeedLogin();
@@ -2817,7 +2823,7 @@ new MutationObserver(() => {
   h.insertBefore(wrap, date); wrap.append(date, top);
   h.classList.add('subp');
   screen.classList.remove('center'); screen.classList.add('full');
-  h.addEventListener('scroll', () => wrap.classList.toggle('stuck', h.scrollTop > 2), { passive: true });
+  h.addEventListener('scroll', () => { wrap.classList.toggle('stuck', h.scrollTop > 2); wrap.style.setProperty('--fo', Math.max(0, 1 - h.scrollTop / 60).toFixed(2)); }, { passive: true });
 }).observe(screen, { childList: true });
 
 
