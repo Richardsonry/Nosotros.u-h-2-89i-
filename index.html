@@ -1006,6 +1006,41 @@ html[data-theme=dark] .hd-hero{filter:brightness(.94)}
 .hd-row small{display:block;font-size:.72rem;font-weight:700;color:var(--muted)}
 .hd-row b{display:block;margin-top:3px;font-size:.98rem;font-weight:800;font-variant-numeric:tabular-nums}
 .hd-when{margin:12px 4px 14px;text-align:center;font-size:.95rem;font-weight:700;color:var(--muted)}
+/* ===== Detalles del horario: botón + y avisos por día ===== */
+.hd-plus{margin-left:auto;flex:none}
+.hd-plus svg{transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+.hd-plus:active svg{transform:rotate(90deg) scale(.88)}
+.hd-d.has::before{content:"";position:absolute;top:6px;right:calc(50% - 21px);width:6px;height:6px;border-radius:50%;background:#f0a21a;box-shadow:0 0 0 1.5px rgba(255,255,255,.9)}
+.hd-dt{flex:none;display:flex;align-items:center;gap:12px;padding:11px 10px 11px 11px;border-radius:26px;color:var(--ink);--k:#d9830a;--kb:linear-gradient(180deg,#ffd36b,#f0a21a);background:var(--sheen),var(--surface);border:1px solid var(--edge);box-shadow:var(--rim),var(--drop);-webkit-backdrop-filter:blur(24px) saturate(185%);backdrop-filter:blur(24px) saturate(185%)}
+.hd-dt.o{--k:#14825a;--kb:linear-gradient(180deg,#62d9a6,#14825a)}
+.hd-dt .ic{flex:none;width:40px;height:40px;border-radius:14px;display:grid;place-items:center;color:#fff;background:var(--kb);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),0 6px 12px -6px var(--k)}
+.hd-dt .ic svg{width:22px;height:22px}
+.hd-dt .tx{flex:1;min-width:0}
+.hd-dt small{display:block;font-size:.72rem;font-weight:800;color:var(--k)}
+html[data-theme=dark] .hd-dt small{filter:brightness(1.7)}
+.hd-dt b{display:block;margin-top:2px;font-size:.98rem;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.hd-dx{flex:none;min-width:32px;height:32px;padding:0;border:0;border-radius:999px;display:grid;place-items:center;background:var(--field);color:var(--muted);font:inherit;font-size:1.15rem;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hd-dx.arm{padding:0 12px;background:#d6334f;color:#fff;font-size:.74rem;font-weight:700}
+.hd-ft{margin:2px 4px 4px}
+.hd-ft h3{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.hd-ft small{display:block;margin-top:4px;font-size:.84rem;font-weight:600;color:var(--muted)}
+.hd-lb{margin:16px 6px 8px;font-size:.78rem;font-weight:800;color:var(--muted)}
+.hd-dp{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:8px}
+.hd-dp button{border:0;font:inherit;display:flex;flex-direction:column;align-items:center;gap:1px;padding:9px 0 8px;border-radius:20px;background:var(--field);color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .2s,color .2s}
+.hd-dp button span{font-size:.76rem;font-weight:800;opacity:.7}
+.hd-dp button i{font-style:normal;font-size:1.12rem;font-weight:800}
+.hd-dp button.on{background:var(--c);color:#fff;transform:scale(1.04);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.5),0 8px 16px -8px var(--c)}
+.hd-dp button.on span{opacity:.95}
+.hd-dp button:disabled{opacity:.35;cursor:default}
+.hd-qk{display:flex;flex-wrap:wrap;gap:8px}
+.hd-qk button{border:0;font:inherit;padding:8px 13px;border-radius:999px;background:var(--field);color:var(--ink);font-size:.84rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s,color .2s}
+.hd-qk button.on{background:var(--accent);color:#fff}
+.hd-in{display:block;width:100%;margin-top:12px;padding:14px 16px;border:0;border-radius:20px;background:var(--field);color:var(--ink);font:inherit;font-size:1rem;font-weight:600;outline:none;box-shadow:inset 0 1px 3px rgba(0,0,0,.08)}
+.hd-in::placeholder{color:var(--muted);font-weight:500}
+.hd-in:focus{box-shadow:inset 0 1px 3px rgba(0,0,0,.08),0 0 0 2px var(--accent)}
+.hd-save{display:block;width:100%;margin-top:14px;padding:15px;border:0;border-radius:999px;font:inherit;font-size:1.02rem;font-weight:800;color:#fff;background:linear-gradient(180deg,#f27d95,#c2485c);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),0 10px 20px -8px rgba(194,72,92,.6);cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .2s}
+.hd-save:active{transform:scale(.97)}
+.hd-save:disabled{opacity:.45;cursor:default}
 </style>
 
 </head>
@@ -2488,6 +2523,7 @@ function showMailbox(noLoad) {
 
 function showCalendar() {
   const wd = new Date().getDay();
+  const plus = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>';
   const back = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
   // "1:50 – 4:20 PM" → [minutos de inicio, minutos de fin]
   const hm = s => { const m = /(\d{1,2}):(\d{2})\s*(AM|PM)?/i.exec(s) || [0, 0, 0]; return { h: (+m[1]) % 12, m: +m[2], mer: String(m[3] || '').toUpperCase() }; };
@@ -2507,6 +2543,11 @@ function showCalendar() {
   const t0 = new Date(); t0.setHours(0, 0, 0, 0);
   const mon = new Date(t0); mon.setDate(t0.getDate() - ((wd + 6) % 7) + (wd === 0 || wd === 6 ? 7 : 0));
   const dnum = d => { const x = new Date(mon); x.setDate(mon.getDate() + ((d.dow + 6) % 7)); return x.getDate(); };
+  const isoD = d => { const x = new Date(mon); x.setDate(mon.getDate() + ((d.dow + 6) % 7)); return `${x.getFullYear()}-${pad2(x.getMonth() + 1)}-${pad2(x.getDate())}`; };
+  const hasDet = d => { const iso = isoD(d); return horDet().some(x => x.date === iso); };
+  const IC_I = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>';
+  const IC_O = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.6"/></svg>';
+  const detCard = x => `<div class="hd-dt${x.k === 'o' ? ' o' : ''}"><span class="ic">${x.k === 'o' ? IC_O : IC_I}</span><div class="tx"><small>${x.k === 'o' ? 'Día libre' : 'Detalle'}</small><b>${escH(x.text)}</b></div><button class="hd-dx" type="button" data-id="${x.id}" aria-label="Quitar detalle">×</button></div>`;
   // día inicial: hoy; si hoy no hay clases, el próximo día con clases
   let idx = days.findIndex(d => d.dow === wd), noToday = false;
   if (idx < 0) { noToday = true; for (let k = 1; k <= 7 && idx < 0; k++) idx = days.findIndex(d => d.dow === (wd + k) % 7); if (idx < 0) idx = 0; }
@@ -2532,13 +2573,14 @@ function showCalendar() {
     const it = d.items;
     const tot = it.length ? `${it.length} ${it.length === 1 ? 'clase' : 'clases'} · ${f12(it[0].s)} – ${f12(it[it.length - 1].e)}` : 'Sin clases';
     let h = `<div class="hd-ph"><div><h3>${d.day}</h3><small>${tot}</small></div>${d.dow === wd ? '<em class="hd-hoy">Hoy</em>' : ''}</div>`;
+    { const iso = isoD(d); horDet().filter(z => z.date === iso).forEach(z => { h += detCard(z); }); }
     it.forEach((x, k) => { const g = k ? x.s - it[k - 1].e : 0; if (g >= 15) h += `<div class="hd-gap">☕ ${dur(g)} libre</div>`; h += card(d, x, k); });
     return h;
   };
   screen.innerHTML = `<div class="home calfix hor" style="padding-bottom:20px">
     ${dateTop()}
-    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><div><h2 class="big">Horario</h2><div class="date">Universidad</div></div></div>
-    <div class="hd-strip" id="hdstrip" style="--n:${n};--p:${idx}"><div class="hd-lens"></div>${days.map((d, i) => `<button class="hd-d${d.dow === wd ? ' today' : ''}${i === idx ? ' on' : ''}" data-i="${i}" style="--c:${d.color}" aria-label="${d.day}"><span>${d.day.slice(0, 3)}</span><i>${dnum(d)}</i></button>`).join('')}</div>
+    <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${back}</button><div><h2 class="big">Horario</h2><div class="date">Universidad</div></div><button class="rbtn hd-plus" id="hdplus" type="button" aria-label="Añadir detalle">${plus}</button></div>
+    <div class="hd-strip" id="hdstrip" style="--n:${n};--p:${idx}"><div class="hd-lens"></div>${days.map((d, i) => `<button class="hd-d${d.dow === wd ? ' today' : ''}${i === idx ? ' on' : ''}${hasDet(d) ? ' has' : ''}" data-i="${i}" style="--c:${d.color}" aria-label="${d.day}"><span>${d.day.slice(0, 3)}</span><i>${dnum(d)}</i></button>`).join('')}</div>
     ${noToday ? `<div class="hd-note">Hoy no tienes clases · lo siguiente es el ${days[idx].day.toLowerCase()}</div>` : ''}
     <div class="hd-pager" id="hdpager">${days.map((d, i) => `<div class="hd-page" data-i="${i}">${pageBody(d)}</div>`).join('')}</div>
   </div>`;
@@ -2598,6 +2640,50 @@ function showCalendar() {
 
   // El estado (en curso / siguiente / terminada) se actualiza solo
   const tick = setInterval(() => { if (!root.isConnected) { clearInterval(tick); return; } pages.forEach((p, i) => { p.innerHTML = pageBody(days[i]); }); }, 30000);
+
+  // ----- Botón + : añadir un detalle a un día (aparece como un aviso dentro de ese día) -----
+  const refresh = () => {
+    if (!root.isConnected) { window.__horRefresh = null; return; }
+    pages.forEach((p, i) => { p.innerHTML = pageBody(days[i]); });
+    btns.forEach((b, i) => b.classList.toggle('has', hasDet(days[i])));
+  };
+  window.__horRefresh = refresh;
+  pager.addEventListener('click', e => { const x = e.target.closest('.hd-dx'); if (x) armDelete(x, () => { delNota(x.dataset.id); refresh(); }); });
+  const QK = [['Sin clases', 'No tengo clases'], ['Clase en la mañana', 'Tengo clase en la mañana'], ['Clase en la tarde', 'Tengo clase en la tarde'], ['Cambio de hora', 'Cambió la hora de la clase'], ['Clase virtual', 'La clase es virtual'], ['Parcial', 'Tengo parcial']];
+  const openAdd = () => {
+    document.querySelectorAll('.hd-ov').forEach(x => x.remove());
+    const t = todayISO(), ok = days.map(d => isoD(d) >= t);
+    if (!ok.some(Boolean)) ok.fill(true);
+    let sel = ok[cur] ? cur : ok.indexOf(true);
+    const o = document.createElement('div'); o.className = 'hd-ov';
+    o.innerHTML = `<div class="hd-sh" role="dialog" aria-label="Añadir detalle"><i class="hd-gr"></i>
+      <div class="hd-ft"><h3>Añadir detalle</h3><small>Aparece como aviso en ese día del horario</small></div>
+      <div class="hd-lb">¿Qué día?</div>
+      <div class="hd-dp" style="--n:${n}">${days.map((d, i) => `<button type="button" data-i="${i}" style="--c:${d.color}"${ok[i] ? '' : ' disabled'}${i === sel ? ' class="on"' : ''}><span>${d.day.slice(0, 3)}</span><i>${dnum(d)}</i></button>`).join('')}</div>
+      <div class="hd-lb">Atajos</div>
+      <div class="hd-qk">${QK.map(q => `<button type="button">${q[0]}</button>`).join('')}</div>
+      <input class="hd-in" id="hdtx" type="text" maxlength="120" placeholder="O escribe lo que quieras…" enterkeyhint="done" autocomplete="off">
+      <button class="hd-save" id="hdsv" type="button" disabled>Añadir al horario</button></div>`;
+    document.body.appendChild(o); void o.offsetWidth; o.classList.add('in');
+    const close = () => { o.classList.remove('in'); setTimeout(() => o.remove(), 320); };
+    const tx = o.querySelector('#hdtx'), sv = o.querySelector('#hdsv'), dp = o.querySelector('.hd-dp'), qk = o.querySelector('.hd-qk');
+    const upd = () => { sv.disabled = !tx.value.trim(); [...qk.children].forEach((b, i) => b.classList.toggle('on', tx.value.trim() === QK[i][1])); };
+    o.onclick = e => { if (e.target === o) close(); };
+    dp.onclick = e => { const b = e.target.closest('button'); if (!b || b.disabled) return; sel = +b.dataset.i; [...dp.children].forEach((x, i) => x.classList.toggle('on', i === sel)); if (navigator.vibrate) navigator.vibrate(5); };
+    qk.onclick = e => { const b = e.target.closest('button'); if (!b) return; tx.value = QK[[...qk.children].indexOf(b)][1]; upd(); };
+    tx.oninput = upd;
+    tx.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); sv.click(); } };
+    sv.onclick = () => {
+      const text = tx.value.trim().replace(/[<>|]/g, ''); if (!text) return;
+      const libre = /\b(sin clases?|no tengo clases?|no hay clases?|libre)\b/i.test(text);
+      addHorDet(isoD(days[sel]), text, libre ? 'o' : 'i');
+      close(); refresh();
+      pager.scrollTo({ left: sel * pager.clientWidth, behavior: 'smooth' });
+      if (navigator.vibrate) navigator.vibrate(8);
+    };
+  };
+  $('hdplus').onclick = openAdd;
+  loadNotas();
 }
 
 function showNotas() {
@@ -2762,7 +2848,15 @@ document.addEventListener('touchmove', e => {
 
 /* ===================== Notas pegadas del calendario ===================== */
 const NCOL = ['#fff3a3', '#ffd1dc', '#cdeefd', '#d5f5c8', '#e8dcff'];
-const notasAll = () => { const del = store.get('qn_notas_del', {}); return store.get('qn_notas', []).filter(n => !del[n.id]); };
+const notasAllRaw = () => { const del = store.get('qn_notas_del', {}); return store.get('qn_notas', []).filter(n => !del[n.id]); };
+const HOR = '@hor|';   // los detalles del horario viajan como notas con este prefijo (así se guardan en tu hoja sin tocar el script)
+const notasAll = () => notasAllRaw().filter(n => String(n.t).indexOf(HOR) !== 0);
+const horDet = () => notasAllRaw().filter(n => String(n.t).indexOf(HOR) === 0).map(n => { const q = String(n.t).slice(HOR.length).split('|'); return { id: n.id, date: q[0], k: q[1] === 'o' ? 'o' : 'i', text: q.slice(2).join('|') }; }).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x.date) && x.text);
+function addHorDet(date, text, k) {
+  const n = { id: newId(), t: `${HOR}${date}|${k}|${text}`, c: NCOL[0], ts: Date.now() };
+  store.set('qn_notas', [n, ...store.get('qn_notas', [])]);
+  postApi({ tipo: 'nota', id: n.id, texto: n.t, color: n.c });
+}
 function addNota(t) {
   const n = { id: newId(), t, c: NCOL[Math.floor(Math.random() * NCOL.length)], ts: Date.now() };
   store.set('qn_notas', [n, ...store.get('qn_notas', [])]);
@@ -2791,6 +2885,7 @@ async function loadNotas() {
   store.set('qn_notas_del', del);
   store.set('qn_notas', [...fresh, ...srv.filter(n => !del[n.id]).reverse()]);
   renderNotas();
+  if (window.__horRefresh) window.__horRefresh();
 }
 
 /* ===================== LoveCoins, Juegos por puntos y Canjear ===================== */
@@ -3209,14 +3304,14 @@ new MutationObserver(() => {
   const IC = {
     home: '<path d="M12 2.6 2.9 10.1c-.5.4-.4 1.2.2 1.4l.9.3v7.6c0 1.4 1.1 2.5 2.5 2.5h3.2v-6h4.6v6h3.2c1.4 0 2.5-1.1 2.5-2.5v-7.6l.9-.3c.6-.2.7-1 .2-1.4z"/>',
     cal: '<path fill-rule="evenodd" d="M5.48,4.54L4.54,5.48L4.47,5.61L4.31,5.77L4.23,5.90L3.91,6.30L3.57,6.82L3.42,7.12L3.33,7.22L2.97,7.95L2.97,8.02L2.80,8.36L2.80,8.43L2.74,8.53L2.68,8.78L2.56,9.00L2.56,9.13L2.45,9.40L2.45,9.53L2.39,9.63L2.39,9.76L2.33,9.87L2.33,10.05L2.27,10.16L2.27,10.35L2.22,10.45L2.22,10.87L2.16,10.97L2.16,11.62L2.10,11.72L2.10,12.26L2.16,12.36L2.16,13.02L2.22,13.12L2.22,13.54L2.27,13.64L2.27,13.83L2.33,13.93L2.33,14.12L2.39,14.22L2.39,14.35L2.45,14.45L2.45,14.58L2.51,14.69L2.51,14.82L2.56,14.92L2.56,14.99L2.62,15.09L2.68,15.34L2.80,15.56L2.80,15.63L2.91,15.85L2.91,15.92L3.39,16.88L3.48,16.98L3.57,17.17L3.65,17.27L3.86,17.63L4.00,17.79L4.25,18.15L4.41,18.31L4.48,18.45L4.87,18.84L4.89,18.88L4.97,18.94L5.60,19.56L5.73,19.64L5.89,19.80L6.02,19.87L6.41,20.19L6.60,20.27L7.17,20.65L8.01,21.07L8.08,21.07L8.41,21.25L8.66,21.30L8.88,21.42L9.01,21.42L9.29,21.54L9.42,21.54L9.52,21.60L9.59,21.60L9.69,21.65L9.82,21.65L9.92,21.71L10.17,21.71L10.27,21.77L10.52,21.77L10.62,21.83L10.93,21.83L11.03,21.89L11.85,21.89L11.96,21.94L12.03,21.94L12.13,21.89L13.02,21.89L13.12,21.83L13.48,21.83L13.58,21.77L13.83,21.77L13.93,21.71L14.12,21.71L14.22,21.65L14.35,21.65L14.45,21.60L14.58,21.60L14.86,21.48L14.99,21.48L15.09,21.42L15.34,21.36L15.56,21.25L15.80,21.19L16.25,20.96L16.35,20.94L16.46,20.85L16.99,20.59L17.10,20.51L17.28,20.42L17.81,20.07L17.97,19.93L18.33,19.68L18.60,19.40L18.74,19.33L19.45,18.62L19.55,18.45L19.55,18.37L15.80,14.63L15.76,14.63L15.75,14.66L15.75,19.27L15.67,19.35L14.35,19.35L14.28,19.27L14.28,13.47L14.34,13.36L14.34,13.12L14.40,13.02L14.45,12.77L14.64,12.45L14.83,12.26L15.15,12.07L15.22,12.07L15.50,11.96L17.14,11.96L17.24,11.90L17.37,11.90L17.63,11.77L17.76,11.65L17.94,11.33L17.94,11.26L18.00,11.16L18.00,10.74L17.94,10.64L17.94,10.56L17.82,10.36L17.57,10.13L17.31,10.00L17.18,10.00L17.08,9.94L12.89,9.94L12.80,10.01L12.78,15.16L12.73,15.27L12.73,15.51L12.67,15.61L12.67,15.75L12.61,15.85L12.61,15.92L12.30,16.53L12.19,16.70L11.65,17.24L11.48,17.36L10.87,17.66L10.80,17.66L10.52,17.78L10.39,17.78L10.29,17.84L10.04,17.84L9.94,17.89L8.70,17.89L8.60,17.84L8.47,17.84L8.37,17.78L8.24,17.78L8.14,17.72L7.89,17.66L7.28,17.36L6.95,17.10L6.88,17.07L6.69,16.88L6.66,16.80L6.45,16.59L6.34,16.41L6.09,15.92L6.09,15.85L6.03,15.75L6.03,15.61L5.98,15.51L5.98,15.32L5.92,15.22L5.90,4.28L5.83,4.26L5.61,4.47ZM7.46,3.20L7.38,3.30L7.38,14.82L7.44,14.92L7.44,15.11L7.50,15.21L7.50,15.28L7.63,15.54L7.79,15.77L7.98,15.96L8.39,16.24L8.49,16.25L8.70,16.37L8.89,16.37L9.00,16.43L9.71,16.43L9.81,16.37L10.00,16.37L10.10,16.31L10.17,16.31L10.55,16.12L10.78,15.96L11.01,15.66L11.20,15.28L11.20,15.21L11.26,15.11L11.26,14.74L11.32,14.64L11.32,10.04L11.22,9.94L9.39,9.92L9.34,9.87L9.34,8.55L9.42,8.47L11.25,8.46L11.32,8.37L11.32,6.79L11.29,6.69L11.32,6.63L11.33,6.43L11.39,6.38L12.71,6.38L12.78,6.45L12.78,8.41L12.84,8.47L17.25,8.47L17.36,8.53L17.60,8.53L17.70,8.59L17.84,8.59L17.94,8.65L18.01,8.65L18.50,8.89L18.60,9.00L18.74,9.07L18.92,9.26L18.95,9.33L19.10,9.49L19.29,9.81L19.29,9.88L19.40,10.10L19.40,10.23L19.46,10.33L19.46,10.58L19.52,10.68L19.52,11.27L19.46,11.38L19.46,11.56L19.40,11.67L19.40,11.80L19.29,12.01L19.29,12.09L19.21,12.23L18.95,12.57L18.92,12.64L18.79,12.77L18.72,12.80L18.39,13.06L18.01,13.25L17.94,13.25L17.66,13.36L17.47,13.36L17.37,13.42L16.91,13.42L16.86,13.45L16.86,13.51L17.21,13.87L17.34,13.95L17.49,14.15L17.63,14.24L19.77,16.37L19.90,16.44L20.06,16.65L20.13,16.67L20.51,17.04L20.59,17.01L20.65,16.94L21.19,15.86L21.25,15.61L21.36,15.40L21.36,15.32L21.42,15.22L21.42,15.15L21.54,14.87L21.54,14.74L21.60,14.64L21.60,14.57L21.65,14.47L21.65,14.34L21.71,14.24L21.71,14.05L21.77,13.95L21.77,13.76L21.83,13.65L21.83,13.41L21.89,13.31L21.89,12.94L21.94,12.84L21.94,11.14L21.89,11.04L21.89,10.68L21.83,10.58L21.83,10.33L21.77,10.23L21.77,10.04L21.71,9.94L21.71,9.75L21.65,9.65L21.65,9.52L21.54,9.24L21.54,9.11L21.48,9.01L21.48,8.94L21.42,8.84L21.36,8.59L21.25,8.37L21.25,8.30L21.13,8.08L21.13,8.01L20.71,7.17L20.62,7.06L20.54,6.88L19.85,5.89L19.69,5.73L19.62,5.60L19.29,5.26L19.21,5.13L18.79,4.71L18.66,4.64L18.45,4.42L18.31,4.35L18.15,4.19L18.02,4.12L17.86,3.97L17.17,3.51L16.98,3.42L16.88,3.33L16.04,2.91L15.96,2.91L15.45,2.68L15.38,2.68L15.28,2.62L15.21,2.62L14.93,2.51L14.80,2.51L14.53,2.39L14.40,2.39L14.29,2.33L14.10,2.33L14.00,2.27L13.81,2.27L13.71,2.22L13.47,2.22L13.36,2.16L13.00,2.16L12.90,2.10L11.14,2.10L11.04,2.16L10.68,2.16L10.58,2.22L10.39,2.22L10.29,2.27L10.04,2.27L9.94,2.33L9.81,2.33L9.71,2.39L9.58,2.39L9.47,2.45L9.34,2.45L9.24,2.51L9.17,2.51L8.89,2.62L8.76,2.62L8.55,2.74L8.47,2.74L8.25,2.85L8.18,2.85Z"/>',
-    luck: '<g fill="url(#tbGold)"><path id="tbLeaf" d="M12 11.4C8.6 8.4 8.4 5.2 10.1 3.9 11 3.2 11.8 3.7 12 4.6c.2-.9 1-1.4 1.9-.7 1.7 1.3 1.5 4.5-1.9 7.5z"/><path d="M12 11.4C8.6 8.4 8.4 5.2 10.1 3.9 11 3.2 11.8 3.7 12 4.6c.2-.9 1-1.4 1.9-.7 1.7 1.3 1.5 4.5-1.9 7.5z" transform="rotate(90 12 12)"/><path d="M12 11.4C8.6 8.4 8.4 5.2 10.1 3.9 11 3.2 11.8 3.7 12 4.6c.2-.9 1-1.4 1.9-.7 1.7 1.3 1.5 4.5-1.9 7.5z" transform="rotate(180 12 12)"/><path d="M12 11.4C8.6 8.4 8.4 5.2 10.1 3.9 11 3.2 11.8 3.7 12 4.6c.2-.9 1-1.4 1.9-.7 1.7 1.3 1.5 4.5-1.9 7.5z" transform="rotate(270 12 12)"/></g><path d="M12.4 13c.3 3.2 1.5 5.6 3.7 7.6" fill="none" stroke="url(#tbGold)" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="1.5" fill="#fff6c8" opacity=".85"/>',
+    luck: '<g transform="translate(13 7.6)"><circle r="6" fill="url(#tbGold)"/><circle r="6" fill="none" stroke="#b8770a" stroke-opacity=".5" stroke-width=".6"/><circle r="4.7" fill="none" stroke="#fff6c8" stroke-opacity=".85" stroke-width=".8"/><path transform="scale(.5) translate(-12 -12.9)" d="M12 17.4l-4.6-4.4a2.9 2.9 0 0 1 4.1-4.1l.5.5.5-.5a2.9 2.9 0 0 1 4.1 4.1z" fill="#c2485c"/></g><g transform="rotate(-6 12 15.8)"><rect x="2.6" y="10.4" width="18.8" height="11.2" rx="3.6" fill="url(#tbSil)" stroke="#7d889d" stroke-opacity=".5" stroke-width=".6"/><path d="M6.2 13.1h11.6" stroke="#fff" stroke-opacity=".85" stroke-width=".8" stroke-linecap="round"/><path d="M7.4 19.1L16.6 15" fill="none" stroke="url(#tbGold)" stroke-width="3" stroke-linecap="round"/></g>',
     redeem: '<path d="M3 8.6c0-1 .8-1.8 1.8-1.8h14.4c1 0 1.8.8 1.8 1.8v1.8c0 .6-.4 1-1 1H4c-.6 0-1-.4-1-1z"/><path d="M4.4 12.9h6.5v7.4H7.2c-1.5 0-2.8-1.2-2.8-2.8zM13.1 12.9h6.5v4.6c0 1.6-1.3 2.8-2.8 2.8h-3.7z"/><path d="M12 6.8C10.2 6.8 7.2 6 6.8 4.3 6.5 2.9 8.3 2.2 9.6 3c1.2.7 2.1 2.2 2.4 3.8zM12 6.8c1.8 0 4.8-.8 5.2-2.5.3-1.4-1.5-2.1-2.8-1.3-1.2.7-2.1 2.2-2.4 3.8z"/>',
     profile: '<path fill-rule="evenodd" d="M12 2.4a9.6 9.6 0 1 0 0 19.2 9.6 9.6 0 0 0 0-19.2zM12 6.4a3.3 3.3 0 1 0 0 6.6 3.3 3.3 0 0 0 0-6.6zM5.9 18.3c1.1-2.4 3.5-3.7 6.1-3.7s5 1.3 6.1 3.7A7.9 7.9 0 0 1 12 19.9a7.9 7.9 0 0 1-6.1-1.6z"/>'
   };
-  const TABS = [['home', 'Inicio', () => renderHome], ['cal', 'Horario', () => showCalendar], ['luck', 'Suerte', () => showRaspa], ['redeem', 'Canjear', () => showCanje], ['profile', 'Perfil', () => showPerfil]];
+  const TABS = [['home', 'Inicio', () => renderHome], ['cal', 'Horario', () => showCalendar], ['luck', 'Raspa', () => showRaspa], ['redeem', 'Canjear', () => showCanje], ['profile', 'Perfil', () => showPerfil]];
   const items = () => TABS.map((t, i) => `<button class="tb-i${t[0] === 'luck' ? ' gold' : ''}" data-i="${i}" aria-label="${t[1]}"><svg viewBox="0 0 24 24"${t[0] === 'luck' ? '' : ' fill="currentColor"'} aria-hidden="true">${IC[t[0]]}</svg><span>${t[1]}</span>${t[0] === 'luck' ? '<i class="tb-dot"></i>' : ''}</button>`).join('');
   const bar = $('tabbar');
-  bar.innerHTML = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="tbGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3b0"/><stop offset=".45" stop-color="#f4c542"/><stop offset="1" stop-color="#b8770a"/></linearGradient></defs></svg>
+  bar.innerHTML = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="tbGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3b0"/><stop offset=".45" stop-color="#f4c542"/><stop offset="1" stop-color="#b8770a"/></linearGradient><linearGradient id="tbSil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e1e6ef"/><stop offset="1" stop-color="#aab3c6"/></linearGradient></defs></svg>
     <div class="tb-glass"></div><div class="tb-lens" id="lens"><div class="tb-lens-in"></div></div><div class="tb-row" id="base">${items()}</div>`;
   const lens = $('lens'), base = $('base'), btns = [...base.children];
   let W = 0, iw = 0, pad = 6, cur = 0, x = 0, tx = 0, ps = 0, press = false, moved = false, sx = 0, raf = 0;
