@@ -625,6 +625,15 @@
   .ghud { display: flex; gap: 10px; margin: 6px 0 10px; }
   .ghud div { flex: 1; background: #fff; border-radius: 18px; padding: 10px 12px; font-size: .8rem; color: var(--muted); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
   .ghud b { display: block; font-size: 1.35rem; color: var(--accent); }
+  /* Puntos · Tiempo · ¡Jugar! en una sola fila, los tres del mismo grosor */
+  .ghud { display: grid; grid-template-columns: 1fr 1fr 1.1fr; gap: 8px; align-items: stretch; margin: 4px 0 6px; flex: none; }
+  .ghud div { padding: 8px 11px; font-size: .72rem; border-radius: 16px; min-height: 56px; display: flex; flex-direction: column; justify-content: center; }
+  .ghud b { font-size: 1.2rem; line-height: 1.15; }
+  .ghud .btn { min-height: 56px; margin: 0; padding: 0 8px; border-radius: 16px; font-size: .92rem; width: 100%; }
+  .home.jgame .tmsg { flex: none; min-height: 1.2em; margin-bottom: 6px; font-size: .88rem; }
+  .screen.full > .home.subp.jgame { display: flex; flex-direction: column; overflow: hidden; }
+  .home.jgame .garea { flex: 1 1 0; min-height: 140px; height: auto; margin-bottom: 4px; }
+  .home.jgame .garea > .mgrid, .home.jgame .garea > .tapbtn { position: absolute; inset: 0; width: 100%; height: 100%; }
   .garea { position: relative; width: 100%; height: min(46vh, 380px); border-radius: 26px; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
   .gintro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 24px; text-align: center; color: var(--muted); font-weight: 600; line-height: 1.4; }
   .gintro span { font-size: 3rem; }
@@ -780,7 +789,15 @@ html[data-theme=dark] body{background:radial-gradient(70% 40% at 0% 0%,rgba(194,
 .chk{background:var(--surface-hi)!important}
 .pdots i{background:var(--field)}.pdots i.on{background:var(--accent)}
 .tile,.calbtn,.gcard,.cjopt,.ppick{transition:transform .38s cubic-bezier(.34,1.56,.64,1)}
-html[data-theme=dark] .entry h4,html[data-theme=dark] .qbox,html[data-theme=dark] .cnote{color:var(--ink)}
+html[data-theme=dark] .entry h4,html[data-theme=dark] .qbox{color:var(--ink)}
+/* Fondos pastel (calendario, eventos, notitas): el texto debe ser oscuro también en modo oscuro */
+html[data-theme=dark] .day,html[data-theme=dark] .ev{--ink:#3a2830;--muted:#6f5a62;color:#3a2830}
+html[data-theme=dark] .cnote{color:#4a3a12}
+html[data-theme=dark] .cnote .nx{color:rgba(74,58,18,.6)}
+html[data-theme=dark] .pnote{color:#4a2f34}
+html[data-theme=dark] .mhost .mmsg{background:rgba(58,44,64,.96)!important;color:var(--ink);border:1px solid var(--edge);box-shadow:0 6px 16px rgba(0,0,0,.35)}
+html[data-theme=dark] .mhost .mmsg::before{background:rgba(58,44,64,.96);box-shadow:none;border-left:1px solid var(--edge);border-bottom:1px solid var(--edge)}
+html[data-theme=dark] .mmsg.win{color:#6ee7b0}html[data-theme=dark] .mmsg.lose{color:#ff93a0}
 html[data-theme=dark] .cnote,html[data-theme=dark] .day,html[data-theme=dark] .ev{filter:brightness(.88)}
 
 /* Botones rosa (color del index) con brillo de cristal */
@@ -2687,11 +2704,10 @@ function showJuegos() {
 function showJuego(key) {
   stopGame();
   const g = JG[key], me = yo();
-  screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
+  screen.innerHTML = `<div class="home calfix jgame" style="padding-bottom:20px">${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">${g.n}</h2><div class="date">${escH(nombreDe(me))} · <span id="gint"></span></div></div></div>
-    <div class="ghud"><div>${g.l1}<b id="gp">0</b></div><div>${g.l2}<b id="gt">–</b></div></div>
-    <div class="tact" style="margin:0 0 6px"><button class="btn wide" id="gstart" style="width:auto">¡Jugar!</button></div>
-    <div class="tmsg" id="gmsg" style="margin-bottom:8px"></div>
+    <div class="ghud"><div>${g.l1}<b id="gp">0</b></div><div>${g.l2}<b id="gt">–</b></div><button class="btn" id="gstart">¡Jugar!</button></div>
+    <div class="tmsg" id="gmsg"></div>
     <div class="garea" id="garea"><div class="gintro"><span>${g.ic}</span>${g.d}</div></div></div>`;
   const ui = { score: v => { $('gp').textContent = v; }, time: v => { $('gt').textContent = v + 's'; } };
   const info = () => { $('gint').textContent = `intentos: ${Math.max(0, restantes(key))}`; };
