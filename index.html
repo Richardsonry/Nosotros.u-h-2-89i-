@@ -1317,7 +1317,17 @@ function postApi(body) {
   if (!API_URL) return;
   try { fetch(API_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: JSON.stringify({ clave: API_KEY, ...body }) }).catch(() => {}); } catch (e) {}
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadBuzon(); loadEventos(); loadPerfiles().then(() => { loadPerfil(); loadMonedas(); }); loadFotos(); loadCupones(); loadTodos(); flushLog(); } });
+const refrescarTodo = () => { loadBuzon(); loadEventos(); loadPerfiles().then(() => { loadPerfil(); loadMonedas(); }); loadFotos(); loadCupones(); loadTodos(); flushLog(); };
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refrescarTodo(); });
+/* Casi en tiempo real: cada 12 s (solo con la app abierta) se pregunta una sola cosa barata: «¿cambió algo?». Si cambió, se recarga todo. */
+let verV = null;
+setInterval(async () => {
+  if (document.hidden || !API_URL) return;
+  const r = await apiGet({ version: 1, clave: API_KEY });
+  if (!r || !r.ok) return;
+  if (verV !== null && r.v !== verV) refrescarTodo();
+  verV = r.v;
+}, 12000);
 
 
 const readPhoto = (f, max = 640, q = .7) => new Promise(res => {
@@ -3021,18 +3031,20 @@ new MutationObserver(() => {
 })();
 
 /* ===================== Arranque ===================== */
-/* Sin rebote arriba: al estar en el tope, arrastrar el dedo hacia abajo no mueve nada (solo se puede bajar el contenido) */
+/* Sin rebote arriba: con el contenido en el tope, arrastrar hacia abajo no mueve nada (solo se puede bajar el contenido) */
 (() => {
-  let y0 = 0, x0 = 0, sc = null;
+  let yAnt = 0, xAnt = 0, sc = null, horiz = false, y0 = 0, x0 = 0;
   const scroller = el => { for (; el && el !== document.documentElement; el = el.parentElement) { const o = getComputedStyle(el).overflowY; if ((o === 'auto' || o === 'scroll') && el.scrollHeight > el.clientHeight + 1) return el; } return null; };
-  document.addEventListener('touchstart', e => { const t = e.touches[0]; y0 = t.clientY; x0 = t.clientX; sc = scroller(e.target); }, { passive: true });
-  document.addEventListener('touchmove', e => {
+  window.addEventListener('touchstart', e => { const t = e.touches[0]; y0 = yAnt = t.clientY; x0 = xAnt = t.clientX; horiz = false; sc = scroller(e.target); }, { passive: true, capture: true });
+  window.addEventListener('touchmove', e => {
     if (e.touches.length > 1) return;
-    const t = e.touches[0], dy = t.clientY - y0, dx = t.clientX - x0;
-    if (Math.abs(dx) > Math.abs(dy)) return;                                // gesto horizontal (carruseles): no se toca
+    const t = e.touches[0];
+    if (!horiz && Math.abs(t.clientX - x0) > Math.abs(t.clientY - y0) + 4) horiz = true;   // gesto de lado (carruseles): no se toca
+    const baja = t.clientY > yAnt; yAnt = t.clientY; xAnt = t.clientX;
+    if (horiz) return;
     if (e.target.closest && e.target.closest('input,textarea,select')) return;
-    if (dy > 0 && (!sc || sc.scrollTop <= 0)) { if (e.cancelable) e.preventDefault(); }   // dedo hacia abajo estando arriba del todo
-  }, { passive: false });
+    if (baja && (!sc || sc.scrollTop <= 1)) { if (e.cancelable) e.preventDefault(); }   // el dedo va hacia abajo y ya estás arriba del todo
+  }, { passive: false, capture: true });
 })();
 const fixH = () => { document.documentElement.style.setProperty('--ah', window.innerHeight + 'px'); window.scrollTo(0, 0); };
 fixH(); ['resize', 'orientationchange', 'pageshow', 'load'].forEach(ev => window.addEventListener(ev, fixH));
