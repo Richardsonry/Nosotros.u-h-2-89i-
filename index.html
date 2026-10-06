@@ -874,11 +874,11 @@ html[data-theme=dark] #tabbar.press .tb-lens-in{background:linear-gradient(180de
 @media (max-width:599px){
   body{background:transparent!important}
   html{background-color:var(--bg);background-repeat:no-repeat;background-position:0 0;background-size:100% calc(100% + 200px);
-    background-image:radial-gradient(70% 40% at 0% 0%,rgba(255,165,192,.6),transparent 70%),radial-gradient(60% 36% at 100% 14%,rgba(200,175,255,.5),transparent 70%),radial-gradient(70% 40% at 90% calc(100% - 200px),rgba(255,190,160,.5),transparent 70%)}
+    background-image:radial-gradient(70% 40% at 0% 0%,rgba(255,165,192,.6),transparent 70%),radial-gradient(60% 36% at 100% 14%,rgba(200,175,255,.5),transparent 70%)}
   /* Desvanecido al pie de la app: las tarjetas se funden con el fondo en vez de cortarse en seco */
-  .app::after{content:"";position:absolute;left:0;right:0;bottom:0;height:96px;z-index:50;pointer-events:none;background:radial-gradient(70% 100% at 90% 100%,rgba(255,190,160,.5),transparent 70%),linear-gradient(to bottom,transparent,var(--bg) 88%)}
-  html[data-theme=dark] .app::after{background:radial-gradient(70% 100% at 80% 100%,rgba(194,72,92,.3),transparent 70%),linear-gradient(to bottom,transparent,var(--bg) 88%)}
-  html[data-theme=dark]{background-image:radial-gradient(70% 40% at 0% 0%,rgba(194,72,92,.42),transparent 70%),radial-gradient(60% 36% at 100% 15%,rgba(110,80,200,.4),transparent 70%),radial-gradient(70% 40% at 80% calc(100% - 200px),rgba(194,72,92,.3),transparent 70%)}
+  .app::after{content:"";position:absolute;left:0;right:0;bottom:0;height:110px;z-index:50;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--bg) 80%)}
+  .tb-glass{box-shadow:var(--rim),0 3px 8px -4px rgba(110,30,60,.3),0 0 0 .5px rgba(255,255,255,.45)!important}
+  html[data-theme=dark]{background-image:radial-gradient(70% 40% at 0% 0%,rgba(194,72,92,.42),transparent 70%),radial-gradient(60% 36% at 100% 15%,rgba(110,80,200,.4),transparent 70%)}
 }
 
 /* ===== ¿Quieres ser millonario?: fondo vino oscuro + texto dorado que resalta ===== */
