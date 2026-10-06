@@ -625,7 +625,7 @@
   .ghud { display: flex; gap: 10px; margin: 6px 0 10px; }
   .ghud div { flex: 1; background: #fff; border-radius: 18px; padding: 10px 12px; font-size: .8rem; color: var(--muted); box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
   .ghud b { display: block; font-size: 1.35rem; color: var(--accent); }
-  .garea { position: relative; width: 100%; height: min(52vh, 380px); border-radius: 26px; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
+  .garea { position: relative; width: 100%; height: min(46vh, 380px); border-radius: 26px; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(90,40,60,.08); }
   .gintro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 24px; text-align: center; color: var(--muted); font-weight: 600; line-height: 1.4; }
   .gintro span { font-size: 3rem; }
   .gh { position: absolute; border: 0; background: none; font-size: 2.3rem; line-height: 1; padding: 6px; touch-action: none; animation: gin .15s ease-out; transition: transform .15s, opacity .15s; }
@@ -682,20 +682,21 @@
   @media (max-height: 740px) { .tiles.p2 .tile.mill { min-height: 76px; } }
 
   /* ===== Juego: ¿Quieres ser millonario? ===== */
+  @media (max-height: 760px) { .mbal { padding: 8px 14px !important; } .mbal .mv { font-size: 1.25rem !important; } .mhost .mface { width: 76px; height: 88px; } .mstage { height: 146px !important; } .mbet { padding: 9px !important; } .mchips { margin-top: 6px !important; } .mchips button { padding: 7px 4px !important; } .btn.mgo { margin-top: 8px !important; } .mhost .mmsg { font-size: .82rem; padding: 8px 10px; } }
   .mbal { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 4px 0 6px; padding: 12px 16px; border-radius: 20px; color: #fff; background: linear-gradient(120deg, #ff9db3 0%, #f27d95 45%, #c2485c 100%); box-shadow: 0 6px 16px rgba(194,72,92,.38), inset 0 1.5px 0 rgba(255,255,255,.6); }
   .mbal .ml { font-size: .74rem; font-weight: 700; opacity: .9; }
   .mbal .mv { display: flex; align-items: center; gap: 7px; font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
   .mbal .ms { text-align: right; font-size: .74rem; font-weight: 700; opacity: .92; line-height: 1.35; }
   /* presentador */
   .mhost { position: relative; z-index: 0; display: flex; align-items: flex-end; gap: 6px; margin: 4px 0 0; }
-  .mhost .mface { flex: none; width: 96px; height: 112px; position: relative; }
+  .mhost .mface { flex: none; width: 88px; height: 102px; position: relative; }
   .mhost .mface img { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom; pointer-events: none; -webkit-user-drag: none; }
   .mhost .mface img.pop { animation: mfpop .38s cubic-bezier(.3,1.6,.5,1); }
   @keyframes mfpop { 0% { transform: scale(.88) translateY(6px); } 100% { transform: none; } }
   .mhost .mmsg { position: relative; flex: 1; min-width: 0; align-self: center; margin: 0 0 10px; padding: 10px 12px; border-radius: 18px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 16px rgba(90,40,60,.1); text-align: left; font-size: .9rem; }
   .mhost .mmsg::before { content: ""; position: absolute; left: -7px; top: 50%; margin-top: -7px; width: 14px; height: 14px; background: inherit; border-radius: 3px; transform: rotate(45deg); box-shadow: -2px 2px 3px rgba(90,40,60,.05); }
   /* pared detrás de las tapitas: sube hasta la base del personaje, que queda asomado por detrás */
-  .mstage { position: relative; z-index: 1; height: 170px; margin: -10px 0 0; user-select: none; -webkit-user-select: none; container-type: inline-size; border-radius: 22px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 11px, rgba(255,255,255,0) 11px 22px), linear-gradient(180deg, #fbdde5 0%, #f4c4d1 100%); box-shadow: inset 0 3px 0 rgba(255,255,255,.95), inset 0 8px 10px -6px rgba(150,40,80,.22), 0 6px 16px rgba(90,40,60,.12); }
+  .mstage { position: relative; z-index: 1; height: 156px; margin: -10px 0 0; user-select: none; -webkit-user-select: none; container-type: inline-size; border-radius: 22px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 11px, rgba(255,255,255,0) 11px 22px), linear-gradient(180deg, #fbdde5 0%, #f4c4d1 100%); box-shadow: inset 0 3px 0 rgba(255,255,255,.95), inset 0 8px 10px -6px rgba(150,40,80,.22), 0 6px 16px rgba(90,40,60,.12); }
   /* mesa donde descansan las tapitas */
   .mstage::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: calc(20px + 17cqw); border-radius: 0 0 22px 22px; z-index: 0; pointer-events: none; background: linear-gradient(180deg, #efb3c3 0%, #de93a9 100%); box-shadow: inset 0 2px 0 rgba(255,255,255,.7), 0 -3px 6px rgba(150,40,80,.14), inset 0 -10px 18px rgba(150,40,80,.14); }
   /* sombra: núcleo de contacto bajo la base + sombra suave caída hacia la derecha-abajo (luz desde arriba a la izquierda) */
@@ -1978,10 +1979,11 @@ async function jugarRaspa() {
   store.set('qn_cupones', [...cuponesLocal().filter(y => !(y.f === r.f && y.p === r.p)), r]);
   return { ...r, ya: !!res.ya };
 }
+const premioTxt = t => { t = String(t || '').replace(/^\s*vale\s+por\s+/i, ''); return t.charAt(0).toUpperCase() + t.slice(1); };
 function prizeHTML(r) {
   const t = TIERS[r.n] || TIERS.carton, win = r.n !== 'carton';
   return `<div class="pzc ${r.n}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="pzi">${t.ico}</div><div class="pzn">${t.name}</div>
-    <div class="pzt">${win ? escH(r.c) : 'Hoy no hubo suerte.<br>¡Vuelve mañana!'}</div>${win ? '<div class="pzf">Muéstralo para canjearlo ♥</div>' : ''}</div>`;
+    <div class="pzt">${win ? escH(premioTxt(r.c)) : 'Hoy no hubo suerte.<br>¡Vuelve mañana!'}</div>${win ? '<div class="pzf">Muéstralo para canjearlo ♥</div>' : ''}</div>`;
 }
 function confetti(n) {
   const box = document.createElement('div'); box.className = 'confetti';
@@ -2140,9 +2142,9 @@ function cupQR(x) {
   const close = () => { alive = false; clearInterval(timer); ov.remove(); loadCupones(); };
   const box = html => { ov.innerHTML = `<div class="qbox">${html}</div>`; };
   const cerrar = '<button class="btn glass" id="qcl" style="width:100%;margin-top:10px">Cerrar</button>';
-  const hecho = () => { clearInterval(timer); box(`<div class="qres ya"><div class="qic">⛔</div><h3>Canjeado</h3><div class="qp">${escH(x.c)}</div><small>Este cupón ya se canjeó y no se puede usar otra vez.</small></div>${cerrar}`); $('qcl').onclick = close; };
+  const hecho = () => { clearInterval(timer); box(`<div class="qres ya"><div class="qic">⛔</div><h3>Canjeado</h3><div class="qp">${escH(premioTxt(x.c))}</div><small>Este cupón ya se canjeó y no se puede usar otra vez.</small></div>${cerrar}`); $('qcl').onclick = close; };
   ov.onclick = e => { if (e.target === ov) close(); };
-  box(`<div class="qic">${t.ico}</div><h3>${escH(x.c)}</h3><div class="qwarn">⚠️ Al escanear el QR, el cupón se dará por <b>canjeado</b>. Solo funciona <b>una vez</b>: si lo escanean de nuevo saldrá «Canjeado».</div><button class="btn wide" id="qgo">Mostrar QR</button><button class="btn glass" id="qno" style="width:100%;margin-top:8px">Cancelar</button>`);
+  box(`<div class="qic">${t.ico}</div><h3>${escH(premioTxt(x.c))}</h3><div class="qwarn">⚠️ Al escanear el QR, el cupón se dará por <b>canjeado</b>. Solo funciona <b>una vez</b>: si lo escanean de nuevo saldrá «Canjeado».</div><button class="btn wide" id="qgo">Mostrar QR</button><button class="btn glass" id="qno" style="width:100%;margin-top:8px">Cancelar</button>`);
   $('qno').onclick = close;
   $('qgo').onclick = async () => {
     box('<div class="qic">⏳</div><h3>Generando QR…</h3>');
@@ -2154,7 +2156,7 @@ function cupQR(x) {
     }
     if (r.canjeado) { hecho(); return; }
     const url = location.href.split(/[?#]/)[0] + '?cup=' + encodeURIComponent(r.codigo);
-    box(`<h3>${escH(x.c)}</h3><div class="qsvg">${qrSvg(url)}</div><div class="qwarn">⚠️ Cuando escaneen este QR, el cupón se dará por canjeado y no se podrá usar de nuevo.</div>${cerrar}`);
+    box(`<h3>${escH(premioTxt(x.c))}</h3><div class="qsvg">${qrSvg(url)}</div><div class="qwarn">⚠️ Cuando escaneen este QR, el cupón se dará por canjeado y no se podrá usar de nuevo.</div>${cerrar}`);
     $('qcl').onclick = close;
     timer = setInterval(async () => { const s = await apiGet({ cupon_estado: 1, clave: API_KEY, codigo: r.codigo }, { tries: 1 }); if (alive && s && s.ok && s.canjeado) hecho(); }, 3000);
   };
@@ -2183,7 +2185,7 @@ async function showCupScan(codigo) {
 function renderCupList() {
   const l = cupList().filter(x => x.c).sort((a, b) => a.f < b.f ? 1 : -1), all = cupList().length;
   const row = x => { const t = TIERS[x.n] || TIERS.bronce, [y, m, d] = x.f.split('-').map(Number);
-    return `<div class="cup${x.x ? ' used' : ''}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="cupi">${t.ico}</div><div class="cupt"><small>${t.name} · ${d}/${m}/${y}</small><b>${escH(x.c)}</b></div><button class="cupx" data-k="${cupKey(x)}"${x.x ? ' disabled' : ''}>${x.x ? 'Canjeado ✓' : 'Canjear'}</button></div>`; };
+    return `<div class="cup${x.x ? ' used' : ''}" style="--a:${t.a};--b:${t.b};--ink:${t.ink}"><div class="cupi">${t.ico}</div><div class="cupt"><small>${t.name} · ${d}/${m}/${y}</small><b>${escH(premioTxt(x.c))}</b></div><button class="cupx" data-k="${cupKey(x)}"${x.x ? ' disabled' : ''}>${x.x ? 'Canjeado ✓' : 'Canjear'}</button></div>`; };
   $('cpl').innerHTML = `<div class="evh">${all} ${all === 1 ? 'intento' : 'intentos'} · ${l.length} ${l.length === 1 ? 'cupón ganado' : 'cupones ganados'}</div>` + (l.length ? l.map(row).join('') : '<div class="evempty">Aún no hay cupones. ¡Sigue intentando! ♥</div>');
 }
 function showCupones() {
@@ -2688,16 +2690,16 @@ function showJuego(key) {
   screen.innerHTML = `<div class="home" style="padding-bottom:20px">${dateTop()}
     <div class="jtop" style="justify-content:flex-start;gap:12px"><button class="rbtn" id="back" aria-label="Volver">${BACK}</button><div><h2 class="big">${g.n}</h2><div class="date">${escH(nombreDe(me))} · <span id="gint"></span></div></div></div>
     <div class="ghud"><div>${g.l1}<b id="gp">0</b></div><div>${g.l2}<b id="gt">–</b></div></div>
-    <div class="garea" id="garea"><div class="gintro"><span>${g.ic}</span>${g.d}</div></div>
-    <div class="tmsg" id="gmsg"></div>
-    <div class="tact"><button class="btn wide" id="gstart" style="width:auto">¡Jugar!</button></div></div>`;
+    <div class="tact" style="margin:0 0 6px"><button class="btn wide" id="gstart" style="width:auto">¡Jugar!</button></div>
+    <div class="tmsg" id="gmsg" style="margin-bottom:8px"></div>
+    <div class="garea" id="garea"><div class="gintro"><span>${g.ic}</span>${g.d}</div></div></div>`;
   const ui = { score: v => { $('gp').textContent = v; }, time: v => { $('gt').textContent = v + 's'; } };
   const info = () => { $('gint').textContent = `intentos: ${Math.max(0, restantes(key))}`; };
   info();
   $('back').onclick = () => { stopGame(); go(showJuegos, { hideTitle: true }); };
   $('gstart').onclick = () => {
     if (restantes(key) <= 0) { $('gmsg').textContent = 'Ya usaste tus intentos de hoy en este juego.'; return; }
-    $('gstart').style.display = 'none'; $('gmsg').textContent = ''; ui.score(0); $('gt').textContent = '–';
+    $('gstart').style.visibility = 'hidden'; $('gmsg').textContent = ''; ui.score(0); $('gt').textContent = '–';
     gStop = g.run($('garea'), ui, async score => {
       gStop = null;
       if ($('gmsg')) $('gmsg').textContent = 'Guardando…';
@@ -2710,7 +2712,7 @@ function showJuego(key) {
       else msg = 'No se pudo guardar el puntaje.';
       if (!$('gmsg')) return;
       $('gmsg').textContent = msg; info();
-      $('gstart').textContent = 'Jugar otra vez'; $('gstart').style.display = restantes(key) > 0 ? '' : 'none';
+      $('gstart').textContent = 'Jugar otra vez'; $('gstart').style.visibility = restantes(key) > 0 ? '' : 'hidden';
     });
   };
 }
@@ -2782,6 +2784,7 @@ const RICH_DICE = {
   script: ['Algo falló por detrás del escenario 🎭 Revisa que el script de Google esté actualizado.'],
   quiebra: ['¡Te quedaste sin LoveCoins! Ve a Juegos, gana algunas y regresa, que aquí te espero 💗', 'Billetera vacía, corazón lleno 💗 Gana monedas en Juegos y vuelve.']
 };
+const MILL_INTRO = 'Apuesta, sigue la piedrita y adivina su tapita: ¡si aciertas te doy el doble, si no, la pierdes! 🪨';
 const richDi = k => { const a = RICH_DICE[k]; return a[Math.floor(Math.random() * a.length)]; };
 const richGana = (pago, apuesta) => { const a = [`¡ACERTASTE! 🎉 Eres un genio... o muy suertudo. Te llevas ${fmt(pago)} LoveCoins (apostaste ${fmt(apuesta)}).`, `¡Boom! 💥 La piedrita estaba ahí. Te entrego ${fmt(pago)} LoveCoins y mi admiración (apostaste ${fmt(apuesta)}).`, `¡No lo puedo creer! 🤩 ${fmt(pago)} LoveCoins para ti. Yo ya no tengo tapitas con las que engañarte (apostaste ${fmt(apuesta)}).`]; return a[Math.floor(Math.random() * a.length)]; };
 const richPierde = apuesta => { const a = [`Nooo, estaba en otra tapita 😭 Se fueron ${fmt(apuesta)} LoveCoins. ¡La próxima es tuya!`, `Ouch... esa piedrita se escondió muy bien 🪨 Perdiste ${fmt(apuesta)} LoveCoins. Yo también sufro, créeme.`, `Casi, casi... bueno, no tanto 😅 Adiós a ${fmt(apuesta)} LoveCoins. ¡Revancha!`, `La piedrita se rio de ti 🤭 Perdiste ${fmt(apuesta)} LoveCoins. Pero hey, ¡la suerte da vueltas!`]; return a[Math.floor(Math.random() * a.length)]; };
@@ -2797,14 +2800,13 @@ function showMillonario() {
     for (let x = 10; x <= 90; x += 3.3) { const s = Math.sqrt(1 - ((x - cx) / rx) ** 2); rid += `<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${(ty + ry * s + 1).toFixed(1)}" y2="${(by + ry * s - 1).toFixed(1)}"/>`; }
     return `<svg viewBox="0 0 100 68"><path d="M6 24V46A44 18 0 0 0 94 46V24Z" fill="url(#mcs)"/><g stroke="rgba(110,20,50,.4)" stroke-width="1.1">${rid}</g><path d="M6 46A44 18 0 0 0 94 46" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.4"/><ellipse cx="50" cy="24" rx="44" ry="18" fill="url(#mct)"/><ellipse cx="50" cy="24" rx="37" ry="14.5" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.22)" stroke-width="1.6"/><ellipse cx="37" cy="17" rx="14" ry="3.4" fill="rgba(255,255,255,.3)" transform="rotate(-8 37 17)"/><circle cx="50" cy="23" r="1.3" fill="rgba(255,255,255,.7)"/></svg>`;
   })();
-  screen.innerHTML = `<div class="home">${head}
+  screen.innerHTML = `<div class="home calfix">${head}
     <div class="mbal"><div><div class="ml">Tus LoveCoins</div><div class="mv">${COIN(24)}<span class="lcv">${fmt(miSaldo())}</span></div></div><div class="ms">${escH(nombreDe(yo()))}<br><span id="mst2">Sin apuestas aún</span></div></div>
-    <div class="mhost"><div class="mface"><img id="mface" alt="Richardson" src="${RICHARD.saludando}"></div><div class="mmsg" id="mmsg">${richDi('hola')}</div></div>
+    <div class="mhost"><div class="mface"><img id="mface" alt="Richardson" src="${RICHARD.saludando}"></div><div class="mmsg" id="mmsg" data-intro="1">${MILL_INTRO}</div></div>
     <div class="mstage" id="mst"><svg width="0" height="0" style="position:absolute"><defs><linearGradient id="mcs" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a02a47"/><stop offset=".35" stop-color="#f27d95"/><stop offset=".7" stop-color="#d8586f"/><stop offset="1" stop-color="#8a2340"/></linearGradient><linearGradient id="mct" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb3c4"/><stop offset=".55" stop-color="#ee6a86"/><stop offset="1" stop-color="#c2485c"/></linearGradient></defs></svg>      <div class="mstone" id="mstone"></div>
       ${[0, 1, 2].map(i => `<button class="mcup" data-c="${i}" style="--x:${X[i]}%" aria-label="Tapita ${i + 1}">${cupSvg}</button><div class="mshd" style="--x:${X[i]}%"></div>`).join('')}</div>
     <div class="mbet" id="mbet"><div class="ml">Cantidad a apostar</div><input id="mamt" type="text" inputmode="numeric" autocomplete="off" placeholder="0"></div>
-    <button class="btn wide mgo" id="mgo">Apostar</button>
-    <p class="mrule">Si aciertas dónde está la piedrita te entregan el <b>doble</b> de lo que apostaste. Si fallas, no se te devuelve lo apostado. Puedes jugar sin límite mientras te alcancen las LoveCoins.</p></div>`;
+    <button class="btn wide mgo" id="mgo">Apostar</button></div>`;
   $('back').onclick = () => { stopGame(); back(); };
   const cups = [...screen.querySelectorAll('.mcup')], stone = $('mstone'), msg = $('mmsg'), amt = $('mamt'), go2 = $('mgo');
   const slot = [0, 1, 2];                         // slot[copa] = posición actual (0 izquierda … 2 derecha)
@@ -2812,13 +2814,14 @@ function showMillonario() {
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const faceEl = $('mface');
   const face = k => { if (!faceEl || faceEl.dataset.k === k) return; faceEl.dataset.k = k; faceEl.src = RICHARD[k]; faceEl.classList.remove('pop'); void faceEl.offsetWidth; faceEl.classList.add('pop'); };
-  const say = (t, cls) => { msg.textContent = t; msg.className = 'mmsg' + (cls ? ' ' + cls : ''); };
+  const say = (t, cls) => { msg.dataset.intro = ''; msg.textContent = t; msg.className = 'mmsg' + (cls ? ' ' + cls : ''); };
   const bet = () => Math.floor(Number(String(amt.value).replace(/\D/g, ''))) || 0;
   const setBet = n => { amt.value = n > 0 ? fmt(Math.min(n, miSaldo())) : ''; };
   const lock = on => { $('mbet').classList.toggle('off', on); go2.disabled = on; };
   const place = () => cups.forEach((c, i) => { c.style.setProperty('--x', X[slot[i]] + '%'); c.nextElementSibling.style.setProperty('--x', X[slot[i]] + '%'); });
   const stats = () => { $('mst2').textContent = won + lost ? `${won} ganada${won === 1 ? '' : 's'} · ${lost} perdida${lost === 1 ? '' : 's'}` : 'Sin apuestas aún'; };
   const reset = () => { cups.forEach(c => c.classList.remove('up', 'pick', 'chosen', 'hop')); stone.classList.remove('show'); };
+  const introT = setTimeout(() => { if (alive && msg.dataset.intro === '1') say(richDi('hola')); }, 5000);   // la explicación dura 5 s y luego entran las frases graciosas
   setBet(Math.min(100, miSaldo()));
   amt.oninput = () => { const n = bet(); amt.value = n ? fmt(n) : ''; };
   $('mbet').onclick = e => {
@@ -2873,7 +2876,7 @@ function showMillonario() {
   }
   go2.onclick = () => { if (state === 'idle') empezar(); };
   screen.querySelector('.mstage').onclick = e => { const c = e.target.closest('.mcup'); if (c) elegir(+c.dataset.c); };
-  gStop = () => { alive = false; };                           // al salir de la pantalla se frenan las animaciones
+  gStop = () => { alive = false; clearTimeout(introT); };                           // al salir de la pantalla se frenan las animaciones
   loadMonedas().then(() => { if (!$('mamt')) return; if (state === 'idle') { if (bet() > miSaldo() || !bet()) setBet(Math.min(100, miSaldo())); } });
 }
 
